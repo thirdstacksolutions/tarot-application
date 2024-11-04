@@ -269,12 +269,9 @@ const resolvers = {
             return handleNotFound(user, 'User', userId);
         },
 
-        // dynamic data queries
-        // TODO: integrate s3 queries where needed
         generateTemporaryReading: async (_, { userId, deckId, spreadId }, context) => {
             try {
                 checkAuthentication(context, userId);
-
                 const spread = await Spread.findOne({ _id: spreadId });
                 const deck = await Deck.findOne({ _id: deckId });
 
@@ -286,9 +283,7 @@ const resolvers = {
                 if (!deck) {
                     throw new Error('Deck not found');
                 }
-
                 const selectedCardIds = drawCards(deck.cards, spread.numCards).map((card) => card._id);
-
                 const selectedCards = await Card.find({ _id: { $in: selectedCardIds } });
 
                 console.log('Selected Cards:', selectedCards);
@@ -297,6 +292,7 @@ const resolvers = {
                     card: {
                         _id: card._id,
                         cardName: card.cardName,
+
                         imageUrl: card.imageUrl
                     },
                     position: index + 1,
