@@ -50,7 +50,10 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         if (loading || !currentTheme) return;
 
-        const theme = themes[currentTheme];
+        let theme = themes['main'];
+        if (themes[currentTheme]) {
+            theme = themes[currentTheme];
+        }
         const root = document.documentElement;
 
         Object.keys(theme).forEach((key) => {
