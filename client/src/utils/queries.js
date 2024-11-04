@@ -189,6 +189,9 @@ export const QUERY_ALL_DECKS_BY_USER = gql`
         allDecksByUser(userId: $userId) {
             _id
             deckName
+            imageUrl
+            deckId
+            deckDescription
         }
     }
 `;
