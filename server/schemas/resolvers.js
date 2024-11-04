@@ -272,8 +272,60 @@ const resolvers = {
             return handleNotFound(user, 'User', userId);
         },
 
-        // dynamic data queries
-        // TODO: integrate s3 queries where needed
+        generateTemporaryReading: async (_, { userId, deckId, spreadId }, context) => {
+            try {
+                // Check authentication
+                checkAuthentication(context, userId);
+
+                // Fetch the spread and deck, ensuring we only get card IDs in the deck
+                const spread = await Spread.findOne({ _id: spreadId });
+                const deck = await Deck.findOne({ _id: deckId });
+
+                console.log('Deck:', deck);
+
+                if (!spread) {
+                    throw new Error('Spread not found');
+                }
+                if (!deck) {
+                    throw new Error('Deck not found');
+                }
+
+                // Draw random cards by IDs from the deck
+                const selectedCardIds = drawCards(deck.cards, spread.numCards).map((card) => card._id);
+
+                // Now, fetch full card objects based on those selectedCardIds
+                const selectedCards = await Card.find({ _id: { $in: selectedCardIds } });
+
+                console.log('Selected Cards:', selectedCards);
+
+                // Create card objects with full card details (including cardName and imageUrl)
+                const cardObjects = selectedCards.map((card, index) => ({
+                    card: {
+                        _id: card._id,
+                        cardName: card.cardName, // Fetch full card details here
+                        imageUrl: card.imageUrl
+                    },
+                    position: index + 1,
+                    orientation: Math.random() < 0.5 ? 'Upright' : 'Reversed'
+                }));
+
+                // Return the deck, spread, and selected cards
+                return {
+                    deck: {
+                        _id: deck._id,
+                        deckName: deck.deckName
+                    },
+                    spread: {
+                        _id: spread._id,
+                        spreadName: spread.spreadName
+                    },
+                    cards: cardObjects // Includes card details
+                };
+            } catch (error) {
+                console.error('Error generating temporary reading:', error);
+                throw new Error('Failed to generate the temporary reading');
+            }
+        },
         allReadingsByUser: async (_, { userId }, context) => {
             checkAuthentication(context, userId);
 
