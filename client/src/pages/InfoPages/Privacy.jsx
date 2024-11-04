@@ -1,11 +1,16 @@
 import './InfoPages.css';
+import { useAuth } from '../../utils/AuthContext';
 
 const Privacy = () => {
+    const { isAuthenticated } = useAuth();
+
+    const hrClass = isAuthenticated ? '' : 'non-auth-hr';
+    const linkClass = isAuthenticated ? 'link-styling' : 'non-link-styling';
     return (
         <section className='infoSections'>
             <div className='infoHeader'>
                 <h2>Privacy Policy</h2>
-                <hr style={{ width: '80%' }} />
+                <hr className={hrClass} />
 
                 <h3 className='mt-5'>Effective Date: 10/08/2024</h3>
             </div>
@@ -61,7 +66,7 @@ const Privacy = () => {
                 <a
                     href='mailto:tarotreaderappcontact@gmail.com'
                     target='_blank'
-                    className='link-styling'>
+                    className={linkClass}>
                     {' '}
                     tarotreaderappcontact@gmail.com
                 </a>
