@@ -62,9 +62,10 @@ export const GlobalProvider = ({ children }) => {
 
         const shouldUpdateBackgroundColor = (backgroundColorInfo, data) => {
             const key = data.defaultTheme.value;
-
-            if (themes[key].backgroundColor === backgroundColorInfo.color) {
-                return false;
+            if (themes[key]) {
+                if (themes[key].backgroundColor === backgroundColorInfo.color) {
+                    return false;
+                }
             } else {
                 return true;
             }
@@ -72,7 +73,11 @@ export const GlobalProvider = ({ children }) => {
 
         const setBackgroundColor = (data) => {
             const key = data.value;
-            const backgroundColor = themes[key].backgroundColor;
+            console.log(key);
+            let backgroundColor = themes['main'].backgroundColor;
+            if (themes[key]) {
+                backgroundColor = themes[key].backgroundColor;
+            }
 
             localStorage.setItem('backgroundColor', backgroundColor);
         };

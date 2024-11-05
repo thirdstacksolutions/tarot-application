@@ -12,7 +12,7 @@ import { useSpring, animated } from '@react-spring/web';
 import { QUERY_APPEARANCE_DATA, GET_THEME_DETAILS, GET_DECK_DETAILS, GET_SPREAD_DETAILS } from '../../../utils/queries';
 import { useLazyQuery } from '@apollo/client';
 import '../Settings.css';
-import '../ThemeConfig';
+import themes from '../ThemeConfig';
 
 const Fade = forwardRef(function Fade(props, ref) {
     const { children, in: open, onClick, onEnter, onExited, ...other } = props;
@@ -146,6 +146,12 @@ const Appearance = () => {
 
                 // Filter out any null entries in case a theme didn't return
                 const validThemeDetailsArray = themeDetailsArray.filter(Boolean);
+                validThemeDetailsArray.forEach((theme, idx) => {
+                    if (!themes[theme.value]) {
+                        validThemeDetailsArray.splice(idx, 1);
+                        console.log(`Theme ${theme.value} is not present in css themes object`);
+                    }
+                });
 
                 // Set the fetched theme details
                 setUserThemes(validThemeDetailsArray);
