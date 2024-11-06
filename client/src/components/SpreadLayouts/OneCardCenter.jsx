@@ -1,6 +1,7 @@
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const OneCardCenter = ({ spreadData, deckData, cardData, showCardFronts }) => {
+const OneCardCenter = ({ spreadData, deckData, cardData, cardRefs }) => {
     if (!spreadData || !deckData) {
         return <div>Loading...</div>;
     }
@@ -33,7 +34,7 @@ const OneCardCenter = ({ spreadData, deckData, cardData, showCardFronts }) => {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                            {showCardFronts && card ? (
+                            {cardRefs.current[index] && card ? (
                                 <div>
                                     <p>{card.card.cardName}</p>
                                     <img
@@ -70,7 +71,6 @@ OneCardCenter.propTypes = {
         positions: PropTypes.arrayOf(
             PropTypes.shape({
                 positionNumber: PropTypes.number.isRequired,
-                positionDescription: PropTypes.string.isRequired,
                 positionDetails: PropTypes.string.isRequired
             })
         ).isRequired
@@ -79,7 +79,7 @@ OneCardCenter.propTypes = {
         imageUrl: PropTypes.string.isRequired
     }).isRequired,
     cardData: PropTypes.array.isRequired,
-    showCardFronts: PropTypes.bool.isRequired
+    cardRefs: PropTypes.object.isRequired
 };
 
 export default OneCardCenter;

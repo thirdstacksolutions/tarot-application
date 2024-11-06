@@ -12,11 +12,17 @@ import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 const NewReading = () => {
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
     const [cardData, setCardData] = useState([]);
-    const cardRefs = useRef([false, false, false]); // Adjust for number of cards in the spread
-    const [toggleRender, setToggleRender] = useState(false); // Use this to force re-render
+    const cardRefs = useRef([]);
+    const [toggleRender, setToggleRender] = useState(false);
 
     const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
     const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
+
+    useEffect(() => {
+        if (cardData.length > 0) {
+            cardRefs.current = Array(cardData.length).fill(false);
+        }
+    }, [cardData.length]);
 
     useEffect(() => {
         if (data) {
@@ -32,11 +38,12 @@ const NewReading = () => {
     }, [data, error, saveError]);
 
     const handleRevealNextCard = () => {
-        const nextCardIndex = cardRefs.current.findIndex((isFlipped) => !isFlipped); // Find the next unflipped card
+        const nextCardIndex = cardRefs.current.findIndex((isFlipped) => !isFlipped);
 
-        if (nextCardIndex !== -1) {
-            cardRefs.current[nextCardIndex] = true; // Set the ref to true to "flip" the card
-            setToggleRender((prev) => !prev); // Trigger re-render to update visibility
+        if (nextCardIndex !== -1 && nextCardIndex < cardData.length) {
+            cardRefs.current[nextCardIndex] = true;
+            console.log(`Revealing card at position: ${nextCardIndex + 1}`);
+            setToggleRender((prev) => !prev);
         } else {
             console.log('All cards are revealed');
         }
@@ -49,10 +56,6 @@ const NewReading = () => {
                 position: card.position,
                 orientation: card.orientation
             }));
-            console.log('Deck ID:', selectedDeck._id);
-            console.log('Spread ID:', selectedSpread._id);
-            console.log('Card Objects:', cardObjects);
-
             createTarotReading({
                 variables: {
                     userId,
@@ -73,7 +76,6 @@ const NewReading = () => {
     };
 
     const handleStartReading = () => {
-        console.log('Start reading clicked');
         if (selectedSpread && selectedDeck && userId) {
             createTemporaryReading({
                 variables: {
