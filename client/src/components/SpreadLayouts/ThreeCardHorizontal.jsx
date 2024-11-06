@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const ThreeCardHorizontal = ({ spreadData, deckData, cardData, showCardFronts }) => {
+const ThreeCardHorizontal = ({ spreadData, deckData, cardData, cardRefs }) => {
     if (!spreadData || !deckData) {
         return <div>Loading...</div>;
     }
@@ -12,14 +12,7 @@ const ThreeCardHorizontal = ({ spreadData, deckData, cardData, showCardFronts })
         <section>
             <div
                 className='three-card-horizontal-layout'
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: '10px',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100%'
-                }}>
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                 {positions.map((pos, index) => {
                     const card = cardData[index];
                     const cardImageUrl = card?.card?.imageUrl;
@@ -34,7 +27,7 @@ const ThreeCardHorizontal = ({ spreadData, deckData, cardData, showCardFronts })
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                            {showCardFronts && card ? (
+                            {cardRefs.current[index] && card ? (
                                 <div>
                                     <p>
                                         {card.card.cardName} - {card.orientation}

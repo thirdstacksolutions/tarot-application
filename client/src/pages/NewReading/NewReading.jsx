@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { useReadingContext } from '../../context/ReadingContext';
 
@@ -11,8 +11,8 @@ import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 
 const NewReading = () => {
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
-    const [showCardFronts, setShowCardFronts] = useState(false);
     const [cardData, setCardData] = useState([]);
+    const cardRefs = useRef([false, false, false]);
 
     const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
 
@@ -22,7 +22,6 @@ const NewReading = () => {
         if (data) {
             console.log('Temporary reading created:', data);
             setCardData(data.generateTemporaryReading.cards);
-            // Remove setShowCardFronts(true) here to avoid flipping all at once
         }
         if (error) {
             console.error('Error creating temporary reading:', error);
@@ -31,6 +30,19 @@ const NewReading = () => {
             console.error('Error saving the reading:', saveError);
         }
     }, [data, error, saveError]);
+
+    const handleRevealNextCard = () => {
+        const nextCardIndex = cardRefs.current.findIndex((isFlipped) => !isFlipped); // Find the next unflipped card
+
+        if (nextCardIndex !== -1) {
+            cardRefs.current[nextCardIndex] = true; // Set the ref to true to "flip" the card
+        } else {
+            console.log('All cards are revealed');
+        }
+
+        // Trigger a re-render to update the visible state of cards
+        setShowCardFronts((prev) => !prev);
+    };
 
     const handleSaveReading = () => {
         if (data && data.generateTemporaryReading && selectedSpread && selectedDeck && userId) {
@@ -109,7 +121,7 @@ const NewReading = () => {
                             spreadData={selectedSpread}
                             deckData={selectedDeck}
                             cardData={cardData}
-                            showCardFronts={showCardFronts} // Passing this to control visibility in child
+                            cardRefs={cardRefs}
                         />
                     ) : (
                         <p>No matching layout found for this spread.</p>
