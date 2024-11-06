@@ -74,7 +74,7 @@ ThreeCardHorizontal.propTypes = {
         imageUrl: PropTypes.string.isRequired
     }).isRequired,
     cardData: PropTypes.array.isRequired,
-    showCardFronts: PropTypes.bool.isRequired
+    cardRefs: PropTypes.object.isRequired
 };
 
 export default ThreeCardHorizontal;

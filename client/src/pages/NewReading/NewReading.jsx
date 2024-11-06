@@ -12,10 +12,10 @@ import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 const NewReading = () => {
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
     const [cardData, setCardData] = useState([]);
-    const cardRefs = useRef([false, false, false]);
+    const cardRefs = useRef([false, false, false]); // Adjust for number of cards in the spread
+    const [toggleRender, setToggleRender] = useState(false); // Use this to force re-render
 
     const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
-
     const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
 
     useEffect(() => {
@@ -36,12 +36,10 @@ const NewReading = () => {
 
         if (nextCardIndex !== -1) {
             cardRefs.current[nextCardIndex] = true; // Set the ref to true to "flip" the card
+            setToggleRender((prev) => !prev); // Trigger re-render to update visibility
         } else {
             console.log('All cards are revealed');
         }
-
-        // Trigger a re-render to update the visible state of cards
-        setShowCardFronts((prev) => !prev);
     };
 
     const handleSaveReading = () => {
@@ -139,9 +137,7 @@ const NewReading = () => {
             </button>
             <button
                 className='button'
-                onClick={() => setShowCardFronts(true)}>
-                {' '}
-                {/* Reveal cards on button click */}
+                onClick={handleRevealNextCard}>
                 Reveal Next Card
             </button>
             <button
