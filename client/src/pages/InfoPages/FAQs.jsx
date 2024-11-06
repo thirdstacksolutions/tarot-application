@@ -1,15 +1,11 @@
 import './InfoPages.css';
-import { useAuth } from '../../utils/AuthContext';
 
 const FAQs = () => {
-    const { isAuthenticated } = useAuth();
-    const hrClass = isAuthenticated ? '' : 'non-auth-hr';
-
     return (
         <section className='infoSections'>
             <div className='infoHeader'>
                 <h2>Frequently Asked Questions</h2>
-                <hr className={hrClass} />
+                <hr className='hr-spread' />
             </div>
             <h2 className='mt-5'>Why this App?</h2>
             <p>
