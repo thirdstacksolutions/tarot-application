@@ -27,6 +27,7 @@
 
 .comingSoonTitle {
     text-align: center;
+    color: var(--h2-color) !important;
 }
 
 .featuredDeckImgContainer {

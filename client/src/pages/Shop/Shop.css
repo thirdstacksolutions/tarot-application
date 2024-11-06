@@ -7,6 +7,7 @@
     flex-direction: column;
     overflow: scroll;
     overflow-x: hidden; /* Prevent horizontal scroll */
+    background-color: var(--background-color);
 }
 
 .topBar {
@@ -27,7 +28,7 @@
     justify-content: center;
     align-items: center;
     width: 100px;
-    border: 2px solid #a89467;
+    border: 2px solid var(--universal-image-border) !important;
     border-radius: 50%;
     margin-left: 2rem;
 }
@@ -47,7 +48,7 @@
 }
 
 #cartText {
-    color: #a89467;
+    color: var(--h2-color);
     font-size: 2rem;
     font-size: bolder;
     /* border: 2px solid white; */
@@ -62,8 +63,8 @@
 }
 
 .headingShop {
-    font-size: 2rem;
-    color: whitesmoke;
+    font-size: 2.5rem;
+    color: var(--h2-color) !important;
 }
 
 .deckShopContainer {
@@ -80,7 +81,7 @@
     position: relative;
     width: 150px;
     height: 219px;
-    border: 2px solid #a89467;
+    border: 2px solid var(--universal-image-border) !important;
     border-radius: 8px;
     margin: 1rem 4rem;
 }
@@ -124,7 +125,7 @@
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    border: 2px solid #a89467;
+    border: 2px solid var(--universal-image-border) !important;
     margin: 1rem 4rem;
 }
 
@@ -151,7 +152,7 @@
     cursor: pointer;
     width: 500px;
     border-radius: 5%;
-    border: 2px solid #a89467;
+    border: 2px solid var(--universal-image-border) !important;
     margin: 1rem 4rem;
 }
 
@@ -177,7 +178,7 @@
 .bundleShopWrapper {
     width: 500px;
     border-radius: 5%;
-    border: 2px solid #a89467;
+    border: 2px solid var(--universal-image-border) !important;
     margin: 1rem 4rem;
     cursor: pointer;
 }
@@ -202,7 +203,7 @@
 .avatarShopModalImgs {
     width: 30%;
     border-radius: 50%;
-    border: 2px solid #a89467;
+    border: 2px solid var(--universal-image-border) !important;
 }
 
 .themeBundleModalContainer {

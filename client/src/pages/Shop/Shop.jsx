@@ -128,28 +128,28 @@ const AppShop = () => {
                 </div>
             </div>
             <div className='shopItems deckShop'>
-                <h1 className='headingShop'>Most Popular Tarot Decks</h1>
+                <h2 className='headingShop'>Most Popular Tarot Decks</h2>
                 <Decks
                     deckInfo={shopData.decks}
                     sendModal={handleOpen}
                 />
             </div>
             <div className='shopItems avatarShop'>
-                <h1 className='headingShop'>Avatars for You</h1>
+                <h2 className='headingShop'>Avatars for You</h2>
                 <Avatars
                     avatarInfo={shopData.avatars}
                     sendModal={handleOpen}
                 />
             </div>
             <div className='shopItems themeShop'>
-                <h1 className='headingShop'>Carefully Crafted Themes</h1>
+                <h2 className='headingShop'>Carefully Crafted Themes</h2>
                 <Themes
                     imgUrl={ThemeOne}
                     sendModal={handleOpen}
                 />
             </div>
             <div className='shopItems bundleShop'>
-                <h1 className='headingShop'>Bundles</h1>
+                <h2 className='headingShop'>Bundles</h2>
                 <Bundles
                     imgUrl={BundleOne}
                     sendModal={handleOpen}
