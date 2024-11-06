@@ -36,7 +36,9 @@ const ThreeCardHorizontal = ({ spreadData, deckData, cardData, showCardFronts })
                             }}>
                             {showCardFronts && card ? (
                                 <div>
-                                    <p>{card.card.cardName}</p>
+                                    <p>
+                                        {card.card.cardName} - {card.orientation}
+                                    </p>
                                     <img
                                         src={cardImageUrl}
                                         alt={card.card.cardName}

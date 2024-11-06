@@ -22,7 +22,7 @@ const NewReading = () => {
         if (data) {
             console.log('Temporary reading created:', data);
             setCardData(data.generateTemporaryReading.cards);
-            setShowCardFronts(true);
+            // Remove setShowCardFronts(true) here to avoid flipping all at once
         }
         if (error) {
             console.error('Error creating temporary reading:', error);
@@ -109,7 +109,7 @@ const NewReading = () => {
                             spreadData={selectedSpread}
                             deckData={selectedDeck}
                             cardData={cardData}
-                            showCardFronts={showCardFronts}
+                            showCardFronts={showCardFronts} // Passing this to control visibility in child
                         />
                     ) : (
                         <p>No matching layout found for this spread.</p>
@@ -125,7 +125,13 @@ const NewReading = () => {
                 disabled={loading}>
                 {loading ? 'Starting Reading...' : 'Start Reading'}
             </button>
-
+            <button
+                className='button'
+                onClick={() => setShowCardFronts(true)}>
+                {' '}
+                {/* Reveal cards on button click */}
+                Reveal Next Card
+            </button>
             <button
                 className='button'
                 onClick={handleSaveReading}>
