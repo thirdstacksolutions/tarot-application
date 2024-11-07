@@ -5,7 +5,7 @@ const Privacy = () => {
         <section className='infoSections'>
             <div className='infoHeader'>
                 <h2>Privacy Policy</h2>
-                <hr style={{ width: '80%' }} />
+                <hr className='hr-spread' />
 
                 <h3 className='mt-5'>Effective Date: 10/08/2024</h3>
             </div>

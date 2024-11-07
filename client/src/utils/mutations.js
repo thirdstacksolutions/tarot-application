@@ -104,7 +104,6 @@ export const CREATE_TAROT_READING = gql`
                 card {
                     _id
                     cardName
-                    imageUrl
                 }
                 position
                 orientation

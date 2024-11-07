@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '../../utils/AuthContext';
 
 import DashboardLeft from '../../pages/Dashboard/DashboardLeft';
 import DashboardRight from '../../pages/Dashboard/DashboardRight';
@@ -61,7 +62,6 @@ const routeToMainComponents = {
             <JournalRight style={{ width: '50%' }} />
         </div>
     ),
-    // This is a temporary link in the navigation pane for testing purposes only. It will be removed. Access to the page will be determined by chose card
     '/cardDetails': () => (
         <section
             style={{
@@ -90,9 +90,28 @@ const routeToMainComponents = {
 
 const MainContainer = () => {
     const location = useLocation();
+    const { isAuthenticated } = useAuth();
     const MainComponent = routeToMainComponents[location.pathname];
 
-    return <main style={{ flex: '1' }}>{MainComponent && <MainComponent />}</main>;
+    const publicInfoRoutes = [
+        '/terms',
+        '/privacy',
+        '/contactUs',
+        '/faqs',
+        '/appShop',
+        '/aboutUs',
+        '/browseSpreads',
+        '/browseDecks'
+    ];
+    const isPublicInfoPage = publicInfoRoutes.includes(location.pathname);
+
+    const containerClassName = isPublicInfoPage ? 'landing-page' : '';
+
+    return (
+        <main style={{ flex: '1' }}>
+            <div className={containerClassName}>{MainComponent && <MainComponent />}</div>
+        </main>
+    );
 };
 
 export default MainContainer;

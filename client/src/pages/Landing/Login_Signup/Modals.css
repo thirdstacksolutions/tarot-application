@@ -6,7 +6,7 @@
     top: 10px;
     right: 10px;
     color: #fafaf7;
-    background-color: rgb(170, 142, 80);
+    background-color: #a89467;
 }
 
 /* Signup Modal*************************************** */
@@ -25,10 +25,12 @@
     width: 400px;
     text-align: right;
     margin-right: 10px;
-    /* Add space between label and input */
 }
 
 .form-group input {
     padding: 5px;
     margin-bottom: 2px;
+}
+.form-group-label {
+    color: #a89467;
 }

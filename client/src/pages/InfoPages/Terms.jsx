@@ -5,7 +5,7 @@ const Terms = () => {
         <section className='infoSections'>
             <div className='infoHeader'>
                 <h2>Terms of Service</h2>
-                <hr style={{ width: '80%' }} />
+                <hr className='hr-spread' />
                 <h3>Effective Date: 10/8/2024</h3>
             </div>
             <p className='terms-p'>

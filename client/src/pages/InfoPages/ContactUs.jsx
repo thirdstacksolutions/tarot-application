@@ -7,7 +7,7 @@ const ContactUs = () => {
         <section className='infoSections'>
             <div className='infoHeader'>
                 <h2>Contact Us</h2>
-                <hr style={{ width: '80%' }} />
+                <hr className='hr-spread' />
             </div>
             <h2>Have questions or need help? We're here for you!</h2>
             <p>
@@ -52,15 +52,8 @@ const ContactUs = () => {
                 </div>
             </div>
             <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                <Button className='button'>Send Message</Button>
+                <Button className='auth-button'>Send Message</Button>
             </div>
-            {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button
-                    onClick={() => (window.location.href = '/dashboard')}
-                    className='button'>
-                    Go to Dashboard
-                </button>
-            </div> */}
         </section>
     );
 };

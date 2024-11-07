@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { useReadingContext } from '../../context/ReadingContext';
 
@@ -11,16 +11,18 @@ import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 
 const NewReading = () => {
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
+    const [showCardFronts, setShowCardFronts] = useState(false);
+    const [cardData, setCardData] = useState([]);
 
-    // Set up useLazyQuery for creating the temporary reading
     const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
 
-    // Set up useMutation for saving the reading
     const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
 
     useEffect(() => {
         if (data) {
             console.log('Temporary reading created:', data);
+            setCardData(data.generateTemporaryReading.cards);
+            setShowCardFronts(true);
         }
         if (error) {
             console.error('Error creating temporary reading:', error);
@@ -33,7 +35,7 @@ const NewReading = () => {
     const handleSaveReading = () => {
         if (data && data.generateTemporaryReading && selectedSpread && selectedDeck && userId) {
             const cardObjects = data.generateTemporaryReading.cards.map((card) => ({
-                card: card.card._id, // Extract the card ID
+                card: card.card._id,
                 position: card.position,
                 orientation: card.orientation
             }));
@@ -46,7 +48,7 @@ const NewReading = () => {
                     userId,
                     deckId: selectedDeck._id,
                     spreadId: selectedSpread._id,
-                    cardObjects // Pass the cardObjects array directly
+                    cardObjects
                 }
             })
                 .then((response) => {
@@ -57,6 +59,21 @@ const NewReading = () => {
                 });
         } else {
             console.error('Required data missing: Check if deck, spread, or user is selected.');
+        }
+    };
+
+    const handleStartReading = () => {
+        console.log('Start reading clicked');
+        if (selectedSpread && selectedDeck && userId) {
+            createTemporaryReading({
+                variables: {
+                    userId,
+                    spreadId: selectedSpread._id,
+                    deckId: selectedDeck._id
+                }
+            });
+        } else {
+            console.error('Spread, Deck, or User not selected');
         }
     };
 
@@ -91,6 +108,8 @@ const NewReading = () => {
                         <LayoutComponent
                             spreadData={selectedSpread}
                             deckData={selectedDeck}
+                            cardData={cardData}
+                            showCardFronts={showCardFronts}
                         />
                     ) : (
                         <p>No matching layout found for this spread.</p>
@@ -102,23 +121,11 @@ const NewReading = () => {
 
             <button
                 className='button'
-                onClick={() => {
-                    if (selectedSpread && selectedDeck && userId) {
-                        createTemporaryReading({
-                            variables: {
-                                userId,
-                                spreadId: selectedSpread._id,
-                                deckId: selectedDeck._id
-                            }
-                        });
-                    } else {
-                        console.error('Spread, Deck, or User not selected');
-                    }
-                }}>
-                Start Reading
+                onClick={handleStartReading}
+                disabled={loading}>
+                {loading ? 'Starting Reading...' : 'Start Reading'}
             </button>
 
-            {/* Save Reading Button */}
             <button
                 className='button'
                 onClick={handleSaveReading}>

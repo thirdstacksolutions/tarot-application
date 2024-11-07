@@ -109,7 +109,7 @@ const LoginForm = () => {
                 <br />
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <button
-                        className='button'
+                        className='auth-button'
                         style={{ marginTop: '0' }}
                         type='submit'>
                         Submit
