@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import './sixSpokesUpright.css';
+import './SpreadLayouts.css';
 
 const SixSpokesUpright = ({ spreadData, deckData, cardData, cardRefs }) => {
     if (!spreadData || !deckData) {
@@ -15,215 +15,134 @@ const SixSpokesUpright = ({ spreadData, deckData, cardData, cardRefs }) => {
             <div className='six-spokes-upright-layout'>
                 {/* Column 1 (Positions 5 and 4) */}
                 <div className='column-1'>
-                    {/* Position 5 */}
-                    <div className='position-5'>
-                        {(() => {
-                            const card = getCardForPosition(5);
-                            return cardRefs.current[4] && card ? (
-                                <div>
-                                    <p>{card.card.cardName}</p>
-                                    <img
-                                        src={card.card.imageUrl}
-                                        alt={card.card.cardName}
-                                        className='card-image'
-                                        style={{
-                                            transform: card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
-                                        }}
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 5).positionDetails}
-                                    </p>
+                    {[5, 4].map((position) => {
+                        const card = getCardForPosition(position);
+                        return (
+                            <div
+                                key={position}
+                                className='card-container position-details'>
+                                <p className='position-details'>
+                                    {
+                                        spreadData.positions.find((pos) => pos.positionNumber === position)
+                                            .positionDetails
+                                    }
+                                </p>
+                                <div className={`card ${cardRefs.current[position - 1] ? 'flipped' : ''}`}>
+                                    <div className='card-face front'>
+                                        <img
+                                            src={deckBackImage}
+                                            alt='Card Back'
+                                            className='card-image'
+                                        />
+                                    </div>
+                                    {card && (
+                                        <div className='card-face back'>
+                                            <img
+                                                src={card.card.imageUrl}
+                                                alt={card.card.cardName}
+                                                className='card-image'
+                                                style={{
+                                                    transform:
+                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                }}
+                                            />
+                                            <p className='card-name'>
+                                                {card.card.cardName} - {card.orientation}
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
-                            ) : (
-                                <div>
-                                    <img
-                                        src={deckBackImage}
-                                        alt='Card Back'
-                                        className='card-image'
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 5).positionDetails}
-                                    </p>
-                                </div>
-                            );
-                        })()}
-                    </div>
-
-                    {/* Position 4 */}
-                    <div className='position-4'>
-                        {(() => {
-                            const card = getCardForPosition(4);
-                            return cardRefs.current[3] && card ? (
-                                <div>
-                                    <p>{card.card.cardName}</p>
-                                    <img
-                                        src={card.card.imageUrl}
-                                        alt={card.card.cardName}
-                                        className='card-image'
-                                        style={{
-                                            transform: card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
-                                        }}
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 4).positionDetails}
-                                    </p>
-                                </div>
-                            ) : (
-                                <div>
-                                    <img
-                                        src={deckBackImage}
-                                        alt='Card Back'
-                                        className='card-image'
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 4).positionDetails}
-                                    </p>
-                                </div>
-                            );
-                        })()}
-                    </div>
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* Column 2 (Positions 6 and 3) */}
                 <div className='column-2'>
-                    {/* Position 6 */}
-                    <div className='position-6'>
-                        {(() => {
-                            const card = getCardForPosition(6);
-                            return cardRefs.current[5] && card ? (
-                                <div>
-                                    <p>{card.card.cardName}</p>
-                                    <img
-                                        src={card.card.imageUrl}
-                                        alt={card.card.cardName}
-                                        className='card-image'
-                                        style={{
-                                            transform: card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
-                                        }}
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 6).positionDetails}
-                                    </p>
+                    {[6, 3].map((position) => {
+                        const card = getCardForPosition(position);
+                        return (
+                            <div
+                                key={position}
+                                className='card-container position-details'>
+                                <p className='position-details'>
+                                    {
+                                        spreadData.positions.find((pos) => pos.positionNumber === position)
+                                            .positionDetails
+                                    }
+                                </p>
+                                <div className={`card ${cardRefs.current[position - 1] ? 'flipped' : ''}`}>
+                                    <div className='card-face front'>
+                                        <img
+                                            src={deckBackImage}
+                                            alt='Card Back'
+                                            className='card-image'
+                                        />
+                                    </div>
+                                    {card && (
+                                        <div className='card-face back'>
+                                            <img
+                                                src={card.card.imageUrl}
+                                                alt={card.card.cardName}
+                                                className='card-image'
+                                                style={{
+                                                    transform:
+                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                }}
+                                            />
+                                            <p className='card-name'>
+                                                {card.card.cardName} - {card.orientation}
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
-                            ) : (
-                                <div>
-                                    <img
-                                        src={deckBackImage}
-                                        alt='Card Back'
-                                        className='card-image'
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 6).positionDetails}
-                                    </p>
-                                </div>
-                            );
-                        })()}
-                    </div>
-
-                    {/* Position 3 */}
-                    <div className='position-3'>
-                        {(() => {
-                            const card = getCardForPosition(3);
-                            return cardRefs.current[2] && card ? (
-                                <div>
-                                    <p>{card.card.cardName}</p>
-                                    <img
-                                        src={card.card.imageUrl}
-                                        alt={card.card.cardName}
-                                        className='card-image'
-                                        style={{
-                                            transform: card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
-                                        }}
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 3).positionDetails}
-                                    </p>
-                                </div>
-                            ) : (
-                                <div>
-                                    <img
-                                        src={deckBackImage}
-                                        alt='Card Back'
-                                        className='card-image'
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 3).positionDetails}
-                                    </p>
-                                </div>
-                            );
-                        })()}
-                    </div>
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* Column 3 (Positions 1 and 2) */}
                 <div className='column-3'>
-                    {/* Position 1 */}
-                    <div className='position-1'>
-                        {(() => {
-                            const card = getCardForPosition(1);
-                            return cardRefs.current[0] && card ? (
-                                <div>
-                                    <p>{card.card.cardName}</p>
-                                    <img
-                                        src={card.card.imageUrl}
-                                        alt={card.card.cardName}
-                                        className='card-image'
-                                        style={{
-                                            transform: card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
-                                        }}
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 1).positionDetails}
-                                    </p>
+                    {[1, 2].map((position) => {
+                        const card = getCardForPosition(position);
+                        return (
+                            <div
+                                key={position}
+                                className='card-container position-details'>
+                                <p className='position-details'>
+                                    {
+                                        spreadData.positions.find((pos) => pos.positionNumber === position)
+                                            .positionDetails
+                                    }
+                                </p>
+                                <div className={`card ${cardRefs.current[position - 1] ? 'flipped' : ''}`}>
+                                    <div className='card-face front'>
+                                        <img
+                                            src={deckBackImage}
+                                            alt='Card Back'
+                                            className='card-image'
+                                        />
+                                    </div>
+                                    {card && (
+                                        <div className='card-face back'>
+                                            <img
+                                                src={card.card.imageUrl}
+                                                alt={card.card.cardName}
+                                                className='card-image'
+                                                style={{
+                                                    transform:
+                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                }}
+                                            />
+                                            <p className='card-name'>
+                                                {card.card.cardName} - {card.orientation}
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
-                            ) : (
-                                <div>
-                                    <img
-                                        src={deckBackImage}
-                                        alt='Card Back'
-                                        className='card-image'
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 1).positionDetails}
-                                    </p>
-                                </div>
-                            );
-                        })()}
-                    </div>
-
-                    {/* Position 2 */}
-                    <div className='position-2'>
-                        {(() => {
-                            const card = getCardForPosition(2);
-                            return cardRefs.current[1] && card ? (
-                                <div>
-                                    <p>{card.card.cardName}</p>
-                                    <img
-                                        src={card.card.imageUrl}
-                                        alt={card.card.cardName}
-                                        className='card-image'
-                                        style={{
-                                            transform: card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
-                                        }}
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 2).positionDetails}
-                                    </p>
-                                </div>
-                            ) : (
-                                <div>
-                                    <img
-                                        src={deckBackImage}
-                                        alt='Card Back'
-                                        className='card-image'
-                                    />
-                                    <p>
-                                        {spreadData.positions.find((pos) => pos.positionNumber === 2).positionDetails}
-                                    </p>
-                                </div>
-                            );
-                        })()}
-                    </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </section>
