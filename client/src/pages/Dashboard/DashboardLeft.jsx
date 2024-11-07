@@ -4,6 +4,7 @@ import Interview from '../../assets/Spreads/interview_spread.png';
 import EOTSBack from '../../assets/CardBacks/eots_backs_01.jpg';
 import RWSDBack from '../../assets/CardBacks/rwsd_backs_01.jpg';
 import UniversalCarousel from './AltCarousel';
+import SliderComponent from './SliderComponent';
 import './Dashboard.css';
 import { useTheme } from '../Settings/ThemeContext';
 import { useLazyQuery } from '@apollo/client';
@@ -47,7 +48,12 @@ const DashboardLeft = () => {
 
                 if (data && data.allDecksByUser) {
                     data.allDecksByUser.forEach((deck) => {
-                        deckDetailsObject[deck.deckId] = deck;
+                        deckDetailsObject[deck.deckId] = {
+                            _id: deck._id,
+                            name: deck.deckName,
+                            description: deck.deckDescription,
+                            imageUrl: deck.imageUrl
+                        };
                     });
                 }
 
@@ -67,10 +73,15 @@ const DashboardLeft = () => {
             if (meData.me._id) {
                 const deckDetailsObject = {};
                 const { data } = await favoriteDecksByUser({ variables: { userId: meData.me._id } });
-                console.log(data);
+
                 if (data && data.allFavoriteDecksByUser) {
                     data.allFavoriteDecksByUser.forEach((deck) => {
-                        deckDetailsObject[deck.deckId] = deck;
+                        deckDetailsObject[deck.deckId] = {
+                            _id: deck._id,
+                            name: deck.deckName,
+                            description: deck.deckDescription,
+                            imageUrl: deck.imageUrl
+                        };
                     });
                 }
 
@@ -85,7 +96,39 @@ const DashboardLeft = () => {
         }
     }, [meData, meLoading, favoriteDecksByUser]);
 
-    console.log(userInfo);
+    useEffect(() => {
+        const fetchFavoriteSpreadsDetails = async () => {
+            if (meData.me._id) {
+                const spreadDetailsObject = {};
+                const { data } = await favoriteSpreadsByUser({ variables: { userId: meData.me._id } });
+
+                if (data && data.allFavoriteSpreadsByUser) {
+                    data.allFavoriteSpreadsByUser.forEach((spread) => {
+                        // Convert "Daily Focus" to "daily_focus"
+                        const spreadKey = spread.spreadName
+                            .toLowerCase() // Convert to lowercase
+                            .replace(/\s+/g, '_'); // Replace spaces with underscores
+
+                        // Rename spreadName to name and spreadDescription to description
+                        spreadDetailsObject[spreadKey] = {
+                            _id: spread._id,
+                            name: spread.spreadName,
+                            description: spread.spreadDescription,
+                            imageUrl: spread.imageUrl
+                        };
+                    });
+                }
+
+                setUserInfo((prev) => ({
+                    ...prev,
+                    favoriteSpreads: spreadDetailsObject
+                }));
+            }
+        };
+        if (!meLoading && meData?.me) {
+            fetchFavoriteSpreadsDetails();
+        }
+    }, [meData, meLoading, favoriteSpreadsByUser]);
 
     const deckImages = [
         { src: EOTSBack, alt: 'Deck' },
@@ -111,25 +154,25 @@ const DashboardLeft = () => {
                 <div className='my-decks'>
                     <h2>My Decks</h2>
                     <hr className='hr-spread' />
-                    <UniversalCarousel
-                        images={deckImages}
-                        border={theme.universalImageBorder}
+                    <SliderComponent
+                        userInfo={userInfo.decks}
+                        type={'Decks'}
                     />
                 </div>
                 <div className='my-spreads'>
                     <h2>Favorite Spreads</h2>
                     <hr className='hr-spread' />
-                    <UniversalCarousel
-                        images={spreadImages}
-                        border={theme.universalImageBorder}
+                    <SliderComponent
+                        userInfo={userInfo.favoriteSpreads}
+                        type={'Spreads'}
                     />
                 </div>
                 <div className='fav-decks'>
                     <h2>Favorite Decks</h2>
                     <hr className='hr-spread' />
-                    <UniversalCarousel
-                        images={deckImages}
-                        border={theme.universalImageBorder}
+                    <SliderComponent
+                        userInfo={userInfo.favoriteDecks}
+                        type={'FavoriteDecks'}
                     />
                 </div>
             </section>

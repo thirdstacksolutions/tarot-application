@@ -74,7 +74,7 @@ export const GlobalProvider = ({ children }) => {
         const setBackgroundColor = (data) => {
             const key = data.value;
             console.log(key);
-            let backgroundColor = themes['main'].backgroundColor;
+            let backgroundColor = themes['pastel'].backgroundColor;
             if (themes[key]) {
                 backgroundColor = themes[key].backgroundColor;
             }

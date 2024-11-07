@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --headerImage: url('TarotHeader1.png');
     --h2-color: #a89467;
     --link-color: #a89467;
@@ -8,7 +8,7 @@
     --border-left-color: #a89467;
     --text-color: #fafaf7;
     --user-text-color: #d7d5ce;
-    /* --background-color: #331834; */
+    --background-color: #331834;
     --img-text-bg-color: #4f3052;
     --universal-image-border: #a89467;
     --avatar-settings-border: 2px solid #808080;
@@ -25,7 +25,7 @@
     --fields-input-background-color: #4f3052;
     --fields-input-border-color: #a89467;
     --fields-input-text-color: #fafaf7;
-}
+} */
 
 .theme-moody {
     --headerImage: url('Moody_Header.jpg');
