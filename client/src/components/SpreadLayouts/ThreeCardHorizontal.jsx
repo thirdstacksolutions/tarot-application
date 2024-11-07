@@ -1,63 +1,56 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+import './SpreadLayouts.css';
 
-const ThreeCardHorizontal = ({ spreadData, deckData, cardData, showCardFronts }) => {
+const ThreeCardHorizontal = ({ spreadData, deckData, cardData, cardRefs }) => {
     if (!spreadData || !deckData) {
         return <div>Loading...</div>;
     }
 
-    const { positions } = spreadData;
     const { imageUrl: deckBackImage } = deckData;
 
     return (
         <section>
             <div
                 className='three-card-horizontal-layout'
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: '10px',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100%'
-                }}>
-                {positions.map((pos, index) => {
-                    const card = cardData[index];
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                {spreadData.positions.map((pos, index) => {
+                    const card = cardData.find((c) => c.position === pos.positionNumber);
                     const cardImageUrl = card?.card?.imageUrl;
                     const cardOrientation = card?.orientation;
 
                     return (
                         <div
                             key={index}
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
-                            {showCardFronts && card ? (
-                                <div>
-                                    <p>{card.card.cardName}</p>
-                                    <img
-                                        src={cardImageUrl}
-                                        alt={card.card.cardName}
-                                        style={{
-                                            width: '200px',
-                                            height: 'auto',
-                                            transform: cardOrientation === 'Reversed' ? 'rotate(180deg)' : 'none'
-                                        }}
-                                    />
-                                    <p>{pos.positionDetails}</p>
-                                </div>
-                            ) : (
-                                <div>
+                            className='card-container'>
+                            <p className='position-details'>{pos.positionDetails}</p>
+                            <div className={`card ${cardRefs.current[index] && card ? 'flipped' : ''}`}>
+                                <div className='card-face front'>
                                     <img
                                         src={deckBackImage}
                                         alt={`Card ${pos.positionNumber}`}
+                                        className='card-image'
                                         style={{ width: '200px', height: 'auto' }}
                                     />
-                                    <p>{pos.positionDetails}</p>
                                 </div>
-                            )}
+                                {card && (
+                                    <div className='card-face back'>
+                                        <img
+                                            src={cardImageUrl}
+                                            alt={card.card.cardName}
+                                            className='card-image'
+                                            style={{
+                                                width: '200px',
+                                                height: 'auto',
+                                                transform: cardOrientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                            }}
+                                        />
+                                        <p>
+                                            {card.card.cardName} - {card.orientation}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     );
                 })}
@@ -79,7 +72,7 @@ ThreeCardHorizontal.propTypes = {
         imageUrl: PropTypes.string.isRequired
     }).isRequired,
     cardData: PropTypes.array.isRequired,
-    showCardFronts: PropTypes.bool.isRequired
+    cardRefs: PropTypes.object.isRequired
 };
 
 export default ThreeCardHorizontal;
