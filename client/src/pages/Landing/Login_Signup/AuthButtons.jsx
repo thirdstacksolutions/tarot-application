@@ -5,12 +5,12 @@ export const AuthButtons = ({ handleLoginOpen, handleSignUpOpen }) => {
         <div className='button-container'>
             <div>
                 <button
-                    className='button'
+                    className='auth-button'
                     onClick={handleLoginOpen}>
                     Login
                 </button>
                 <button
-                    className='button'
+                    className='auth-button'
                     onClick={handleSignUpOpen}>
                     Sign Up
                 </button>

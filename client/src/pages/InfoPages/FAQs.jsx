@@ -5,7 +5,7 @@ const FAQs = () => {
         <section className='infoSections'>
             <div className='infoHeader'>
                 <h2>Frequently Asked Questions</h2>
-                <hr style={{ width: '80%' }} />
+                <hr className='hr-spread' />
             </div>
             <h2 className='mt-5'>Why this App?</h2>
             <p>
