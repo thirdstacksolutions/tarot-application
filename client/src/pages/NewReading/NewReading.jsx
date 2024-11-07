@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { useReadingContext } from '../../context/ReadingContext';
 
@@ -11,18 +11,23 @@ import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 
 const NewReading = () => {
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
-    const [showCardFronts, setShowCardFronts] = useState(false);
     const [cardData, setCardData] = useState([]);
+    const cardRefs = useRef([]);
+    const [toggleRender, setToggleRender] = useState(false);
 
     const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
-
     const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
+
+    useEffect(() => {
+        if (cardData.length > 0) {
+            cardRefs.current = Array(cardData.length).fill(false);
+        }
+    }, [cardData.length]);
 
     useEffect(() => {
         if (data) {
             console.log('Temporary reading created:', data);
             setCardData(data.generateTemporaryReading.cards);
-            setShowCardFronts(true);
         }
         if (error) {
             console.error('Error creating temporary reading:', error);
@@ -32,6 +37,18 @@ const NewReading = () => {
         }
     }, [data, error, saveError]);
 
+    const handleRevealNextCard = () => {
+        const nextCardIndex = cardRefs.current.findIndex((isFlipped) => !isFlipped);
+
+        if (nextCardIndex !== -1 && nextCardIndex < cardData.length) {
+            cardRefs.current[nextCardIndex] = true;
+            console.log(`Revealing card at position: ${nextCardIndex + 1}`);
+            setToggleRender((prev) => !prev);
+        } else {
+            console.log('All cards are revealed');
+        }
+    };
+
     const handleSaveReading = () => {
         if (data && data.generateTemporaryReading && selectedSpread && selectedDeck && userId) {
             const cardObjects = data.generateTemporaryReading.cards.map((card) => ({
@@ -39,10 +56,6 @@ const NewReading = () => {
                 position: card.position,
                 orientation: card.orientation
             }));
-            console.log('Deck ID:', selectedDeck._id);
-            console.log('Spread ID:', selectedSpread._id);
-            console.log('Card Objects:', cardObjects);
-
             createTarotReading({
                 variables: {
                     userId,
@@ -63,7 +76,6 @@ const NewReading = () => {
     };
 
     const handleStartReading = () => {
-        console.log('Start reading clicked');
         if (selectedSpread && selectedDeck && userId) {
             createTemporaryReading({
                 variables: {
@@ -109,7 +121,7 @@ const NewReading = () => {
                             spreadData={selectedSpread}
                             deckData={selectedDeck}
                             cardData={cardData}
-                            showCardFronts={showCardFronts}
+                            cardRefs={cardRefs}
                         />
                     ) : (
                         <p>No matching layout found for this spread.</p>
@@ -125,7 +137,11 @@ const NewReading = () => {
                 disabled={loading}>
                 {loading ? 'Starting Reading...' : 'Start Reading'}
             </button>
-
+            <button
+                className='button'
+                onClick={handleRevealNextCard}>
+                Reveal Next Card
+            </button>
             <button
                 className='button'
                 onClick={handleSaveReading}>

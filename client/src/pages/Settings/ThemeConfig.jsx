@@ -41,7 +41,8 @@ const themes = {
         editableTextColor: '#372B4F',
         fieldsInputBackgroundColor: '#D7D5CE',
         fieldsInputBorderColor: '#8C3D00',
-        fieldsInputTextColor: '#561E1E'
+        fieldsInputTextColor: '#561E1E',
+        shopColor: '#00565E'
     },
     // label: Scarlet Shadows - Christi's theme
     moody: {
