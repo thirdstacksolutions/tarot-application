@@ -1,11 +1,10 @@
-const { drawCards } = require('../schemas/resolvers'); // Import drawCards
-const resolvers = require('../schemas/resolvers'); // Import resolvers for any needed constants
-import { vi } from 'vitest';
+const { drawCards } = require('../schemas/resolvers');
+const resolvers = require('../schemas/resolvers');
+constants;
 
-// Create a mock version of generateTemporaryReading for testing
 const mockGenerateTemporaryReading = async (_, { deckId, spreadId, numCards = 6 }) => {
     const deck = Array.from({ length: 78 }, (_, i) => ({ _id: `card${i}`, cardName: `Card ${i}` }));
-    const drawnCards = drawCards(deck, numCards); // Use the real drawCards function
+    const drawnCards = drawCards(deck, numCards);
 
     return {
         deck: { _id: deckId, deckName: 'Mocked Deck' },
@@ -23,7 +22,6 @@ describe('generateTemporaryReading resolver with simulated cases', () => {
     const testDeckId = '66c6184ed8c96ed65ab4e708';
     const testSpreadId = '66c6184dd8c96ed65ab4e6f2';
 
-    // Helper function to simulate readings using the mock resolver
     const simulateReading = async (drawSize) => {
         const context = { user: { id: testUserId } };
         return mockGenerateTemporaryReading(
