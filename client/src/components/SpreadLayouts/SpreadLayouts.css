@@ -39,6 +39,7 @@
 .card-image {
     width: 200px;
     height: auto;
+    background-color: var(--background-color);
 }
 
 .card-container {
