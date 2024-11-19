@@ -1,6 +1,4 @@
 const { drawCards } = require('../schemas/resolvers');
-const resolvers = require('../schemas/resolvers');
-constants;
 
 const mockGenerateTemporaryReading = async (_, { deckId, spreadId, numCards = 6 }) => {
     const deck = Array.from({ length: 78 }, (_, i) => ({ _id: `card${i}`, cardName: `Card ${i}` }));
