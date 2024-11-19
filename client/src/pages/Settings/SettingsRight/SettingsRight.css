@@ -3,7 +3,7 @@
     width: 50%;
     height: 95%;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     flex-direction: column;
     /* border-left: 1px solid #a89467; */

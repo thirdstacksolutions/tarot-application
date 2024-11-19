@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
-import Empress from '../../../assets/03_The_Empress.jpg';
-import Moon from '../../../assets/18_The_Moon.jpg';
-import Magician from '../../../assets/01_The_Magician.jpg';
+import Empress from '../../assets/03_The_Empress.jpg';
+import Moon from '../../assets/18_The_Moon.jpg';
+import Magician from '../../assets/01_The_Magician.jpg';
+import './InfoPages.css';
 
 const TeamMember = ({ image, name, title, description, reverse }) => (
-    <section style={{ display: 'flex', justifyContent: 'space-between', width: '80%' }}>
+    <section style={{ display: 'flex', justifyContent: 'space-between', width: '70%' }}>
         {reverse ? (
             <>
-                <p style={{ textAlign: 'justify', width: '30%' }}>{description}</p>
-                <div style={{ width: '30%', textAlign: 'right', margin: '16px 0' }}>
+                <p style={{ textAlign: 'justify', width: '70%' }}>{description}</p>
+                <div style={{ width: '70%', textAlign: 'right', margin: '16px 0' }}>
                     <h3 style={{ margin: 0 }}>{name}</h3>
                     <p style={{ margin: 0, fontWeight: 'bold' }}>{title}</p>
                 </div>
@@ -48,7 +49,8 @@ const AboutUs = () => {
                 marginTop: '2rem',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center'
+                alignItems: 'center',
+                height: '100%'
             }}>
             <h2>Meet the Team</h2>
             <hr style={{ width: '100%', marginBottom: '3rem' }} />

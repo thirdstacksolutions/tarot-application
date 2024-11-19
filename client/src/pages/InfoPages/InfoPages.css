@@ -1,0 +1,62 @@
+.infoSections {
+    width: 70%;
+    margin: auto;
+    margin-top: 2rem;
+}
+
+.infoHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 0;
+}
+.form-section {
+    width: 80%;
+    margin: 2rem auto;
+    text-align: left;
+}
+
+.field-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.label-style {
+    min-width: 100px;
+    text-align: left;
+    margin-right: 10px;
+}
+
+.message {
+    display: flex;
+    align-items: start;
+}
+.input-field {
+    width: 35%;
+    text-align: end;
+}
+
+.textarea-field {
+    height: 120px;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 30px;
+}
+.non-auth-hr {
+    border-color: #a89467;
+    width: 80%;
+    margin: 0 auto;
+}
+.link-styling {
+    color: var(--link-color);
+    text-shadow: 0px 0.5px 1px var(--linkShadow);
+}
+.non-link-styling {
+    color: #a89467 !important; /* Ensure the color applies */
+    text-shadow: none; /* Optional: remove shadow if not needed */
+}

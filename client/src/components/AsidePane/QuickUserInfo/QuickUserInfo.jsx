@@ -65,7 +65,7 @@ const QuickUserInfo = () => {
     const [avatar, setAvatar] = useState(preferences.avatar);
 
     useEffect(() => {
-        setAvatar(preferences.avatar.imageUrl);
+        setAvatar(preferences.avatar.squareImageUrl);
     }, [preferences.avatar]);
 
     return (
@@ -90,8 +90,8 @@ const QuickUserInfo = () => {
                 src={avatar}
                 alt='settings'
                 style={{
-                    width: '100px',
-                    borderRadius: '50%',
+                    width: '150px',
+                    borderRadius: '5px',
                     border: `6px solid ${theme.avatarSettingsBorder}`,
                     marginTop: '1rem',
                     marginBottom: '1rem'

@@ -18,5 +18,6 @@ const Spread = require('../models/Spread')(singleDB);
 const Reading = require('../models/Reading')(singleDB);
 const Avatar = require('../models/Avatar')(singleDB);
 const Theme = require('../models/Theme')(singleDB);
+const NewUserDefaults = require('../models/NewUserDefaults')(singleDB);
 
-module.exports = { singleDB, User, Deck, Card, Spread, Reading, Avatar, Theme };
+module.exports = { singleDB, User, Deck, Card, Spread, Reading, Avatar, Theme, NewUserDefaults };

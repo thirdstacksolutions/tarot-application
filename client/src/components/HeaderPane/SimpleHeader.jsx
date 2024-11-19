@@ -17,7 +17,8 @@ const SimpleHeader = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 boxSizing: 'border-box',
-                padding: '.5rem'
+                padding: '.5rem',
+                overflowX: 'hidden'
             }}>
             <div>
                 <Link to='/'>
@@ -29,7 +30,7 @@ const SimpleHeader = () => {
             </div>
             <div>
                 <img
-                    src={preferences.avatar.imageUrl}
+                    src={preferences.avatar.circleImageUrl}
                     alt='settings'
                     style={{ width: '40px', borderRadius: '50%', border: `4px solid ${theme.avatarSettingsBorder}` }}
                 />

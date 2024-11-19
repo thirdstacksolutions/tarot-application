@@ -1,25 +1,30 @@
-:root {
+.theme-main {
     --headerImage: url('TarotHeader1.png');
+    --background-color: #331834;
     --h2-color: #a89467;
     --h2-text-shadow: 2px 2px 1px #121212;
+    --link-color: #a89467;
+    --link-shadow: none;
     --h3-color: #a89467;
     --hr-border-color: #a89467;
     --hr-aside-color: #a89467;
     --border-left-color: #a89467;
     --text-color: #fafaf7;
     --user-text-color: #d7d5ce;
-    --background-color: #331834;
     --img-text-bg-color: #4f3052;
     --universal-image-border: #a89467;
     --avatar-settings-border: 2px solid #808080;
     --panel-color: #4f334a;
+    --button-color: #a89467;
     --button-secondary-color: #fafaf7;
     --button-color: #a89467;
     --reading-color: #4f3052;
     --icon-color: #a89467;
     --icon-styling: #fafaf7;
+    --body-color: none;
     --trash-can-color: #a89467;
     --trash-can-hover-color: #fafaf7;
+    --disabled-color: none;
     --editable-background-color: #fafaf7;
     --editable-border-color: #ccc;
     --editable-text-color: #121212;
@@ -31,26 +36,28 @@
 .theme-moody {
     --headerImage: url('Moody_Header.jpg');
     --background-color: #fcfbfb;
-    --img-text-bg-color: #7b2c2c;
     --h2-color: #7b2c2c;
+    /* --h2-text-shadow: none; */
+    --link-color: #7b2c2c;
+    --link-shadow: #121212;
     --h3-color: #561e1e;
-    --body-color: #fcfbfb;
-    --h2-text-shadow: none;
     --hr-border-color: #121212;
     --hr-aside-color: #fcfbfb;
     --border-left-color: #7b2c2c;
-    --universal-image-border: #7b2c2c;
     --text-color: #7b2c2c;
     --user-text-color: #d7d5ce;
-    --disabled-color: #7b2c2c;
+    --img-text-bg-color: #7b2c2c;
+    --universal-image-border: #7b2c2c;
     --avatar-settings-border: 2px solid #7b2c2c;
     --panel-color: #121212;
     --button-color: #7b2c2c;
     --button-secondary-color: #d0c9c0;
     --icon-color: #561e1e;
     --icon-styling: #d0c9c0;
+    --body-color: #fcfbfb;
     --trash-can-color: #561e1e;
     --trash-can-hover-color: #7b2c2c;
+    --disabled-color: #7b2c2c;
     --editable-background-color: #d0c9c0;
     --editable-border-color: #7b2c2c;
     --editable-text-color: #121212;
@@ -64,6 +71,8 @@
     --background-color: #141414;
     --h2-color: #d7d5ce;
     --h2-text-shadow: 2px 2px 2px #121212;
+    --link-color: #00565e;
+    --link-shadow: #d7d5ce;
     --h3-color: #d7d5ce;
     --hr-border-color: #372b4f;
     --hr-aside-color: #daa520;
@@ -71,17 +80,20 @@
     --text-color: #daa520;
     --img-text-bg-color: #00565e;
     --border-left-color: #daa520;
+    --text-color: #daa520;
     --user-text-color: #d7d5ce;
-    --disabled-color: #daa520;
-    --avatar-settings-border: 2px solid #00565e;
+    --img-text-bg-color: #00565e;
     --universal-image-border: #00565e;
+    --avatar-settings-border: 2px solid #00565e;
     --panel-color: #8c3d00;
     --button-color: #00565e;
     --button-secondary-color: #d7d5ce;
     --icon-color: #d7d5ce;
     --icon-styling: #fafaf7;
+    --body-color: #d7d5ce;
     --trash-can-color: #8c3d00;
     --trash-can-hover-color: #daa520;
+    --disabled-color: #daa520;
     --editable-background-color: #d7d5ce;
     --editable-border-color: #00565e;
     --editable-text-color: #121212;
@@ -95,31 +107,67 @@
     --background-color: #468874;
     --h2-color: #cdb167;
     --h2-text-shadow: 1px 1px 1px #121212;
+    --link-color: #cdb167;
+    --link-shadow: #121212;
     --h3-color: #cdb167;
     --hr-border-color: #00565e;
     --hr-aside-color: #372b4f;
     --body-color: #00565e;
     --border-left-color: #cdb167;
     --text-color: #c8c9c1;
+    --user-text-color: #00565e;
     --img-text-bg-color: #00565e;
     --universal-image-border: #cc8f8f;
-    --user-text-color: #00565e;
-    --disabled-color: #c8c9c1;
     --avatar-settings-border: 2px solid #cc8f8f;
-    --nav-icons-container-background-color: #c8c9c1;
     --panel-color: #c8c9c1;
     --button-color: #00565e;
     --button-secondary-color: #c8c9c1;
     --icon-color: #d7d5ce;
     --icon-styling: #00565e;
+    --body-color: #00565e;
     --trash-can-color: #cdb167;
     --trash-can-hover-color: #c8c9c1;
+    --disabled-color: #c8c9c1;
+    --nav-icons-container-background-color: #c8c9c1;
     --editable-background-color: #d7d5ce;
     --editable-border-color: #ce9d9d;
     --editable-text-color: #121212;
     --fields-input-background-color: #d7d5ce;
     --fields-input-border-color: #ab8383;
     --fields-input-text-color: #372b4f;
+}
+
+.theme-joseph {
+    --headerImage: url('Joseph_Header.png');
+    --background-color: #01497c;
+    --h2-color: #fafaf7;
+    --h2-text-shadow: 1px 1px 1px #121212;
+    --link-color: #fafaf7;
+    --link-shadow: #121212;
+    --h3-color: #fafaf7;
+    --hr-border-color: #80848d;
+    --border-left-color: #80848d;
+    --text-color: #c8c9c1;
+    --user-text-color: #468faf;
+    --img-text-bg-color: #01497c;
+    --universal-image-border: #012a4a;
+    --avatar-settings-border: 2px solid #012a4a;
+    --panel-color: #a9c3d9;
+    --button-color: #012a4a;
+    --button-secondary-color: #468faf;
+    --icon-color: #d7d5ce;
+    --icon-styling: #80848d;
+    --body-color: #c8c9c1;
+    --trash-can-color: #80848d;
+    --trash-can-hover-color: #c8c9c1;
+    --disabled-color: #c8c9c1;
+    --nav-icons-container-background-color: #a9c3d9;
+    --editable-background-color: #a9d6e5;
+    --editable-border-color: #468faf;
+    --editable-text-color: #012a4a;
+    --fields-input-background-color: #a9d6e5;
+    --fields-input-border-color: #468faf;
+    --fields-input-text-color: #012a4a;
 }
 
 body {
@@ -160,6 +208,11 @@ h3 {
     font-weight: 100;
 }
 
+.link-styling {
+    color: var(--link-color);
+    text-shadow: 0px 0.5px 1px var(--linkShadow);
+}
+
 .button,
 .logout-button {
     background-color: var(--button-color);
@@ -177,6 +230,7 @@ h3 {
     transition: border-color 0.25s;
     text-align: center;
 }
+
 .button-secondary {
     background-color: var(--button-secondary-color);
     border-radius: 8px;
@@ -193,21 +247,26 @@ h3 {
     transition: border-color 0.25s;
     text-align: center;
 }
+
 .button:hover,
 .logout-button:hover {
     border-color: #f0edd8ff;
 }
+
 .button-secondary:hover {
     border-color: var(--fields-input-border-color);
 }
+
 .logout-button {
     margin-right: 15px;
     margin-left: 15px;
 }
+
 .button-modal {
     width: 9rem;
     margin: 0;
 }
+
 hr {
     border-color: var(--hr-border-color);
     margin-top: 15px;

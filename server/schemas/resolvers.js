@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-errors');
-const { User, Deck, Card, Spread, Reading, Avatar, Theme } = require('../config/connection');
+const { User, Deck, Card, Spread, Reading, Avatar, Theme, NewUserDefaults } = require('../config/connection');
 console.log('Avatar model:', Avatar);
 console.log('Deck model:', Deck);
 
@@ -103,23 +103,28 @@ const updateUser = async (userId, input) => {
 
 // Sets new users default objects
 const userDefaultObjects = async (userId) => {
-    const defaultAvatars = ['66c6184dd8c96ed65ab4e700', '66c6184dd8c96ed65ab4e6fe', '66c6184dd8c96ed65ab4e6ff'];
-    const defaultDecks = ['66c6184ed8c96ed65ab4e708', '66c61854d8c96ed65ab4eab3'];
-    const defaultThemes = [
-        '66f4b279f5a937447ef48970',
-        '66f4b279f5a937447ef48973',
-        '66f4b279f5a937447ef48971',
-        '66f4b279f5a937447ef48972'
-    ];
+    const defaultSettings = await NewUserDefaults.findOne();
 
-    // Add avatars to the user
+    const activeAvatar = defaultSettings.activeAvatar;
+    const defaultDeck = defaultSettings.defaultDeck;
+    const defaultTheme = defaultSettings.defaultTheme;
+    const defaultSpread = defaultSettings.defaultSpread;
+
+    const avatars = defaultSettings.avatars;
+    const decks = defaultSettings.decks;
+    const theme = defaultSettings.themes;
+
+    // Add data to new user
     await User.findByIdAndUpdate(userId, {
         $addToSet: {
-            avatars: { $each: defaultAvatars },
-            decks: { $each: defaultDecks },
-            themes: { $each: defaultThemes }
+            avatars: { $each: avatars },
+            decks: { $each: decks },
+            themes: { $each: theme }
         },
-        activeAvatar: defaultAvatars[0] // Set the first avatar as active
+        activeAvatar: activeAvatar,
+        defaultDeck: defaultDeck,
+        defaultTheme: defaultTheme,
+        defaultSpread: defaultSpread
     });
 };
 
@@ -240,13 +245,15 @@ const resolvers = {
             return handleNotFound(avatar, 'Avatar', avatarId);
         },
 
+        allNewUserDefaults: async () => {
+            const defaultSettings = await NewUserDefaults.findOne();
+            return defaultSettings;
+        },
+
         me: async (_, __, context) => {
             checkAuthentication(context, context.user?._id);
 
-            // Populate the defaultSpread and defaultDeck fields
-            const me = await User.findOne({ _id: context.user._id })
-                .populate('defaultSpread') // Populate the spread data
-                .populate('defaultDeck'); // Populate the deck data
+            const me = await User.findOne({ _id: context.user._id }).populate('defaultSpread').populate('defaultDeck');
 
             return handleNotFound(me, 'User', context.user._id);
         },
@@ -262,8 +269,53 @@ const resolvers = {
             return handleNotFound(user, 'User', userId);
         },
 
-        // dynamic data queries
-        // TODO: integrate s3 queries where needed
+        generateTemporaryReading: async (_, { userId, deckId, spreadId }, context) => {
+            try {
+                checkAuthentication(context, userId);
+                const spread = await Spread.findOne({ _id: spreadId });
+                const deck = await Deck.findOne({ _id: deckId });
+
+                console.log('Deck:', deck);
+
+                if (!spread) {
+                    throw new Error('Spread not found');
+                }
+                if (!deck) {
+                    throw new Error('Deck not found');
+                }
+                const selectedCardIds = drawCards(deck.cards, spread.numCards).map((card) => card._id);
+                const selectedCards = await Card.find({ _id: { $in: selectedCardIds } });
+
+                console.log('Selected Cards:', selectedCards);
+
+                const cardObjects = selectedCards.map((card, index) => ({
+                    card: {
+                        _id: card._id,
+                        cardName: card.cardName,
+
+                        imageUrl: card.imageUrl
+                    },
+                    position: index + 1,
+                    orientation: Math.random() < 0.5 ? 'Upright' : 'Reversed'
+                }));
+
+                return {
+                    deck: {
+                        _id: deck._id,
+                        deckName: deck.deckName
+                    },
+                    spread: {
+                        _id: spread._id,
+                        spreadName: spread.spreadName
+                    },
+                    cards: cardObjects
+                };
+            } catch (error) {
+                console.error('Error generating temporary reading:', error);
+                throw new Error('Failed to generate the temporary reading');
+            }
+        },
+
         allReadingsByUser: async (_, { userId }, context) => {
             checkAuthentication(context, userId);
 
@@ -497,61 +549,50 @@ const resolvers = {
             return updateObjectArrays(userId, input, User.findOneAndUpdate.bind(User), 'readings');
         },
 
-        createTarotReading: async (_, { userId, deckId, spreadId }, context) => {
+        createTarotReading: async (_, { userId, deckId, spreadId, cardObjects }, context) => {
             checkAuthentication(context, userId);
 
             const spread = await Spread.findOne({ _id: spreadId });
-            const deck = await Deck.findOne({ _id: deckId }).populate('cards');
-            const selectedCards = drawCards(deck.cards, spread.numCards);
+            const deck = await Deck.findOne({ _id: deckId });
 
-            const cardObjects = selectedCards.map((card, index) => ({
-                card: card._id,
-                position: index + 1,
-                orientation: Math.random() < 0.5 ? 'Upright' : 'Reversed'
-            }));
+            if (!spread) {
+                throw new Error('Spread not found');
+            }
+            if (!deck) {
+                throw new Error('Deck not found');
+            }
+
+            const cardIds = cardObjects.map((cardObj) => cardObj.card);
+            const fullCards = await Card.find({ _id: { $in: cardIds } });
+
+            const savedCardObjects = cardObjects.map((cardObj) => {
+                const fullCard = fullCards.find((card) => card._id.toString() === cardObj.card);
+                return {
+                    card: fullCard._id,
+                    position: cardObj.position,
+                    orientation: cardObj.orientation
+                };
+            });
 
             const reading = new Reading({
-                user: context.user._id,
+                user: userId,
                 deck: deck._id,
                 spread: spread._id,
-                cards: cardObjects
+                cards: savedCardObjects
             });
 
             await reading.save();
 
-            // Use populate with an array of paths to populate multiple fields at once
+            // Update the user's readings array
+            await User.findByIdAndUpdate(userId, { $addToSet: { readings: reading._id } }, { new: true });
+
             await reading.populate([
                 { path: 'deck', select: 'deckName' },
                 { path: 'spread', select: 'spreadName' },
-                { path: 'cards.card', select: 'cardName' }
+                { path: 'cards.card', select: 'cardName imageUrl' }
             ]);
 
-            console.log('READING ID: ', reading._id);
-
-            // Now update the user's readings array
-            const user = await User.findByIdAndUpdate(userId, { $addToSet: { readings: reading._id } }, { new: true });
-
-            if (!user) {
-                throw new Error('User not found');
-            }
-
             return reading;
-        },
-
-        updateReadingNotes: async (_, { userId, readingId, input }, context) => {
-            checkAuthentication(context, userId);
-            const reading = await Reading.findOne({ _id: readingId });
-
-            if (!reading) {
-                throw new Error('Reading not found');
-            }
-
-            reading.userNotes = input;
-            await reading.save();
-
-            return {
-                message: 'Notes added successfully to reading.'
-            };
         },
 
         deleteReading: async (_, { userId, readingId }, context) => {

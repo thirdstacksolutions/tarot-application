@@ -12,7 +12,7 @@ import { useSpring, animated } from '@react-spring/web';
 import { QUERY_APPEARANCE_DATA, GET_THEME_DETAILS, GET_DECK_DETAILS, GET_SPREAD_DETAILS } from '../../../utils/queries';
 import { useLazyQuery } from '@apollo/client';
 import '../Settings.css';
-import '../ThemeConfig';
+import themes from '../ThemeConfig';
 
 const Fade = forwardRef(function Fade(props, ref) {
     const { children, in: open, onClick, onEnter, onExited, ...other } = props;
@@ -52,7 +52,7 @@ Fade.propTypes = {
 const Appearance = () => {
     const { preferences, updatePreferences } = useContext(CookieSettingsContext);
 
-    const { theme, changeTheme } = useTheme();
+    const { changeTheme } = useTheme();
     const [selectedValue, setSelectedValue] = useState({
         theme: { value: '', placeholder: 'Select a Theme', default: null },
         deck: { value: '', placeholder: 'Select a Deck', default: null },
@@ -86,10 +86,6 @@ const Appearance = () => {
             setAppearanceData(getAppearanceData);
         }
     }, [getAppearanceData]);
-
-    useEffect(() => {
-        document.body.className = `theme-${theme}`;
-    }, [theme]);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -150,6 +146,12 @@ const Appearance = () => {
 
                 // Filter out any null entries in case a theme didn't return
                 const validThemeDetailsArray = themeDetailsArray.filter(Boolean);
+                validThemeDetailsArray.forEach((theme, idx) => {
+                    if (!themes[theme.value]) {
+                        validThemeDetailsArray.splice(idx, 1);
+                        console.log(`Theme ${theme.value} is not present in css themes object`);
+                    }
+                });
 
                 // Set the fetched theme details
                 setUserThemes(validThemeDetailsArray);
@@ -301,7 +303,7 @@ const Appearance = () => {
                 <div className='fields-avatars'>Active Avatar:</div>
                 <div>
                     <img
-                        src={preferences.avatar.imageUrl}
+                        src={preferences.avatar.circleImageUrl}
                         alt='settings'
                         className='avatar-settings'
                         onClick={handleOpen}

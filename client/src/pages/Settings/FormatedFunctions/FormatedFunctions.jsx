@@ -76,7 +76,7 @@ export const formatBirthdayToISO = (value) => {
     const year = cleaned.substring(4, 8);
 
     // Rearrange the components to form the desired format (YYYY-MM-DD)
-    const formattedBirthday = `${year}-${month}-${day}`;
+    const formattedBirthday = `${year}-${month}-${day}T00:00:00`;
 
     return formattedBirthday;
 };

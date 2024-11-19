@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import themes from './ThemeConfig';
 import { GET_DEFAULT_THEME, GET_THEME_DETAILS } from '../../utils/queries';
 import { useLazyQuery } from '@apollo/client';
+import Cookies from 'js-cookie';
 
 const ThemeContext = createContext();
 
@@ -11,6 +12,7 @@ export const ThemeProvider = ({ children }) => {
     const [getThemeDetails] = useLazyQuery(GET_THEME_DETAILS);
     const [defaultTheme, setDefaultTheme] = useState('');
     const [currentTheme, setCurrentTheme] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         userDefaultTheme();
@@ -35,6 +37,7 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         if (defaultTheme && defaultTheme.value) {
             setCurrentTheme(defaultTheme.value);
+            setLoading(false);
         }
     }, [defaultTheme]);
 
@@ -45,8 +48,12 @@ export const ThemeProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (!currentTheme) return;
-        const theme = themes[currentTheme];
+        if (loading || !currentTheme) return;
+
+        let theme = themes['main'];
+        if (themes[currentTheme]) {
+            theme = themes[currentTheme];
+        }
         const root = document.documentElement;
 
         Object.keys(theme).forEach((key) => {
@@ -61,17 +68,21 @@ export const ThemeProvider = ({ children }) => {
 
         document.body.className = `theme-${currentTheme}`;
 
-        // return () => {
-        //     Object.keys(theme).forEach((key) => {
-        //         root.style.removeProperty(`--${key}`);
-        //     });
+        return () => {
+            Object.keys(theme).forEach((key) => {
+                root.style.removeProperty(`--${key}`);
+            });
 
-        //     document.body.className = '';
-        // };
-    }, [currentTheme]);
+            document.body.className = '';
+        };
+    }, [currentTheme, loading]);
+
+    const themeData = Cookies.get('themeData');
+    const themeCookies = themeData ? JSON.parse(themeData) : {};
+    // const defaultThemeValue = themeCookies.defaultTheme.value;
 
     return (
-        <ThemeContext.Provider value={{ theme: themes[currentTheme] || 'main', changeTheme }}>
+        <ThemeContext.Provider value={{ theme: themes[currentTheme] || 'main', changeTheme, loading, defaultTheme }}>
             {children}
         </ThemeContext.Provider>
     );

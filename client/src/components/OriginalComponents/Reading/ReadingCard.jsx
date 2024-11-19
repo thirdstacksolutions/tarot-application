@@ -6,7 +6,7 @@ import { useMutation, useLazyQuery } from '@apollo/client';
 import { CREATE_TAROT_READING } from '../../../utils/mutations';
 import { QUERY_ALL_SPREADS, QUERY_ALL_DECKS, GET_ME } from '../../../utils/queries';
 
-const CreateReading = () => {
+const createTarotReading = () => {
     // Creation of states to keep data seperate
     const [userId, setUserId] = useState(null);
     const [spreads, setSpreads] = useState([]);
@@ -96,7 +96,7 @@ const CreateReading = () => {
         }
     };
 
-    const createReadingSubmit = async (event) => {
+    const createTarotReadingSubmit = async (event) => {
         event.preventDefault();
 
         try {
@@ -115,7 +115,7 @@ const CreateReading = () => {
 
     return (
         <div>
-            <form onSubmit={createReadingSubmit}>
+            <form onSubmit={createTarotReadingSubmit}>
                 <h1
                     className='text-bold'
                     style={{
@@ -172,4 +172,4 @@ const CreateReading = () => {
     );
 };
 
-export default CreateReading;
+export default createTarotReading;

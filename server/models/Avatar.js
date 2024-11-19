@@ -6,7 +6,12 @@ const avatarSchema = new Schema({
         required: true
     },
 
-    imageUrl: {
+    circleImageUrl: {
+        type: String,
+        required: true
+    },
+
+    squareImageUrl: {
         type: String,
         required: true
     },

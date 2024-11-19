@@ -1,100 +1,148 @@
 import PropTypes from 'prop-types';
+import './SpreadLayouts.css';
 
-const SixSpokesUpright = ({ spreadData, deckData }) => {
+const SixSpokesUpright = ({ spreadData, deckData, cardData, cardRefs }) => {
     if (!spreadData || !deckData) {
         return <div>Loading...</div>;
     }
 
-    const { positions } = spreadData;
     const { imageUrl: deckBackImage } = deckData;
+
+    const getCardForPosition = (positionNumber) => cardData.find((card) => card.position === positionNumber);
 
     return (
         <section>
-            <div
-                className='six-spokes-upright-layout'
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1fr', // 3 columns for the layout
-                    gap: '20px',
-                    justifyItems: 'center',
-                    alignItems: 'center',
-                    padding: '20px',
-                    width: '70%',
-                    height: '60vh'
-                }}>
-                {/* Column 1 (Cards 5 and 4) */}
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '100%'
-                    }}>
-                    {positions
-                        .filter((pos) => [5, 4].includes(pos.positionNumber))
-                        .map((pos, index) => (
-                            <div key={index}>
-                                <img
-                                    src={deckBackImage}
-                                    alt={`Card ${pos.positionNumber}`}
-                                    style={{ width: '100px', height: 'auto' }}
-                                />
-                                <p>{pos.positionDetails}</p>
-                            </div>
-                        ))}
-                </div>
-
-                {/* Column 2 (Cards 6 and 3) */}
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column-reverse',
-                        justifyContent: 'space-between',
-                        height: '100%'
-                    }}>
-                    {positions
-                        .filter((pos) => [6, 3].includes(pos.positionNumber))
-                        .map((pos, index) => {
-                            const height = pos.positionNumber === 3 ? '35%' : '50%';
-                            return (
-                                <div
-                                    key={index}
-                                    style={{ height }}>
-                                    <img
-                                        src={deckBackImage}
-                                        alt={`Card ${pos.positionNumber}`}
-                                        style={{ width: '100px', height: 'auto' }}
-                                    />
-                                    <p>{pos.positionDetails}</p>
-                                </div>
-                            );
-                        })}
-                </div>
-
-                {/* Column 3 (Cards 1 and 2) */}
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '100%'
-                    }}>
-                    {positions
-                        .filter((pos) => [1, 2].includes(pos.positionNumber))
-                        .map((pos, index) => (
+            <div className='six-spokes-upright-layout'>
+                {/* Column 1 (Positions 5 and 4) */}
+                <div className='column-1'>
+                    {[5, 4].map((position) => {
+                        const card = getCardForPosition(position);
+                        return (
                             <div
-                                key={index}
-                                style={{ height: '50%' }}>
-                                <img
-                                    src={deckBackImage}
-                                    alt={`Card ${pos.positionNumber}`}
-                                    style={{ width: '100px', height: 'auto' }}
-                                />
-                                <p>{pos.positionDetails}</p>
+                                key={position}
+                                className='card-container position-details'>
+                                <p className='position-details'>
+                                    {
+                                        spreadData.positions.find((pos) => pos.positionNumber === position)
+                                            .positionDetails
+                                    }
+                                </p>
+                                <div className={`card ${cardRefs.current[position - 1] ? 'flipped' : ''}`}>
+                                    <div className='card-face front'>
+                                        <img
+                                            src={deckBackImage}
+                                            alt='Card Back'
+                                            className='card-image'
+                                        />
+                                    </div>
+                                    {card && (
+                                        <div className='card-face back'>
+                                            <img
+                                                src={card.card.imageUrl}
+                                                alt={card.card.cardName}
+                                                className='card-image'
+                                                style={{
+                                                    transform:
+                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                }}
+                                            />
+                                            <p className='card-name'>
+                                                {card.card.cardName} - {card.orientation}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        ))}
+                        );
+                    })}
+                </div>
+
+                {/* Column 2 (Positions 6 and 3) */}
+                <div className='column-2'>
+                    {[6, 3].map((position) => {
+                        const card = getCardForPosition(position);
+                        return (
+                            <div
+                                key={position}
+                                className='card-container position-details'>
+                                <p className='position-details'>
+                                    {
+                                        spreadData.positions.find((pos) => pos.positionNumber === position)
+                                            .positionDetails
+                                    }
+                                </p>
+                                <div className={`card ${cardRefs.current[position - 1] ? 'flipped' : ''}`}>
+                                    <div className='card-face front'>
+                                        <img
+                                            src={deckBackImage}
+                                            alt='Card Back'
+                                            className='card-image'
+                                        />
+                                    </div>
+                                    {card && (
+                                        <div className='card-face back'>
+                                            <img
+                                                src={card.card.imageUrl}
+                                                alt={card.card.cardName}
+                                                className='card-image'
+                                                style={{
+                                                    transform:
+                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                }}
+                                            />
+                                            <p className='card-name'>
+                                                {card.card.cardName} - {card.orientation}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Column 3 (Positions 1 and 2) */}
+                <div className='column-3'>
+                    {[1, 2].map((position) => {
+                        const card = getCardForPosition(position);
+                        return (
+                            <div
+                                key={position}
+                                className='card-container position-details'>
+                                <p className='position-details'>
+                                    {
+                                        spreadData.positions.find((pos) => pos.positionNumber === position)
+                                            .positionDetails
+                                    }
+                                </p>
+                                <div className={`card ${cardRefs.current[position - 1] ? 'flipped' : ''}`}>
+                                    <div className='card-face front'>
+                                        <img
+                                            src={deckBackImage}
+                                            alt='Card Back'
+                                            className='card-image'
+                                        />
+                                    </div>
+                                    {card && (
+                                        <div className='card-face back'>
+                                            <img
+                                                src={card.card.imageUrl}
+                                                alt={card.card.cardName}
+                                                className='card-image'
+                                                style={{
+                                                    transform:
+                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                }}
+                                            />
+                                            <p className='card-name'>
+                                                {card.card.cardName} - {card.orientation}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </section>
@@ -112,7 +160,18 @@ SixSpokesUpright.propTypes = {
     }).isRequired,
     deckData: PropTypes.shape({
         imageUrl: PropTypes.string.isRequired
-    }).isRequired
+    }).isRequired,
+    cardData: PropTypes.arrayOf(
+        PropTypes.shape({
+            position: PropTypes.number.isRequired,
+            orientation: PropTypes.string.isRequired,
+            card: PropTypes.shape({
+                cardName: PropTypes.string.isRequired,
+                imageUrl: PropTypes.string.isRequired
+            }).isRequired
+        })
+    ).isRequired,
+    cardRefs: PropTypes.object.isRequired
 };
 
 export default SixSpokesUpright;

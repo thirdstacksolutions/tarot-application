@@ -4,7 +4,7 @@ import { ModalProvider } from './ModalContext';
 
 const Landing = () => {
     return (
-        <div>
+        <div className='landing-page'>
             <ModalProvider>
                 <Carousel />
             </ModalProvider>

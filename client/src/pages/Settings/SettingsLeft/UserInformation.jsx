@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext, useCallback } from 'react';
-import { CookieSettingsContext } from '../SettingsRight/CookiesSettings';
 import CustomSwitch from '../Switch';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -20,8 +19,6 @@ import '../Settings.css';
 import '../ThemeConfig';
 
 const UserInformation = () => {
-    const { preferences, updatePreferences } = useContext(CookieSettingsContext);
-
     const handleToggle = (value) => {
         console.log(value);
         setFormData((prev) => ({ ...prev, [value]: !formData[value] }));
@@ -219,7 +216,8 @@ const UserInformation = () => {
         }
     });
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
             if (!formData.birthdayError && !formData.emailError) {
                 // const formattedBirthday = formatBirthdayToISO(formData.birthday);

@@ -75,7 +75,8 @@ export const GET_AVATAR_DETAILS = gql`
         avatarDetails(avatarId: $avatarId) {
             _id
             avatarName
-            imageUrl
+            circleImageUrl
+            squareImageUrl
         }
     }
 `;
@@ -271,6 +272,30 @@ export const QUERY_ALL_FAVORITE_SPREADS_BY_USER = gql`
         allFavoriteSpreadsByUser(userId: $userId) {
             _id
             spreadName
+        }
+    }
+`;
+
+export const CREATE_TEMPORARY_READING = gql`
+    query generateTemporaryReading($userId: ID!, $deckId: ID!, $spreadId: ID!) {
+        generateTemporaryReading(userId: $userId, deckId: $deckId, spreadId: $spreadId) {
+            deck {
+                _id
+                deckName
+            }
+            spread {
+                _id
+                spreadName
+            }
+            cards {
+                card {
+                    _id
+                    cardName
+                    imageUrl
+                }
+                position
+                orientation
+            }
         }
     }
 `;

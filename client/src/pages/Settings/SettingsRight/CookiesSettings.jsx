@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import Cookies from 'js-cookie';
 import { QUERY_DEFAULT_DATA, GET_AVATAR_DETAILS } from '../../../utils/queries';
 import { useLazyQuery } from '@apollo/client';
 
@@ -15,13 +14,7 @@ const CookieSettings = ({ children }) => {
         theme: '',
         deck: '',
         spread: '',
-        defaultData: {
-            theme: '',
-            deck: '',
-            spread: '',
-            notifications: true,
-            advancedSecurity: false
-        },
+        defaultData: {},
         saveChanges: false,
         notifications: true,
         advancedSecurity: false
@@ -67,74 +60,6 @@ const CookieSettings = ({ children }) => {
             }));
         }
     }, [avatarDetailsData]);
-
-    // const defaultPreferences = {
-    //     theme: 'main',
-    //     deck: 'eclipse',
-    //     spread: 'dailyFocus',
-    //     displayDiscordHandle: true,
-    //     displayBirthday: true,
-    //     notifications: true,
-    //     advancedSecurity: false,
-    //     enableAvatarIcons: true,
-    //     avatar: 'https://tarot-deck-images.s3.us-east-2.amazonaws.com/avatars/chibi_fool_avatar.png'
-    // };
-
-    // const [preferences, setPreferences] = useState(() => {
-    //     // const storedPreferences = Cookies.get('preferences');
-    //     // return storedPreferences ? JSON.parse(storedPreferences) : defaultPreferences;
-    //     return defaultPreferences;
-    // });
-
-    // console.log(preferences);
-
-    // const [hasChanges, setHasChanges] = useState(false);
-    // const timerRef = useRef(null);
-
-    // const syncPreferences = useCallback(() => {
-    //     // Cookies.set('preferences', JSON.stringify(preferences), {
-    //     //     expires: 365
-    //     // });
-    //     setHasChanges(false);
-    //     console.log('preferences updated:', preferences);
-    // }, [preferences]);
-
-    // const updatePreferences = (newPreferences) => {
-    //     setHasChanges(true);
-    //     setPreferences((prevPreferences) => ({
-    //         ...prevPreferences,
-    //         ...newPreferences
-    //     }));
-    // };
-
-    // useEffect(() => {
-    //     const handleBeforeUnload = () => {
-    //         if (hasChanges) {
-    //             syncPreferences();
-    //         }
-    //     };
-
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
-
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //         if (timerRef.current) {
-    //             clearTimeout(timerRef.current);
-    //         }
-    //     };
-    // }, [hasChanges, syncPreferences]);
-
-    // useEffect(() => {
-    //     if (hasChanges) {
-    //         if (timerRef.current) {
-    //             clearTimeout(timerRef.current);
-    //         }
-    //         timerRef.current = setTimeout(() => {
-    //             syncPreferences();
-    //             timerRef.current = null;
-    //         }, 5000); // Sync after 5 seconds of inactivity
-    //     }
-    // }, [hasChanges, syncPreferences]);
 
     return (
         <CookieSettingsContext.Provider value={{ preferences, updatePreferences, dataLoaded, setDataLoaded }}>

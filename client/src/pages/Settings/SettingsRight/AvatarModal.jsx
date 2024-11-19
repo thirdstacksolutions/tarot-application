@@ -101,7 +101,7 @@ const AvatarModal = ({ onClose }) => {
                     {avatarInfo.slice(i, i + maxAvatarsPerRow).map((avatar) => (
                         <Avatar
                             key={avatar._id}
-                            src={avatar.imageUrl}
+                            src={avatar.circleImageUrl}
                             sx={{ width: 100, height: 100, margin: '0.5rem' }}
                             draggable='false'
                             className='avatarImg'
@@ -172,7 +172,7 @@ const AvatarModal = ({ onClose }) => {
                     <Box>
                         <img
                             alt='avatar'
-                            src={selectedAvatar.imageUrl}
+                            src={selectedAvatar.circleImageUrl}
                             className='selectedAvatar'
                         />
                     </Box>
@@ -201,7 +201,7 @@ const AvatarModal = ({ onClose }) => {
                             </Button>
                             <Button
                                 className='button button-modal'
-                                onClick={() => handleSelectorChange('avatar', selectedAvatar)}>
+                                onClick={() => handleSelectorChange(selectedAvatar)}>
                                 Save
                             </Button>
                         </CardActions>
