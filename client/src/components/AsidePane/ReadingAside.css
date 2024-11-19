@@ -9,7 +9,7 @@
 
 /* Container background for the buttons */
 .button-background {
-    background-color: #382337;
+    background-color: var(--panel-color);
     padding: 0.5em;
     display: flex;
     justify-content: center;
@@ -70,7 +70,7 @@
     align-items: center;
     margin: 1.5em auto;
     width: 80%;
-    border-bottom: 1px solid #a89467;
+    border-bottom: 1px solid var(--hr-border-color);
     padding-bottom: 0.7em;
 }
 
@@ -78,23 +78,24 @@
 .spread-slide:first-child,
 .deck-slide:first-child {
     padding-top: 1.2em;
-    border-top: 1px solid #a89457;
+    border-top: 1px solid var(--hr-border-color);
 }
 
 /* Common styling for images in spreads and decks */
 .spread-slide img,
 .deck-slide img {
-    width: 100%;
+    width: 90%;
     height: auto;
-    border: 3px solid #382337;
+    border: 2px solid #fafaf7;
     border-radius: 0.5em;
     transition: 0.2s;
+    margin-bottom: 0.2rem;
 }
 
 /* Hover effect for images */
 .spread-slide img:hover,
 .deck-slide img:hover {
-    border: 3px solid #a89467;
+    border: 2px solid var(--universal-image-border);
     cursor: pointer;
 }
 
@@ -109,25 +110,17 @@
 }
 
 /* Common styling for info buttons */
-/* .reading-button,
+.reading-button,
 .spread-info-btn,
 .deck-info-btn {
-    border-radius: 6px;
-    background-color: #a89467;
-    padding: 0.5em 0;
-    margin: 0.7em 0 0.5em;
-    width: 70%;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    color: #382337;
-    font-weight: bold;
-    font-size: 0.8em;
-} */
+    padding: 0.5em 0 !important;
+    margin: 0.7em 0 0.5em !important;
+    width: 85% !important;
+}
 
 /* Hover effect for info buttons */
 .reading-button:hover,
 .spread-info-btn:hover,
 .deck-info-btn:hover {
-    background-color: #fafaf7;
+    background-color: var(--button-secondary-color);
 }
