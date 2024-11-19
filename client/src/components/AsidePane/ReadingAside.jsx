@@ -101,7 +101,7 @@ const ReadingAside = () => {
                                 <img
                                     src={item.image}
                                     alt={item.name}
-                                    onClick={() => handleDeckImageClick(item)} // Select deck via context
+                                    onClick={() => handleDeckImageClick(item)}
                                 />
                                 <p>{item.name}</p>
                                 <button
