@@ -150,7 +150,7 @@ const NewReading = () => {
 
             {loading && <p>Loading...</p>}
             {savingReading && <p>Saving reading...</p>}
-        </section>
+        </div>
     );
 };
 
