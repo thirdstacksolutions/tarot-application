@@ -15,7 +15,8 @@
     --avatar-settings-border: 2px solid #808080;
     --panel-color: #4f334a;
     --button-color: #a89467;
-    --button-secondary-color: #331834;
+    --button-secondary-color: #fafaf7;
+    --button-tertiary-color: #331834;
     --icon-color: #a89467;
     --icon-styling: #fafaf7;
     --body-color: none;
@@ -48,6 +49,7 @@
     --panel-color: #121212;
     --button-color: #7b2c2c;
     --button-secondary-color: #d0c9c0;
+    --button-tertiary-color: #686867;
     --icon-color: #561e1e;
     --icon-styling: #d0c9c0;
     --body-color: #fcfbfb;
@@ -79,7 +81,8 @@
     --avatar-settings-border: 2px solid #00565e;
     --panel-color: #8c3d00;
     --button-color: #00565e;
-    --button-secondary-color: #372b4f;
+    --button-secondary-color: #fafaf7;
+    --button-tertiary-color: #372b4f;
     --icon-color: #d7d5ce;
     --icon-styling: #fafaf7;
     --body-color: #d7d5ce;
@@ -111,7 +114,8 @@
     --avatar-settings-border: 2px solid #cc8f8f;
     --panel-color: #c8c9c1;
     --button-color: #00565e;
-    --button-secondary-color: #cc8f8f;
+    --button-secondary-color: #fafaf7;
+    --button-tertiary-color: #cc8f8f;
     --icon-color: #d7d5ce;
     --icon-styling: #00565e;
     --body-color: #00565e;
@@ -144,7 +148,8 @@
     --avatar-settings-border: 2px solid #012a4a;
     --panel-color: #a9c3d9;
     --button-color: #012a4a;
-    --button-secondary-color: #468faf;
+    --button-secondary-color: #fafaf7;
+    --button-tertiary-color: #468faf;
     --icon-color: #d7d5ce;
     --icon-styling: #80848d;
     --body-color: #c8c9c1;
