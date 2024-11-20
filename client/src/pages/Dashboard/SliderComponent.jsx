@@ -6,6 +6,7 @@ import { useSpring, animated } from '@react-spring/web';
 import DashboardModal from './DashboardModal.jsx';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/splide.min.css';
+import { useTheme } from '../Settings/ThemeContext';
 
 import './Dashboard.css';
 
@@ -50,14 +51,15 @@ const SliderComponent = ({ userInfo, type }) => {
     const [loading, setLoading] = useState(true);
     const [dimensions, setDimensions] = useState({
         skeletonWidth: 75,
-        skeletonHeight: 125,
+        skeletonHeight: 120,
         width: 75,
-        height: 125,
+        height: 120,
         length: 3,
         defaultPerPage: 3,
         perPage: 3,
         arrows: false
     });
+    const { theme } = useTheme();
 
     useEffect(() => {
         // Check if userInfo contains data and if each object has an imageUrl property
@@ -94,7 +96,7 @@ const SliderComponent = ({ userInfo, type }) => {
                 setDimensions((prev) => ({
                     ...prev,
                     width: 75,
-                    height: 125,
+                    height: 120,
                     skeletonWidth: 275,
                     skeletonHeight: 250,
                     defaultPerPage: 4,
@@ -115,7 +117,7 @@ const SliderComponent = ({ userInfo, type }) => {
             } else {
                 setDimensions((prev) => ({
                     ...prev,
-                    width: 125,
+                    width: 175,
                     height: 120,
                     skeletonWidth: 275,
                     skeletonHeight: 175,
@@ -168,8 +170,14 @@ const SliderComponent = ({ userInfo, type }) => {
                                   <img
                                       src={slide.imageUrl}
                                       alt={slide.name}
-                                      style={{ cursor: 'pointer', width: dimensions.width }}
+                                      style={{
+                                          cursor: 'pointer',
+                                          width: dimensions.width,
+                                          margin: 0,
+                                          border: `3px solid ${theme.universalImageBorder}`
+                                      }}
                                   />
+
                                   <h3>{slide.name}</h3>
                               </div>
                           </SplideSlide>
