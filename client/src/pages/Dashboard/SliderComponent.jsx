@@ -135,7 +135,6 @@ const SliderComponent = ({ userInfo, type }) => {
                     gap: '1rem',
                     arrows: dimensions.arrows,
                     pagination: false,
-                    paginationDirection: 'rtl',
                     breakpoints: {
                         640: {
                             perPage: 2,
