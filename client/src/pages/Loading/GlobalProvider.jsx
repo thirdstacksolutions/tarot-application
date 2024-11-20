@@ -63,8 +63,10 @@ export const GlobalProvider = ({ children }) => {
         const shouldUpdateBackgroundColor = (backgroundColorInfo, data) => {
             const key = data.defaultTheme.value;
             if (themes[key]) {
-                if (themes[key].backgroundColor === backgroundColorInfo.color) {
+                if (themes[key].backgroundColor === backgroundColorInfo) {
                     return false;
+                } else {
+                    return true;
                 }
             } else {
                 return true;
