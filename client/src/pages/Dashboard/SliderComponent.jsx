@@ -1,5 +1,7 @@
 import { useState, useEffect, forwardRef, cloneElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Modal, Box, Typography, Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import Skeleton from '@mui/material/Skeleton';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from '@react-spring/web';
@@ -7,6 +9,8 @@ import DashboardModal from './DashboardModal.jsx';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/splide.min.css';
 import { useTheme } from '../Settings/ThemeContext';
+import { useLazyQuery } from '@apollo/client';
+import { QUERY_ALL_DECKS } from '../../utils/queries';
 
 import './Dashboard.css';
 
@@ -59,7 +63,24 @@ const SliderComponent = ({ userInfo, type }) => {
         perPage: 3,
         arrows: false
     });
+    const [total, setTotal] = useState({
+        decks: 4,
+        favoriteSpreads: 3,
+        favoriteDecks: 4
+    });
+    const [plusArray, setPlusArray] = useState([]);
     const { theme } = useTheme();
+    const [allDecks, { data: allDecksData, loading: deckLoading }] = useLazyQuery(QUERY_ALL_DECKS);
+
+    useEffect(() => {
+        allDecks();
+        setTotal((prev) => ({
+            ...prev,
+            decks: allDecksData.allDecks.length
+        }));
+    }, [allDecks]);
+
+    console.log(allDecksData.allDecks.length);
 
     useEffect(() => {
         // Check if userInfo contains data and if each object has an imageUrl property
@@ -77,17 +98,18 @@ const SliderComponent = ({ userInfo, type }) => {
         setOpen(false);
     };
 
+    const navigate = useNavigate();
+
+    const handlePlusClick = (location) => {
+        navigate(`/${location}`);
+    };
+
     // Convert the userInfo object into an array of its values
     const slidesArray = Object.values(userInfo);
 
     useEffect(() => {
         if (type === 'Decks' || type === 'FavoriteDecks') {
-            if (slidesArray.length < dimensions.defaultPerPage) {
-                setDimensions((prev) => ({
-                    ...prev,
-                    perPage: slidesArray.length
-                }));
-            } else if (slidesArray.length > dimensions.defaultPerPage && type === 'Decks') {
+            if (slidesArray.length > dimensions.defaultPerPage && type === 'Decks') {
                 setDimensions((prev) => ({
                     ...prev,
                     arrows: true
@@ -103,13 +125,29 @@ const SliderComponent = ({ userInfo, type }) => {
                     perPage: 4
                 }));
             }
+            if (type === 'Decks' && slidesArray.length < total.decks) {
+                const numDecksToShow = total.decks - slidesArray.length;
+                // Create an array of JSX elements
+                let array = Array.from({ length: numDecksToShow }).map((_, idx) => (
+                    <div>
+                        <div
+                            key={`add-item-${idx}`}
+                            className='addItem'
+                            style={{ border: `3px solid ${theme.universalImageBorder}` }}
+                            onClick={() => {
+                                handlePlusClick('appShop');
+                            }}>
+                            <AddIcon sx={{ width: '1.5em', height: '1.5em' }} />
+                        </div>
+                        <h3>Add Deck</h3>
+                    </div>
+                ));
+
+                // Push the created array into plusArray
+                plusArray.push(...array);
+            }
         } else {
-            if (slidesArray.length < dimensions.defaultPerPage) {
-                setDimensions((prev) => ({
-                    ...prev,
-                    perPage: slidesArray.length
-                }));
-            } else if (slidesArray.length > dimensions.defaultPerPage) {
+            if (slidesArray.length > dimensions.defaultPerPage) {
                 // setDimensions((prev) => ({
                 //     ...prev,
                 //     arrows: true
@@ -166,6 +204,7 @@ const SliderComponent = ({ userInfo, type }) => {
                       ))
                     : slidesArray.map((slide, index) => (
                           <SplideSlide key={index}>
+                              {/* Render slide */}
                               <div onClick={() => handleOpen({ ...slide, type })}>
                                   <img
                                       src={slide.imageUrl}
@@ -174,14 +213,23 @@ const SliderComponent = ({ userInfo, type }) => {
                                           cursor: 'pointer',
                                           width: dimensions.width,
                                           margin: 0,
-                                          border: `3px solid ${theme.universalImageBorder}`
+                                          border: `3px solid ${theme.universalImageBorder}`,
+                                          borderRadius: '5%'
                                       }}
                                   />
-
                                   <h3>{slide.name}</h3>
                               </div>
                           </SplideSlide>
                       ))}
+
+                {/* Render additional plusArray slides */}
+                {plusArray.map((item, idx) => (
+                    <SplideSlide
+                        key={`plus-slide-${idx}`}
+                        style={{ display: 'flex', justifyContent: 'center' }}>
+                        {item}
+                    </SplideSlide>
+                ))}
             </Splide>
 
             <Modal
