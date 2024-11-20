@@ -172,10 +172,16 @@ const shuffleArray = (array) => {
     }
     return array;
 };
-
 const drawCards = (deck, numberOfCards) => {
     const shuffledDeck = shuffleArray([...deck]);
-    return shuffledDeck.slice(0, numberOfCards);
+    const drawnCards = new Set();
+
+    while (drawnCards.size < numberOfCards && shuffledDeck.length > 0) {
+        const card = shuffledDeck.pop();
+        drawnCards.add(card);
+    }
+
+    return Array.from(drawnCards);
 };
 
 // END COMMON LOGICS
@@ -660,4 +666,4 @@ const resolvers = {
     }
 };
 
-module.exports = resolvers;
+module.exports = { resolvers, drawCards };
