@@ -173,6 +173,7 @@ const DashboardLeft = () => {
                     <SliderComponent
                         userInfo={userInfo.favoriteDecks}
                         type={'FavoriteDecks'}
+                        deckInfo={userInfo.decks}
                     />
                 </div>
             </section>
