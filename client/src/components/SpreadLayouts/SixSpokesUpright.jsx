@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import './SpreadLayouts.css';
+import { getCardRotation } from '../../utils/CardUtils';
 
 const SixSpokesUpright = ({ spreadData, deckData, cardData, cardRefs }) => {
     if (!spreadData || !deckData) {
         return <div>Loading...</div>;
     }
 
-    const { imageUrl: deckBackImage } = deckData;
+    const { imageUrl: deckBackImage, deckName } = deckData;
 
     const getCardForPosition = (positionNumber) => cardData.find((card) => card.position === positionNumber);
 
@@ -42,8 +43,7 @@ const SixSpokesUpright = ({ spreadData, deckData, cardData, cardRefs }) => {
                                                 alt={card.card.cardName}
                                                 className='card-image'
                                                 style={{
-                                                    transform:
-                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                    transform: getCardRotation(card.orientation, deckName)
                                                 }}
                                             />
                                             <p className='card-name'>
@@ -86,8 +86,7 @@ const SixSpokesUpright = ({ spreadData, deckData, cardData, cardRefs }) => {
                                                 alt={card.card.cardName}
                                                 className='card-image'
                                                 style={{
-                                                    transform:
-                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                    transform: getCardRotation(card.orientation, deckName)
                                                 }}
                                             />
                                             <p className='card-name'>
@@ -130,8 +129,7 @@ const SixSpokesUpright = ({ spreadData, deckData, cardData, cardRefs }) => {
                                                 alt={card.card.cardName}
                                                 className='card-image'
                                                 style={{
-                                                    transform:
-                                                        card.orientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                    transform: getCardRotation(card.orientation, deckName)
                                                 }}
                                             />
                                             <p className='card-name'>
@@ -159,7 +157,8 @@ SixSpokesUpright.propTypes = {
         ).isRequired
     }).isRequired,
     deckData: PropTypes.shape({
-        imageUrl: PropTypes.string.isRequired
+        imageUrl: PropTypes.string.isRequired,
+        deckName: PropTypes.string.isRequired // Add deckName for the utility function
     }).isRequired,
     cardData: PropTypes.arrayOf(
         PropTypes.shape({

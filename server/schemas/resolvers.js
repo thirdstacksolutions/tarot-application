@@ -306,7 +306,7 @@ const resolvers = {
                     orientation: isEclipseDeck
                         ? Math.random() < 0.5
                             ? 'Upright'
-                            : 'Eclipsed' // Use "Eclipsed" for reversed cards in the Eclipse deck
+                            : 'Eclipsed'
                         : Math.random() < 0.5
                           ? 'Upright'
                           : 'Reversed'
