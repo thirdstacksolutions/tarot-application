@@ -158,7 +158,7 @@ SixSpokesUpright.propTypes = {
     }).isRequired,
     deckData: PropTypes.shape({
         imageUrl: PropTypes.string.isRequired,
-        deckName: PropTypes.string.isRequired // Add deckName for the utility function
+        deckName: PropTypes.string.isRequired
     }).isRequired,
     cardData: PropTypes.arrayOf(
         PropTypes.shape({

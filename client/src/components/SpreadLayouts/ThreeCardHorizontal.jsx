@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './SpreadLayouts.css';
+import { getCardRotation } from '../../utils/CardUtils';
 
 const ThreeCardHorizontal = ({ spreadData, deckData, cardData, cardRefs }) => {
     if (!spreadData || !deckData) {
@@ -42,7 +43,7 @@ const ThreeCardHorizontal = ({ spreadData, deckData, cardData, cardRefs }) => {
                                             style={{
                                                 width: '200px',
                                                 height: 'auto',
-                                                transform: cardOrientation === 'Reversed' ? 'rotate(180deg)' : 'none'
+                                                transform: getCardRotation(cardOrientation, deckData.deckName)
                                             }}
                                         />
                                         <p>
@@ -69,7 +70,8 @@ ThreeCardHorizontal.propTypes = {
         ).isRequired
     }).isRequired,
     deckData: PropTypes.shape({
-        imageUrl: PropTypes.string.isRequired
+        imageUrl: PropTypes.string.isRequired,
+        deckName: PropTypes.string.isRequired
     }).isRequired,
     cardData: PropTypes.array.isRequired,
     cardRefs: PropTypes.object.isRequired
