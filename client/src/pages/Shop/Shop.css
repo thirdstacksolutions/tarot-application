@@ -1,3 +1,22 @@
+.shopContainer {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.topBar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    background-color: #382337;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 .shopWrapper {
     width: 100%;
     height: 100vh;
@@ -5,29 +24,17 @@
     justify-content: top;
     align-items: center;
     flex-direction: column;
-    overflow: scroll;
+    overflow-y: auto;
     overflow-x: hidden; /* Prevent horizontal scroll */
     background-color: var(--background-color);
-}
-
-.topBar {
-    width: 100%;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* border: 2px solid white; */
-    padding: 1rem;
-    background-color: #382337;
+    padding-top: 7rem;
 }
 
 .logoWrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
+    width: 80px;
     border: 2px solid var(--universal-image-border) !important;
     border-radius: 50%;
     margin-left: 2rem;
@@ -60,6 +67,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
+    margin: 0;
 }
 
 .headingShop {
