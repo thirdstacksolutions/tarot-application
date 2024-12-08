@@ -26,7 +26,7 @@ const readingSchema = new Schema({
             },
             orientation: {
                 type: String,
-                enum: ['Upright', 'Reversed']
+                enum: ['Upright', 'Reversed', 'Eclipsed']
             }
         }
     ],
