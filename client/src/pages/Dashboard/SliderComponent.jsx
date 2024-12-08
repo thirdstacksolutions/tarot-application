@@ -254,7 +254,7 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
                 options={{
                     perPage: dimensions.perPage,
                     gap: '1rem',
-                    arrows: dimensions.arrows,
+                    arrows: false,
                     pagination: false,
                     breakpoints: {
                         640: {
