@@ -150,12 +150,9 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
             if (slidesArray.length < total.favoriteDecks) {
                 const numDecksToShow = total.favoriteDecks - slidesArray.length;
                 const numOfDecks = Object.keys(deckInfo).length;
-                console.log('total.favoriteDecks:', total.favoriteDecks, 'slidesArray.length:', slidesArray.length);
-                console.log('numDecksToShow:', numDecksToShow, 'numOfDecks:', numOfDecks);
                 let availableDecks = numOfDecks;
                 if (numOfDecks !== numDecksToShow) {
                     availableDecks = numOfDecks - numDecksToShow;
-                    console.log(availableDecks);
                 }
                 // Create an array of JSX elements
                 let array = Array.from({ length: availableDecks }).map((_, idx) => (
