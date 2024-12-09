@@ -29,8 +29,13 @@
     margin-bottom: 10px;
 }
 
+.dashboard-h2 {
+    margin-bottom: 0;
+}
+
 .hr-spread {
-    width: 60%;
+    width: 100%;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -154,8 +159,8 @@
 }
 
 .addItem {
-    width: 75px;
-    height: 120px;
+    width: 131.25px;
+    height: 210px;
     border-radius: 5%;
     display: flex;
     justify-content: center;
@@ -164,11 +169,25 @@
 }
 
 .addItemSpread {
-    width: 175px;
-    height: 120px;
+    width: 218.75px;
+    height: 150px;
     border-radius: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.dashboardImageText {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--img-text-bg-color);
+    color: #fafaf7;
+    font-size: 1rem;
+    text-align: center;
+    padding: 2px;
+    border-radius: 4px;
+    margin-bottom: 8px;
 }

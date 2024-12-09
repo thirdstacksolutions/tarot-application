@@ -57,8 +57,8 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
     const [dimensions, setDimensions] = useState({
         skeletonWidth: 75,
         skeletonHeight: 120,
-        width: 75,
-        height: 120,
+        width: 112.5,
+        height: 180,
         length: 3,
         defaultPerPage: 3,
         perPage: 3,
@@ -83,10 +83,14 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
                 ...prev,
                 decks: allDecksData.allDecks.length
             }));
+            if (allDecksData.allDecks.length < total.favoriteDecks) {
+                setTotal((prev) => ({
+                    ...prev,
+                    favoriteDecks: allDecksData.allDecks.length
+                }));
+            }
         }
     }, [allDecksData]);
-
-    // console.log(allDecksData.allDecks.length);
 
     useEffect(() => {
         // Check if userInfo contains data and if each object has an imageUrl property
@@ -115,7 +119,7 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
 
     useEffect(() => {
         if (type === 'Decks') {
-            // setPlusArray([]); // Reset before adding new items
+            setPlusArray([]);
             if (slidesArray.length < total.decks) {
                 const numDecksToShow = total.decks - slidesArray.length;
 
@@ -133,17 +137,17 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
                 setPlusArray((prevArray) => [...prevArray, ...array]);
             }
         }
-    }, [type, userInfo, deckInfo]);
+    }, [type, userInfo, total]);
 
     useEffect(() => {
         if (type === 'FavoriteDecks') {
             setPlusArray([]);
-            if (slidesArray.length < total.favoriteSpreads) {
+            if (slidesArray.length < total.favoriteDecks) {
                 const numDecksToShow = total.favoriteDecks - slidesArray.length;
                 const numOfDecks = Object.keys(deckInfo).length;
                 let availableDecks = 0;
-                if (numOfDecks !== slidesArray.length) {
-                    availableDecks = numDecksToShow - numOfDecks;
+                if (numOfDecks !== numDecksToShow) {
+                    availableDecks = numOfDecks - numDecksToShow;
                 }
                 // Create an array of JSX elements
                 let array = Array.from({ length: availableDecks }).map((_, idx) => (
@@ -175,15 +179,12 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
                     </div>
                 ));
 
-                console.log('array', array);
-                console.log('purchaseArray', purchaseArray);
-
                 // Push the created array into plusArray
                 setPlusArray((prevArray) => [...prevArray, ...array]);
                 setPlusArray((prevArray) => [...prevArray, ...purchaseArray]);
             }
         }
-    }, [type, userInfo, deckInfo]);
+    }, [type, userInfo, deckInfo, total]);
 
     useEffect(() => {
         if (type === 'Spreads') {
@@ -206,7 +207,7 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
             // Push the created array into plusArray
             setPlusArray((prevArray) => [...prevArray, ...array]);
         }
-    });
+    }, [type, userInfo]);
 
     useEffect(() => {
         if (type === 'Decks' || type === 'FavoriteDecks') {
@@ -219,8 +220,8 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
             } else {
                 setDimensions((prev) => ({
                     ...prev,
-                    width: 75,
-                    height: 120,
+                    width: 131.25,
+                    height: 210,
                     skeletonWidth: 275,
                     skeletonHeight: 250,
                     defaultPerPage: 4,
@@ -236,8 +237,8 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
             } else {
                 setDimensions((prev) => ({
                     ...prev,
-                    width: 175,
-                    height: 120,
+                    width: 218.75,
+                    height: 150,
                     skeletonWidth: 275,
                     skeletonHeight: 175,
                     defaultPerPage: 3,
@@ -280,12 +281,20 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
                                     style={{
                                         cursor: 'pointer',
                                         width: dimensions.width,
+                                        height: dimensions.height,
                                         margin: 0,
                                         border: `3px solid ${theme.universalImageBorder}`,
-                                        borderRadius: '5%'
+                                        borderRadius: '5%',
+                                        '&:hover': {
+                                            borderColor: theme.buttonSecondaryColor
+                                        }
                                     }}
                                 />
-                                <h3>{slide.name}</h3>
+                                <p
+                                    className='dashboardImageText'
+                                    style={{ width: dimensions.width }}>
+                                    {slide.name}
+                                </p>
                             </div>
                         </SplideSlide>
                     ))}

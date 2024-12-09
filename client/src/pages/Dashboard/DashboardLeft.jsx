@@ -152,7 +152,7 @@ const DashboardLeft = () => {
         <section className='left-dash-container'>
             <section className='left-dash-content'>
                 <div className='my-decks'>
-                    <h2>My Decks</h2>
+                    <h2 className='dashboard-h2'>My Decks</h2>
                     <hr className='hr-spread' />
                     <SliderComponent
                         userInfo={userInfo.decks}
@@ -160,7 +160,7 @@ const DashboardLeft = () => {
                     />
                 </div>
                 <div className='my-spreads'>
-                    <h2>Favorite Spreads</h2>
+                    <h2 className='dashboard-h2'>Favorite Spreads</h2>
                     <hr className='hr-spread' />
                     <SliderComponent
                         userInfo={userInfo.favoriteSpreads}
@@ -168,7 +168,7 @@ const DashboardLeft = () => {
                     />
                 </div>
                 <div className='fav-decks'>
-                    <h2>Favorite Decks</h2>
+                    <h2 className='dashboard-h2'>Favorite Decks</h2>
                     <hr className='hr-spread' />
                     <SliderComponent
                         userInfo={userInfo.favoriteDecks}
