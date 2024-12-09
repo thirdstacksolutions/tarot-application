@@ -1,25 +1,7 @@
 import { Card, Button, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { deckContainer, themeAndBundleContainer } from '../Shop/ModalContainerChoice';
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'auto',
-    bgcolor: '#4F3052',
-    border: '1px solid rgb(168, 148, 103)',
-    borderRadius: '8px',
-    boxShadow: 24,
-    p: 0,
-    height: '60%',
-    aspectRatio: '8/9',
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexDirection: 'column'
-};
+import { useTheme } from '../Settings/ThemeContext';
 
 const CustomButton = styled(Button)(({ theme }) => ({
     fontFamily: 'Quicksand',
@@ -37,6 +19,8 @@ const CustomButton = styled(Button)(({ theme }) => ({
 }));
 
 const DashboardModal = ({ onClose, modalData }) => {
+    const { theme } = useTheme();
+
     const ContainerChoice = () => {
         if (modalData.type === 'Decks' || modalData.type === 'FavoriteDecks') {
             return deckContainer(modalData);
@@ -48,7 +32,25 @@ const DashboardModal = ({ onClose, modalData }) => {
     };
 
     return (
-        <Card sx={style}>
+        <Card
+            sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 'auto',
+                bgcolor: theme.backgroundColor,
+                border: `3px solid ${theme.universalImageBorder}`,
+                borderRadius: '8px',
+                boxShadow: 24,
+                p: 0,
+                height: '60%',
+                aspectRatio: '8/9',
+                display: 'flex',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                flexDirection: 'column'
+            }}>
             <div className='infoWrapper'>
                 <div className='modal-title'>
                     <h1 className='custom-underline'>{modalData.name}</h1>
@@ -62,7 +64,11 @@ const DashboardModal = ({ onClose, modalData }) => {
             <ContainerChoice />
 
             <div className='shopButtonContainer'>
-                <CustomButton onClick={onClose}>Close</CustomButton>
+                <Button
+                    className='button'
+                    onClick={onClose}>
+                    Close
+                </Button>
             </div>
         </Card>
     );
