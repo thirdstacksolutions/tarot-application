@@ -1,22 +1,9 @@
-import { Card, Button, Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card } from '@mui/material';
+import Button from 'react-bootstrap/Button';
 import { deckContainer, themeAndBundleContainer } from '../Shop/ModalContainerChoice';
 import { useTheme } from '../Settings/ThemeContext';
 
-const CustomButton = styled(Button)(({ theme }) => ({
-    fontFamily: 'Quicksand',
-    backgroundColor: 'white',
-    color: '#a89467',
-    border: '2px solid white',
-    padding: '6px 12px',
-    width: '120px',
-    height: '40px',
-    '&:hover': {
-        backgroundColor: 'white',
-        color: 'black',
-        border: '2px solid rgb(168, 148, 103)'
-    }
-}));
+import './Dashboard.css';
 
 const DashboardModal = ({ onClose, modalData }) => {
     const { theme } = useTheme();
