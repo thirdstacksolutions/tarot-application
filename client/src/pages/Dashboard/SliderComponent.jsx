@@ -125,12 +125,17 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
 
                 let array = Array.from({ length: numDecksToShow }).map((_, idx) => (
                     <div key={`add-item-${idx}`}>
-                        <div
+                        <Box
                             className='addItem'
-                            style={{ border: `3px solid ${theme.universalImageBorder}` }}
+                            sx={{
+                                border: `3px solid ${theme.universalImageBorder}`,
+                                '&:hover': {
+                                    borderColor: theme.buttonSecondaryColor // Change border color on hover
+                                }
+                            }}
                             onClick={() => handlePlusClick('appShop')}>
                             <ShoppingCartIcon sx={{ width: '1.5em', height: '1.5em' }} />
-                        </div>
+                        </Box>
                     </div>
                 ));
 
@@ -145,37 +150,50 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
             if (slidesArray.length < total.favoriteDecks) {
                 const numDecksToShow = total.favoriteDecks - slidesArray.length;
                 const numOfDecks = Object.keys(deckInfo).length;
-                let availableDecks = 0;
+                console.log('total.favoriteDecks:', total.favoriteDecks, 'slidesArray.length:', slidesArray.length);
+                console.log('numDecksToShow:', numDecksToShow, 'numOfDecks:', numOfDecks);
+                let availableDecks = numOfDecks;
                 if (numOfDecks !== numDecksToShow) {
                     availableDecks = numOfDecks - numDecksToShow;
+                    console.log(availableDecks);
                 }
                 // Create an array of JSX elements
                 let array = Array.from({ length: availableDecks }).map((_, idx) => (
                     <div>
-                        <div
+                        <Box
                             key={`add-item-${idx}`}
                             className='addItem'
-                            style={{ border: `3px solid ${theme.universalImageBorder}` }}
+                            sx={{
+                                border: `3px solid ${theme.universalImageBorder}`,
+                                '&:hover': {
+                                    borderColor: theme.buttonSecondaryColor // Change border color on hover
+                                }
+                            }}
                             onClick={() => {
                                 handlePlusClick('browseDecks');
                             }}>
                             <AddIcon sx={{ width: '1.5em', height: '1.5em' }} />
-                        </div>
+                        </Box>
                     </div>
                 ));
 
                 const purchaseLength = numDecksToShow - availableDecks;
                 let purchaseArray = Array.from({ length: purchaseLength }).map((_, idx) => (
                     <div>
-                        <div
+                        <Box
                             key={`add-item-${idx}`}
                             className='addItem'
-                            style={{ border: `3px solid ${theme.universalImageBorder}` }}
+                            sx={{
+                                border: `3px solid ${theme.universalImageBorder}`,
+                                '&:hover': {
+                                    borderColor: theme.buttonSecondaryColor // Change border color on hover
+                                }
+                            }}
                             onClick={() => {
                                 handlePlusClick('appShop');
                             }}>
                             <ShoppingCartIcon sx={{ width: '1.5em', height: '1.5em' }} />
-                        </div>
+                        </Box>
                     </div>
                 ));
 
@@ -193,14 +211,19 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
             // Create an array of JSX elements
             let array = Array.from({ length: numSpreadsToShow }).map((_, idx) => (
                 <div key={`add-item-${idx}`}>
-                    <div
+                    <Box
                         className='addItemSpread'
-                        style={{ border: `3px solid ${theme.universalImageBorder}` }}
+                        sx={{
+                            border: `3px solid ${theme.universalImageBorder}`,
+                            '&:hover': {
+                                borderColor: theme.buttonSecondaryColor // Change border color on hover
+                            }
+                        }}
                         onClick={() => {
                             handlePlusClick('browseSpreads');
                         }}>
                         <AddIcon sx={{ width: '1.5em', height: '1.5em' }} />
-                    </div>
+                    </Box>
                 </div>
             ));
 
@@ -274,19 +297,24 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
                     slidesArray.map((slide, index) => (
                         <SplideSlide key={index}>
                             {/* Render slide */}
-                            <div onClick={() => handleOpen({ ...slide, type })}>
-                                <img
-                                    src={slide.imageUrl}
-                                    alt={slide.name}
-                                    style={{
+                            <div
+                                onClick={() => handleOpen({ ...slide, type })}
+                                className='itemWrapper'>
+                                <Box
+                                    sx={{
                                         cursor: 'pointer',
-                                        width: dimensions.width,
-                                        height: dimensions.height,
+                                        width: `${dimensions.width}px`,
+                                        height: `${dimensions.height}px`,
                                         margin: 0,
                                         border: `3px solid ${theme.universalImageBorder}`,
                                         borderRadius: '5%',
+                                        backgroundImage: `url(${slide.imageUrl})`,
+                                        backgroundSize: 'cover', // Ensure the image covers the entire box
+                                        backgroundPosition: 'center', // Center the image
+                                        backgroundRepeat: 'no-repeat', // Prevent tiling
+                                        transition: 'border-color 0.3s ease', // Smooth transition for hover effect
                                         '&:hover': {
-                                            borderColor: theme.buttonSecondaryColor
+                                            borderColor: theme.buttonSecondaryColor // Change border color on hover
                                         }
                                     }}
                                 />

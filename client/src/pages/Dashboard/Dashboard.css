@@ -178,6 +178,11 @@
     cursor: pointer;
 }
 
+.itemWrapper {
+    display: flex;
+    justify-content: center;
+}
+
 .dashboardImageText {
     position: absolute;
     bottom: 0;
