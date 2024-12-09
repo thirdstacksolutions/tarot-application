@@ -102,9 +102,9 @@
     cursor: pointer;
 }
 
-.dot.active {
-    /* background-color: #a89467; */
-}
+/* .dot.active {
+    background-color: #a89467;
+} */
 
 /* Dashboard Right CSS *********************************************************************************** */
 .right-dash-container {
