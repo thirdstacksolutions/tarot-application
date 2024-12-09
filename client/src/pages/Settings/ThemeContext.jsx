@@ -50,7 +50,7 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         if (loading || !currentTheme) return;
 
-        let theme = themes['main'];
+        let theme = themes['pastel'];
         if (themes[currentTheme]) {
             theme = themes[currentTheme];
         }

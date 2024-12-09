@@ -29,8 +29,7 @@
     --fields-input-border-color: #a89467;
     --fields-input-text-color: #fafaf7;
 }
-
-.theme-moody {
+*/ .theme-moody {
     --headerImage: url('Moody_Header.jpg');
     --background-color: #fcfbfb;
     --h2-color: #7b2c2c;

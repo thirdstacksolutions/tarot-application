@@ -189,6 +189,9 @@ export const QUERY_ALL_DECKS_BY_USER = gql`
         allDecksByUser(userId: $userId) {
             _id
             deckName
+            imageUrl
+            deckId
+            deckDescription
         }
     }
 `;
@@ -198,6 +201,9 @@ export const QUERY_ALL_FAVORITE_DECKS_BY_USER = gql`
         allFavoriteDecksByUser(userId: $userId) {
             _id
             deckName
+            imageUrl
+            deckId
+            deckDescription
         }
     }
 `;
@@ -272,6 +278,8 @@ export const QUERY_ALL_FAVORITE_SPREADS_BY_USER = gql`
         allFavoriteSpreadsByUser(userId: $userId) {
             _id
             spreadName
+            spreadDescription
+            imageUrl
         }
     }
 `;
@@ -328,7 +336,7 @@ export const GET_ALL_SHOP_DATA = gql`
         }
         allAvatars {
             avatarName
-            imageUrl
+            circleImageUrl
         }
     }
 `;

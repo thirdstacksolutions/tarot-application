@@ -55,7 +55,6 @@
 .splide__pagination {
     position: absolute;
     bottom: 10px;
-    left: 50%;
     transition: transform 2.5s ease-in-out;
     z-index: 5;
 }

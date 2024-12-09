@@ -46,7 +46,7 @@ export const Avatars = ({ avatarInfo, sendModal }) => {
                     onClick={() => sendModal(avatarInfo[avatarId])}>
                     <img
                         className='avatarShopImgs'
-                        src={avatarInfo[avatarId].imageUrl}
+                        src={avatarInfo[avatarId].circleImageUrl}
                         alt={avatarInfo[avatarId].avatarName}
                     />
                 </div>
