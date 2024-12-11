@@ -9,8 +9,11 @@ import SixSpokesUpright from '../../components/SpreadLayouts/SixSpokesUpright';
 import { CREATE_TEMPORARY_READING } from '../../utils/queries.js';
 import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 
+import './NewReading.css';
+
 const NewReading = () => {
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
+
     const [cardData, setCardData] = useState([]);
     const cardRefs = useRef([]);
     const [toggleRender, setToggleRender] = useState(false);
@@ -163,7 +166,14 @@ const NewReading = () => {
             </button>
             <button
                 className='button'
-                onClick={() => setIsExpanded(false)}>
+                onClick={() => {
+                    const confirmExit = window.confirm(
+                        'Are you sure you want to exit the reading? Unsaved progress will be lost.'
+                    );
+                    if (confirmExit) {
+                        setIsExpanded(false);
+                    }
+                }}>
                 Exit Reading
             </button>
 
