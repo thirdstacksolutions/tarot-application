@@ -10,7 +10,8 @@ import { CREATE_TEMPORARY_READING } from '../../utils/queries.js';
 import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 
 const NewReading = () => {
-    const { selectedSpread, selectedDeck, userId } = useReadingContext();
+    const { selectedSpread, selectedDeck, userId, isExpanded, setIsExpanded } = useReadingContext();
+
     const [cardData, setCardData] = useState([]);
     const cardRefs = useRef([]);
     const [toggleRender, setToggleRender] = useState(false);
@@ -92,6 +93,7 @@ const NewReading = () => {
             })
                 .then(() => {
                     setReadingStage('reveal');
+                    setIsExpanded(true);
                 })
                 .catch((error) => {
                     console.error('Error starting the reading:', error);
@@ -110,7 +112,7 @@ const NewReading = () => {
     const LayoutComponent = layoutMap[selectedSpread?.layout] || null;
 
     return (
-        <section>
+        <section className={`new-reading ${isExpanded ? 'expanded' : ''}`}>
             <h2>New Reading</h2>
 
             {selectedSpread ? (
@@ -159,6 +161,7 @@ const NewReading = () => {
                         ? 'Reveal Next Card'
                         : 'Save Reading'}
             </button>
+            <button className='button'>Reset Board</button>
 
             {loading && <p>Loading...</p>}
             {savingReading && <p>Saving reading...</p>}

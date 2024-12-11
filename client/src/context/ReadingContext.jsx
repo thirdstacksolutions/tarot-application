@@ -12,6 +12,7 @@ export const useReadingContext = () => useContext(ReadingContext);
 export const ReadingContextProvider = ({ children }) => {
     const [selectedSpread, setSelectedSpread] = useState(null);
     const [selectedDeck, setSelectedDeck] = useState(null);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const { preferences } = useContext(CookieSettingsContext);
 
@@ -42,7 +43,9 @@ export const ReadingContextProvider = ({ children }) => {
                 setSelectedDeck,
                 allDecks: allDecksData?.allDecks || [],
                 allSpreads: allSpreadsData?.allSpreads || [],
-                userId: userData?.me?._id || null // Add userId to the context value
+                userId: userData?.me?._id || null,
+                isExpanded,
+                setIsExpanded // Expose the toggle functions
             }}>
             {children}
         </ReadingContext.Provider>
