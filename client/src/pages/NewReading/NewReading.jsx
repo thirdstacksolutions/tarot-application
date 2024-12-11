@@ -10,12 +10,12 @@ import { CREATE_TEMPORARY_READING } from '../../utils/queries.js';
 import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 
 const NewReading = () => {
-    const { selectedSpread, selectedDeck, userId, isExpanded, setIsExpanded } = useReadingContext();
-
+    const { selectedSpread, selectedDeck, userId } = useReadingContext();
     const [cardData, setCardData] = useState([]);
     const cardRefs = useRef([]);
     const [toggleRender, setToggleRender] = useState(false);
     const [readingStage, setReadingStage] = useState('initial');
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
     const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
@@ -161,7 +161,11 @@ const NewReading = () => {
                         ? 'Reveal Next Card'
                         : 'Save Reading'}
             </button>
-            <button className='button'>Reset Board</button>
+            <button
+                className='button'
+                onClick={() => setIsExpanded(false)}>
+                Exit Reading
+            </button>
 
             {loading && <p>Loading...</p>}
             {savingReading && <p>Saving reading...</p>}

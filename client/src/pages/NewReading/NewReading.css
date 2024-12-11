@@ -1,15 +1,10 @@
-.new-reading {
-    position: fixed; /* Fixes it to the viewport */
+.new-reading.expanded {
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    background-color: var(--background-color);
-    transition: all 0.3s ease-in-out;
-}
-
-.new-reading.expanded {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    overflow: hidden;
+    background-color: grey;
 }

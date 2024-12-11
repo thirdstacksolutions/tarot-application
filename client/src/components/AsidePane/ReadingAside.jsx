@@ -4,7 +4,7 @@ import './ReadingAside.css';
 
 const ReadingAside = () => {
     const panelRef = useRef(null);
-    const { setSelectedSpread, setSelectedDeck, allSpreads, allDecks, isExpanded } = useReadingContext();
+    const { setSelectedSpread, setSelectedDeck, allSpreads, allDecks } = useReadingContext();
 
     const combinedItems = useMemo(() => {
         return [
@@ -47,7 +47,7 @@ const ReadingAside = () => {
     };
 
     return (
-        <div className={`reading-aside ${isExpanded ? 'hidden' : ''}`}>
+        <div className='reading-aside'>
             <div
                 ref={panelRef}
                 className={`slide-container show-spreads`}>
