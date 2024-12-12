@@ -1,10 +1,9 @@
 .shopContainer {
-    width: 100%;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
+
 .topBar {
     width: 100%;
     position: fixed;
@@ -24,10 +23,9 @@
     justify-content: top;
     align-items: center;
     flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-y: scroll;
+    overflow-x: hidden;
     background-color: var(--background-color);
-    padding-top: 7rem;
 }
 
 .logoWrapper {
@@ -200,6 +198,7 @@
     height: 100%;
     border-radius: 5%;
 }
+
 /* Shop Modal CSS */
 .shop-modal-card {
     position: absolute;
@@ -218,6 +217,7 @@
     align-items: center;
     flex-direction: column;
 }
+
 .shop-card-styling {
     background-color: var(--background-color);
     display: flex;
@@ -227,6 +227,7 @@
     height: 100%;
     width: 100%;
 }
+
 .infoWrapper {
     width: 100%;
     height: fit-content;
@@ -237,6 +238,7 @@
     flex-direction: column;
     flex-grow: 1;
 }
+
 .modal-title {
     width: 80%;
     padding: 1.2rem;
@@ -259,6 +261,7 @@
     overflow: scroll;
     color: var(--text-color);
 }
+
 .avatarModalContainer {
     width: 100%;
     display: flex;

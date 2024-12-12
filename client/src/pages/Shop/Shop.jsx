@@ -113,20 +113,6 @@ const AppShop = () => {
 
     return (
         <section className='shopContainer'>
-            <div
-                className='topBar'
-                style={{ backgroundImage: `url(${theme.headerImage})`, backgroundSize: 'cover' }}>
-                <div className='logoWrapper'>
-                    <img
-                        className='LogoShop'
-                        src={theme.logo}
-                        alt='icon'></img>
-                </div>
-                <div className='cartWrapper'>
-                    <h2 id='cartText'>Cart</h2>
-                    <ShoppingCartIcon />
-                </div>
-            </div>
             <div className='shopWrapper'>
                 <div className='shopItems deckShop'>
                     <h2 className='headingShop'>Most Popular Tarot Decks</h2>
