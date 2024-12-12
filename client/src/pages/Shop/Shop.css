@@ -1,3 +1,21 @@
+.shopContainer {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.topBar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    background-color: #382337;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 .shopWrapper {
     width: 100%;
     height: 100vh;
@@ -5,29 +23,16 @@
     justify-content: top;
     align-items: center;
     flex-direction: column;
-    overflow: scroll;
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-y: scroll;
+    overflow-x: hidden;
     background-color: var(--background-color);
-}
-
-.topBar {
-    width: 100%;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* border: 2px solid white; */
-    padding: 1rem;
-    background-color: #382337;
 }
 
 .logoWrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
+    width: 80px;
     border: 2px solid var(--universal-image-border) !important;
     border-radius: 50%;
     margin-left: 2rem;
@@ -60,6 +65,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
+    margin: 0;
 }
 
 .headingShop {
@@ -193,6 +199,69 @@
     border-radius: 5%;
 }
 
+/* Shop Modal CSS */
+.shop-modal-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    border: 3px solid var(--universal-image-border);
+    border-radius: 8px;
+    box-shadow: 24;
+    padding: 0;
+    height: 90%;
+    aspect-ratio: 8/9;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+}
+
+.shop-card-styling {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+}
+
+.infoWrapper {
+    width: 100%;
+    height: fit-content;
+    max-height: 55%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.modal-title {
+    width: 80%;
+    padding: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--h3-color);
+}
+
+.modal-title .custom-underline {
+    width: 100%;
+    font-size: 2.5rem;
+}
+
+.shop-modal-description {
+    font-size: 1.5rem;
+    padding: 0.2rem;
+    width: 80%;
+    height: 40% !important;
+    overflow: scroll;
+    color: var(--text-color);
+}
+
 .avatarModalContainer {
     width: 100%;
     display: flex;
@@ -215,7 +284,8 @@
 
 .themeBundleShopModalImgs {
     width: 75%;
-    border: 2px solid #a89467;
+    border: 2px solid var(--universal-image-border);
+    border-radius: 18px;
 }
 
 .shopButtonContainer {

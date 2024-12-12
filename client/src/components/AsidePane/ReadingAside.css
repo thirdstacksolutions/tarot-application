@@ -122,5 +122,5 @@
 .reading-button:hover,
 .spread-info-btn:hover,
 .deck-info-btn:hover {
-    background-color: var(--button-secondary-color);
+    background-color: var(--button-tertiary-color);
 }
