@@ -172,10 +172,16 @@ const shuffleArray = (array) => {
     }
     return array;
 };
-
 const drawCards = (deck, numberOfCards) => {
     const shuffledDeck = shuffleArray([...deck]);
-    return shuffledDeck.slice(0, numberOfCards);
+    const drawnCards = new Set();
+
+    while (drawnCards.size < numberOfCards && shuffledDeck.length > 0) {
+        const card = shuffledDeck.pop();
+        drawnCards.add(card);
+    }
+
+    return Array.from(drawnCards);
 };
 
 // END COMMON LOGICS
@@ -272,6 +278,7 @@ const resolvers = {
         generateTemporaryReading: async (_, { userId, deckId, spreadId }, context) => {
             try {
                 checkAuthentication(context, userId);
+
                 const spread = await Spread.findOne({ _id: spreadId });
                 const deck = await Deck.findOne({ _id: deckId });
 
@@ -283,20 +290,26 @@ const resolvers = {
                 if (!deck) {
                     throw new Error('Deck not found');
                 }
+
+                const isEclipseDeck = deck.deckName === 'Eclipse of the Soul Tarot';
+
                 const selectedCardIds = drawCards(deck.cards, spread.numCards).map((card) => card._id);
                 const selectedCards = await Card.find({ _id: { $in: selectedCardIds } });
-
-                console.log('Selected Cards:', selectedCards);
 
                 const cardObjects = selectedCards.map((card, index) => ({
                     card: {
                         _id: card._id,
                         cardName: card.cardName,
-
                         imageUrl: card.imageUrl
                     },
                     position: index + 1,
-                    orientation: Math.random() < 0.5 ? 'Upright' : 'Reversed'
+                    orientation: isEclipseDeck
+                        ? Math.random() < 0.5
+                            ? 'Upright'
+                            : 'Eclipsed'
+                        : Math.random() < 0.5
+                          ? 'Upright'
+                          : 'Reversed'
                 }));
 
                 return {
@@ -660,4 +673,4 @@ const resolvers = {
     }
 };
 
-module.exports = resolvers;
+module.exports = { resolvers, drawCards };

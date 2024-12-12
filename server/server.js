@@ -1,7 +1,8 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const { authMiddleware } = require('./utils/auth');
-const { typeDefs, resolvers } = require('./schemas');
+const { typeDefs } = require('./schemas');
+const { resolvers } = require('./schemas/resolvers');
 const { singleDB } = require('./config/connection'); // Updated to use a single DB connection
 const AWS = require('aws-sdk');
 const path = require('path');

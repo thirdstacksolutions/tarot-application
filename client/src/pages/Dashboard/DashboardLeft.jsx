@@ -4,132 +4,131 @@ import Interview from '../../assets/Spreads/interview_spread.png';
 import EOTSBack from '../../assets/CardBacks/eots_backs_01.jpg';
 import RWSDBack from '../../assets/CardBacks/rwsd_backs_01.jpg';
 import UniversalCarousel from './AltCarousel';
+import SliderComponent from './SliderComponent';
 import './Dashboard.css';
 import { useTheme } from '../Settings/ThemeContext';
-// import { useLazyQuery } from '@apollo/client';
-// import { useState, useEffect } from 'react';
-// import {
-//     GET_ME,
-//     QUERY_ALL_DECKS_BY_USER,
-//     QUERY_ALL_FAVORITE_DECKS_BY_USER,
-//     QUERY_ALL_FAVORITE_SPREADS_BY_USER,
-// } from '../../utils/queries';
+import { useLazyQuery } from '@apollo/client';
+import { useState, useEffect } from 'react';
+import {
+    GET_ME,
+    QUERY_ALL_DECKS_BY_USER,
+    QUERY_ALL_FAVORITE_DECKS_BY_USER,
+    QUERY_ALL_FAVORITE_SPREADS_BY_USER
+} from '../../utils/queries';
 
 const DashboardLeft = () => {
     const { theme } = useTheme();
-    // Get me querry
-    // decks
-    // id
-    // deckName
-    //deckCardBackImage // FUTURE UPDATE
-    // FavoriteSpread
-    // _id
-    // SpreadImage  // FUTURE UPDATE
-    // SpreadName
-    // FabvoriteDeck
-    // _id
-    // DeckName
-    // deckCardBackImage // FUTURE UPDATE
 
-    // const [userId, setUserId] = useState( null );
-    // const [decks, setDecks] = useState( [] );
-    // const [favoriteDecks, setFavoriteDecks] = useState( [] );
-    // const [favoriteSpreads, setFavoriteSpreads] = useState( [] );
+    const [getMe, { data: meData, loading: meLoading }] = useLazyQuery(GET_ME);
+    const [decksByUser] = useLazyQuery(QUERY_ALL_DECKS_BY_USER);
+    const [favoriteDecksByUser] = useLazyQuery(QUERY_ALL_FAVORITE_DECKS_BY_USER);
+    const [favoriteSpreadsByUser] = useLazyQuery(QUERY_ALL_FAVORITE_SPREADS_BY_USER);
 
-    // const [getMe, { data: userData }] = useLazyQuery( GET_ME );
-    // const [allDecks] = useLazyQuery( QUERY_ALL_DECKS_BY_USER );
-    // const [allFavoriteDecks] = useLazyQuery( QUERY_ALL_FAVORITE_DECKS_BY_USER );
-    // const [allFavoriteSpreads] = useLazyQuery(
-    //     QUERY_ALL_FAVORITE_SPREADS_BY_USER
-    // );
+    const [userInfo, setUserInfo] = useState({
+        decks: [null],
+        favoriteSpreads: [null],
+        favoriteDecks: [null]
+    });
 
-    // useEffect( () => {
-    //     let mounted = true; // Flag to track if component is mounted
+    useEffect(() => {
+        getMe();
+    }, [getMe]);
 
-    //     if ( userData && userData.me && mounted ) {
-    //         setUserId( userData.me._id );
-    // console.log('User ID:', userData.me._id); // Log userId after it's been set
-    // }
+    useEffect(() => {
+        decksByUser();
+        favoriteDecksByUser();
+        favoriteSpreadsByUser();
+    }, [decksByUser, favoriteDecksByUser, favoriteSpreadsByUser]);
 
-    // Cleanup function: Remove the effect once the state is populated
-    // return () => {
-    // Set the mounted flag to false when component is unmounted
-    //         mounted = false;
-    //         console.log( 'Effect removed' );
-    //     };
-    // }, [userData, userId] );
+    useEffect(() => {
+        const fetchDeckDetails = async () => {
+            if (meData.me._id) {
+                const deckDetailsObject = {};
+                const { data } = await decksByUser({ variables: { userId: meData.me._id } });
 
-    // const getDecksInfo = async () => {
-    //     try {
-    //         const { data } = await allDecks( {
-    //             variables: {
-    //                 userId,
-    //             },
-    //         } );
+                if (data && data.allDecksByUser) {
+                    data.allDecksByUser.forEach((deck) => {
+                        deckDetailsObject[deck.deckId] = {
+                            _id: deck._id,
+                            name: deck.deckName,
+                            description: deck.deckDescription,
+                            imageUrl: deck.imageUrl
+                        };
+                    });
+                }
 
-    // Check if data exists and has the expected structure
-    // if ( data && data.allDecksByUser ) {
-    // console.log('All Decks:', data.allDecksByUser);
-    //             setDecks( data.allDecksByUser );
-    //         } else {
-    //             console.log( 'No decks found.' );
-    //         }
-    //     } catch ( error ) {
-    //         console.error( 'Error fetching decks:', error );
-    //     }
-    // };
+                setUserInfo((prev) => ({
+                    ...prev,
+                    decks: deckDetailsObject
+                }));
+            }
+        };
+        if (!meLoading && meData?.me) {
+            fetchDeckDetails();
+        }
+    }, [meData, meLoading, decksByUser]);
 
-    // const getFavoriteDeckInfo = async () => {
-    //     try {
-    //         const { data } = await allFavoriteDecks( {
-    //             variables: {
-    //                 userId,
-    //             },
-    //         } );
+    useEffect(() => {
+        const fetchFavoriteDeckDetails = async () => {
+            if (meData.me._id) {
+                const deckDetailsObject = {};
+                const { data } = await favoriteDecksByUser({ variables: { userId: meData.me._id } });
 
-    // Check if data exists and has the expected structure
-    // if ( data && data.allFavoriteDecksByUser ) {
-    // console.log('Favorite Decks:', data.allFavoriteDecksByUser);
-    //             setFavoriteDecks( data.allFavoriteDecksByUser );
-    //         } else {
-    //             console.log( 'No favorite decks found.' );
-    //         }
-    //     } catch ( error ) {
-    //         console.error( 'Error fetching decks:', error );
-    //     }
-    // };
+                if (data && data.allFavoriteDecksByUser) {
+                    data.allFavoriteDecksByUser.forEach((deck) => {
+                        deckDetailsObject[deck.deckId] = {
+                            _id: deck._id,
+                            name: deck.deckName,
+                            description: deck.deckDescription,
+                            imageUrl: deck.imageUrl
+                        };
+                    });
+                }
 
-    // const getFavoriteSpreads = async () => {
-    //     try {
-    //         const { data } = await allFavoriteSpreads( {
-    //             variables: {
-    //                 userId,
-    //             },
-    //         } );
+                setUserInfo((prev) => ({
+                    ...prev,
+                    favoriteDecks: deckDetailsObject
+                }));
+            }
+        };
+        if (!meLoading && meData?.me) {
+            fetchFavoriteDeckDetails();
+        }
+    }, [meData, meLoading, favoriteDecksByUser]);
 
-    // Check if data exists and has the expected structure
-    // if ( data && data.allFavoriteSpreadsByUser ) {
-    // console.log('Favorite Spreads:', data.allFavoriteSpreadsByUser);
-    //             setFavoriteSpreads( data.allFavoriteSpreadsByUser );
-    //         } else {
-    //             console.log( 'No favorite spreads found.' );
-    //         }
-    //     } catch ( error ) {
-    //         console.error( 'Error fetching spreads:', error );
-    //     }
-    // };
+    useEffect(() => {
+        const fetchFavoriteSpreadsDetails = async () => {
+            if (meData.me._id) {
+                const spreadDetailsObject = {};
+                const { data } = await favoriteSpreadsByUser({ variables: { userId: meData.me._id } });
 
-    // useEffect( () => {
-    //     getMe();
-    //     getDecksInfo();
-    //     getFavoriteDeckInfo();
-    //     getFavoriteSpreads();
-    // }, [] ); // Empty dependency array to run once on component mount
+                if (data && data.allFavoriteSpreadsByUser) {
+                    data.allFavoriteSpreadsByUser.forEach((spread) => {
+                        // Convert "Daily Focus" to "daily_focus"
+                        const spreadKey = spread.spreadName
+                            .toLowerCase() // Convert to lowercase
+                            .replace(/\s+/g, '_'); // Replace spaces with underscores
 
-    // console.log('UserId:', userId);
-    // console.log('Decks:', decks);
-    // console.log('Favorite Decks:', favoriteDecks);
-    // console.log('Favorite Spreads:', favoriteSpreads);
+                        // Rename spreadName to name and spreadDescription to description
+                        spreadDetailsObject[spreadKey] = {
+                            _id: spread._id,
+                            name: spread.spreadName,
+                            description: spread.spreadDescription,
+                            imageUrl: spread.imageUrl
+                        };
+                    });
+                }
+
+                setUserInfo((prev) => ({
+                    ...prev,
+                    favoriteSpreads: spreadDetailsObject
+                }));
+            }
+        };
+        if (!meLoading && meData?.me) {
+            fetchFavoriteSpreadsDetails();
+        }
+    }, [meData, meLoading, favoriteSpreadsByUser]);
 
     const deckImages = [
         { src: EOTSBack, alt: 'Deck' },
@@ -153,27 +152,28 @@ const DashboardLeft = () => {
         <section className='left-dash-container'>
             <section className='left-dash-content'>
                 <div className='my-decks'>
-                    <h2>My Decks</h2>
+                    <h2 className='dashboard-h2'>My Decks</h2>
                     <hr className='hr-spread' />
-                    <UniversalCarousel
-                        images={deckImages}
-                        border={theme.universalImageBorder}
+                    <SliderComponent
+                        userInfo={userInfo.decks}
+                        type={'Decks'}
                     />
                 </div>
                 <div className='my-spreads'>
-                    <h2>Favorite Spreads</h2>
+                    <h2 className='dashboard-h2'>Favorite Spreads</h2>
                     <hr className='hr-spread' />
-                    <UniversalCarousel
-                        images={spreadImages}
-                        border={theme.universalImageBorder}
+                    <SliderComponent
+                        userInfo={userInfo.favoriteSpreads}
+                        type={'Spreads'}
                     />
                 </div>
                 <div className='fav-decks'>
-                    <h2>Favorite Decks</h2>
+                    <h2 className='dashboard-h2'>Favorite Decks</h2>
                     <hr className='hr-spread' />
-                    <UniversalCarousel
-                        images={deckImages}
-                        border={theme.universalImageBorder}
+                    <SliderComponent
+                        userInfo={userInfo.favoriteDecks}
+                        type={'FavoriteDecks'}
+                        deckInfo={userInfo.decks}
                     />
                 </div>
             </section>

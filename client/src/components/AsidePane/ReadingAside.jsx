@@ -1,27 +1,25 @@
 import { useMemo, useRef } from 'react';
-import { useReadingContext } from '../../context/ReadingContext'; // Use context here
+import { useReadingContext } from '../../context/ReadingContext';
 import './ReadingAside.css';
 
 const ReadingAside = () => {
     const panelRef = useRef(null);
 
-    // Access setSelectedSpread and setSelectedDeck, and fetched spreads and decks from the context
     const { setSelectedSpread, setSelectedDeck, allSpreads, allDecks } = useReadingContext();
 
-    // Memoize combined data for spreads and decks
     const combinedItems = useMemo(() => {
         return [
             ...allSpreads.map((spread) => ({
                 type: 'spread',
                 image: spread.imageUrl,
                 name: spread.spreadName,
-                fullData: spread // Pass the full spread data on selection
+                fullData: spread
             })),
             ...allDecks.map((deck) => ({
                 type: 'deck',
                 image: deck.imageUrl,
                 name: deck.deckName,
-                fullData: deck // Pass the full deck data on selection
+                fullData: deck
             }))
         ];
     }, [allSpreads, allDecks]);
@@ -29,7 +27,6 @@ const ReadingAside = () => {
     const spreadsItems = combinedItems.filter((item) => item.type === 'spread');
     const decksItems = combinedItems.filter((item) => item.type === 'deck');
 
-    // Handle panel movement without causing a re-render
     const handleSpreadsClick = () => {
         panelRef.current.classList.add('show-spreads');
         panelRef.current.classList.remove('show-decks');
@@ -41,11 +38,13 @@ const ReadingAside = () => {
     };
 
     const handleSpreadImageClick = (spread) => {
-        setSelectedSpread(spread.fullData); // Use context to update selected spread
+        setSelectedSpread(spread.fullData);
+        console.log('Selected Spread:', spread.fullData);
     };
 
     const handleDeckImageClick = (deck) => {
-        setSelectedDeck(deck.fullData); // Use context to update selected deck
+        setSelectedDeck(deck.fullData);
+        console.log('Selected Deck:', deck.fullData);
     };
 
     return (
@@ -71,7 +70,7 @@ const ReadingAside = () => {
                                 <img
                                     src={item.image}
                                     alt={item.name}
-                                    onClick={() => handleSpreadImageClick(item)} // Select spread via context
+                                    onClick={() => handleSpreadImageClick(item)}
                                 />
                                 <p>{item.name}</p>
                                 <button

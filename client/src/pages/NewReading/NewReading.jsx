@@ -14,6 +14,7 @@ const NewReading = () => {
     const [cardData, setCardData] = useState([]);
     const cardRefs = useRef([]);
     const [toggleRender, setToggleRender] = useState(false);
+    const [readingStage, setReadingStage] = useState('initial');
 
     const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
     const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
@@ -44,6 +45,10 @@ const NewReading = () => {
             cardRefs.current[nextCardIndex] = true;
             console.log(`Revealing card at position: ${nextCardIndex + 1}`);
             setToggleRender((prev) => !prev);
+
+            if (nextCardIndex === cardData.length - 1) {
+                setReadingStage('save');
+            }
         } else {
             console.log('All cards are revealed');
         }
@@ -66,6 +71,7 @@ const NewReading = () => {
             })
                 .then((response) => {
                     console.log('Reading saved:', response.data);
+                    setReadingStage('initial');
                 })
                 .catch((error) => {
                     console.error('Error saving the reading:', error);
@@ -83,7 +89,13 @@ const NewReading = () => {
                     spreadId: selectedSpread._id,
                     deckId: selectedDeck._id
                 }
-            });
+            })
+                .then(() => {
+                    setReadingStage('reveal');
+                })
+                .catch((error) => {
+                    console.error('Error starting the reading:', error);
+                });
         } else {
             console.error('Spread, Deck, or User not selected');
         }
@@ -133,19 +145,19 @@ const NewReading = () => {
 
             <button
                 className='button'
-                onClick={handleStartReading}
+                onClick={() => {
+                    if (readingStage === 'initial') handleStartReading();
+                    else if (readingStage === 'reveal') handleRevealNextCard();
+                    else if (readingStage === 'save') handleSaveReading();
+                }}
                 disabled={loading}>
-                {loading ? 'Starting Reading...' : 'Start Reading'}
-            </button>
-            <button
-                className='button'
-                onClick={handleRevealNextCard}>
-                Reveal Next Card
-            </button>
-            <button
-                className='button'
-                onClick={handleSaveReading}>
-                Save Reading
+                {loading
+                    ? 'Loading...'
+                    : readingStage === 'initial'
+                      ? 'Start Reading'
+                      : readingStage === 'reveal'
+                        ? 'Reveal Next Card'
+                        : 'Save Reading'}
             </button>
 
             {loading && <p>Loading...</p>}

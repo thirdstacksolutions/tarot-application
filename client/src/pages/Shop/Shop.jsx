@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useSpring, animated } from '@react-spring/web';
 import { useTheme } from '../../pages/Settings/ThemeContext.jsx';
 import { useLazyQuery } from '@apollo/client';
-import { QUERY_ALL_DECKS, GET_ALL_SHOP_DATA } from '../../utils/queries';
+import { GET_ALL_SHOP_DATA } from '../../utils/queries';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logo from '../../assets/Logos/Large/MainLogo.png';
@@ -54,7 +54,7 @@ Fade.propTypes = {
 
 const AppShop = () => {
     const [open, setOpen] = useState(false);
-    const [allShopInfo, { data: allShopData }] = useLazyQuery(GET_ALL_SHOP_DATA);
+    const [allShopInfo, { data: allShopData, loading: shopLoading }] = useLazyQuery(GET_ALL_SHOP_DATA);
 
     const [shopData, setShopData] = useState({ decks: {}, avatars: {}, themes: {}, bundles: {} });
 
@@ -66,6 +66,10 @@ const AppShop = () => {
         imageUrl: '',
         type: ''
     });
+
+    useEffect(() => {
+        allShopInfo();
+    }, [allShopInfo]);
 
     useEffect(() => {
         if (allShopData) {
@@ -90,17 +94,13 @@ const AppShop = () => {
             };
             setShopData(formattedData);
         }
-    }, [allShopData]);
-
-    useEffect(() => {
-        allShopInfo();
-    }, [allShopInfo]);
+    }, [allShopData, shopLoading]);
 
     const handleOpen = (data) => {
         const normalizeData = {
             name: data.deckName || data.avatarName || data.name,
             description: data.deckDescription || data.avatarDescription || data.description,
-            imageUrl: data.imageUrl,
+            imageUrl: data.imageUrl || data.circleImageUrl,
             type: data.__typename || data.type
         };
         setModalData(normalizeData);
