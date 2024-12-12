@@ -9,7 +9,8 @@ const routeToHeader = {
     '/settings': LargeHeader,
     '/newReading': SimpleHeader,
     '/cardDetails': LargeHeader,
-    '/journal': LargeHeader
+    '/journal': LargeHeader,
+    '/appShop': LargeHeader
 };
 
 const Header = () => {

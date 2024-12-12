@@ -112,61 +112,49 @@ const AppShop = () => {
     };
 
     return (
-        <section className='shopWrapper'>
-            <div
-                className='topBar'
-                style={{ backgroundImage: `url(${theme.headerImage})`, backgroundSize: 'cover' }}>
-                <div className='logoWrapper'>
-                    <img
-                        className='LogoShop'
-                        src={theme.logo}
-                        alt='icon'></img>
-                </div>
-                <div className='cartWrapper'>
-                    <h2 id='cartText'>Cart</h2>
-                    <ShoppingCartIcon />
-                </div>
-            </div>
-            <div className='shopItems deckShop'>
-                <h2 className='headingShop'>Most Popular Tarot Decks</h2>
-                <Decks
-                    deckInfo={shopData.decks}
-                    sendModal={handleOpen}
-                />
-            </div>
-            <div className='shopItems avatarShop'>
-                <h2 className='headingShop'>Avatars for You</h2>
-                <Avatars
-                    avatarInfo={shopData.avatars}
-                    sendModal={handleOpen}
-                />
-            </div>
-            <div className='shopItems themeShop'>
-                <h2 className='headingShop'>Carefully Crafted Themes</h2>
-                <Themes
-                    imgUrl={ThemeOne}
-                    sendModal={handleOpen}
-                />
-            </div>
-            <div className='shopItems bundleShop'>
-                <h2 className='headingShop'>Bundles</h2>
-                <Bundles
-                    imgUrl={BundleOne}
-                    sendModal={handleOpen}
-                />
-            </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby='modal-title'
-                aria-describedby='modal-modal-description'>
-                <Fade in={open}>
-                    <ShopModal
-                        onClose={handleClose}
-                        modalData={modalData}
+        <section className='shopWrapperContainer'>
+            <div className='shopWrapper'>
+                <div className='shopItems deckShop'>
+                    <h2 className='headingShop'>Most Popular Tarot Decks</h2>
+                    <Decks
+                        deckInfo={shopData.decks}
+                        sendModal={handleOpen}
                     />
-                </Fade>
-            </Modal>
+                </div>
+                <div className='shopItems avatarShop'>
+                    <h2 className='headingShop'>Avatars for You</h2>
+                    <Avatars
+                        avatarInfo={shopData.avatars}
+                        sendModal={handleOpen}
+                    />
+                </div>
+                <div className='shopItems themeShop'>
+                    <h2 className='headingShop'>Carefully Crafted Themes</h2>
+                    <Themes
+                        imgUrl={ThemeOne}
+                        sendModal={handleOpen}
+                    />
+                </div>
+                {/* <div className='shopItems bundleShop'>
+                    <h2 className='headingShop'>Bundles</h2>
+                    <Bundles
+                        imgUrl={BundleOne}
+                        sendModal={handleOpen}
+                    />
+                </div> */}
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby='modal-title'
+                    aria-describedby='modal-modal-description'>
+                    <Fade in={open}>
+                        <ShopModal
+                            onClose={handleClose}
+                            modalData={modalData}
+                        />
+                    </Fade>
+                </Modal>
+            </div>
         </section>
     );
 };
