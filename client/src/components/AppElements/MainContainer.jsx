@@ -105,7 +105,7 @@ const MainContainer = () => {
     ];
     const isPublicInfoPage = publicInfoRoutes.includes(location.pathname);
 
-    const containerClassName = isPublicInfoPage ? 'landing-page' : '';
+    const containerClassName = isPublicInfoPage && !isAuthenticated ? 'landing-page' : '';
 
     return (
         <main style={{ flex: '1' }}>
