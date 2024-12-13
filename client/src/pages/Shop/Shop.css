@@ -75,7 +75,8 @@
 
 .headingShop {
     font-size: 2.5rem;
-    color: var(--h2-color) !important;
+    color: var(--h2-color);
+    text-shadow: var(--h2-text-shadow);
 }
 
 .deckShopContainer {

@@ -1,5 +1,5 @@
 import { useState, forwardRef, cloneElement, useEffect } from 'react';
-import { Modal } from '@mui/material';
+import { Modal, Divider } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from '@react-spring/web';
 import { useTheme } from '../../pages/Settings/ThemeContext.jsx';
@@ -120,8 +120,6 @@ const AppShop = () => {
         }
     }, [allShopData, shopLoading]);
 
-    console.log(allShopData);
-
     const handleOpen = (data) => {
         const normalizeData = {
             name: data.deckName || data.avatarName || data.name,
@@ -149,6 +147,7 @@ const AppShop = () => {
                         dimensions={carouselData.decks}
                     />
                 </div>
+                <Divider sx={{ width: '100%', height: '1px', marginTop: '2rem' }} />
                 <div className='shopItems avatarShop'>
                     <h2 className='headingShop'>Avatars</h2>
                     <Test
@@ -158,6 +157,7 @@ const AppShop = () => {
                         dimensions={carouselData.avatars}
                     />
                 </div>
+                <Divider sx={{ width: '100%', height: '1px', marginTop: '2rem' }} />
                 {/* <div className='shopItems themeShop'>
                     <h2 className='headingShop'>Carefully Crafted Themes</h2>
                     <Themes
