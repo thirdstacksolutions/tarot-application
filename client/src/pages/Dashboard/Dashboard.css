@@ -181,6 +181,7 @@
 .itemWrapper {
     display: flex;
     justify-content: center;
+    width: fit-content;
 }
 
 .dashboardImageText {
@@ -189,6 +190,7 @@
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--img-text-bg-color);
+    border: 2px solid var(--universalImageBorder);
     color: #fafaf7;
     font-size: 1rem;
     text-align: center;

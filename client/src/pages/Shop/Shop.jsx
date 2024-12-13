@@ -15,7 +15,7 @@ import BundleOne from '../../assets/BundleOne.png';
 import './Shop.css';
 
 import ShopModal from './ShopModal.jsx';
-import { Decks, Avatars, Themes, Bundles } from './ShopCategories.jsx';
+import { Avatars, Themes, Bundles, Test } from './ShopCategories.jsx';
 
 const Fade = forwardRef(function Fade(props, ref) {
     const { children, in: open, onClick, onEnter, onExited, ...other } = props;
@@ -53,18 +53,42 @@ Fade.propTypes = {
 };
 
 const AppShop = () => {
-    const [open, setOpen] = useState(false);
-    const [allShopInfo, { data: allShopData, loading: shopLoading }] = useLazyQuery(GET_ALL_SHOP_DATA);
-
-    const [shopData, setShopData] = useState({ decks: {}, avatars: {}, themes: {}, bundles: {} });
-
     const { theme } = useTheme();
 
+    const [open, setOpen] = useState(false);
+    const [allShopInfo, { data: allShopData, loading: shopLoading }] = useLazyQuery(GET_ALL_SHOP_DATA);
+    const [shopData, setShopData] = useState({ decks: {}, avatars: {}, themes: {}, bundles: {} });
     const [modalData, setModalData] = useState({
         name: '',
         description: '',
         imageUrl: '',
         type: ''
+    });
+    const [carouselData] = useState({
+        decks: {
+            type: 'deck',
+            width: '131.25px',
+            height: '210px',
+            borderRadius: '5%',
+            displayName: true,
+            total: 15
+        },
+        avatars: {
+            type: 'avatar',
+            width: '150px',
+            height: '150px',
+            borderRadius: '50%',
+            displayName: false,
+            total: 12
+        },
+        themes: {
+            type: 'theme',
+            width: '218.75px',
+            height: '150px',
+            borderRadius: '5%',
+            displayName: false,
+            total: 7
+        }
     });
 
     useEffect(() => {
@@ -96,6 +120,8 @@ const AppShop = () => {
         }
     }, [allShopData, shopLoading]);
 
+    console.log(allShopData);
+
     const handleOpen = (data) => {
         const normalizeData = {
             name: data.deckName || data.avatarName || data.name,
@@ -115,33 +141,37 @@ const AppShop = () => {
         <section className='shopContainer'>
             <div className='shopWrapper'>
                 <div className='shopItems deckShop'>
-                    <h2 className='headingShop'>Most Popular Tarot Decks</h2>
-                    <Decks
-                        deckInfo={shopData.decks}
+                    <h2 className='headingShop'>Tarot Decks</h2>
+                    <Test
+                        itemInfo={shopData.decks}
                         sendModal={handleOpen}
+                        theme={theme}
+                        dimensions={carouselData.decks}
                     />
                 </div>
                 <div className='shopItems avatarShop'>
-                    <h2 className='headingShop'>Avatars for You</h2>
-                    <Avatars
-                        avatarInfo={shopData.avatars}
+                    <h2 className='headingShop'>Avatars</h2>
+                    <Test
+                        itemInfo={shopData.avatars}
                         sendModal={handleOpen}
+                        theme={theme}
+                        dimensions={carouselData.avatars}
                     />
                 </div>
-                <div className='shopItems themeShop'>
+                {/* <div className='shopItems themeShop'>
                     <h2 className='headingShop'>Carefully Crafted Themes</h2>
                     <Themes
                         imgUrl={ThemeOne}
                         sendModal={handleOpen}
                     />
-                </div>
-                <div className='shopItems bundleShop'>
+                </div> */}
+                {/* <div className='shopItems bundleShop'>
                     <h2 className='headingShop'>Bundles</h2>
                     <Bundles
                         imgUrl={BundleOne}
                         sendModal={handleOpen}
                     />
-                </div>
+                </div> */}
                 <Modal
                     open={open}
                     onClose={handleClose}
