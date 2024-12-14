@@ -5,6 +5,7 @@ import { useSpring, animated } from '@react-spring/web';
 import { useTheme } from '../../pages/Settings/ThemeContext.jsx';
 import { useLazyQuery } from '@apollo/client';
 import { GET_ALL_SHOP_DATA } from '../../utils/queries';
+import TemporaryDrawer from './CartDrawer.jsx';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logo from '../../assets/Logos/Large/MainLogo.png';
@@ -64,24 +65,27 @@ const AppShop = () => {
         imageUrl: '',
         type: ''
     });
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const [carouselData] = useState({
-        decks: {
+        Deck: {
             type: 'deck',
             width: '131.25px',
             height: '210px',
             borderRadius: '5%',
             displayName: true,
+            textName: 'dashboardImageText',
             total: 15
         },
-        avatars: {
+        Avatar: {
             type: 'avatar',
             width: '150px',
             height: '150px',
             borderRadius: '50%',
-            displayName: false,
+            displayName: true,
+            textName: 'avatarImageText',
             total: 12
         },
-        themes: {
+        Theme: {
             type: 'theme',
             width: '218.75px',
             height: '150px',
@@ -125,7 +129,8 @@ const AppShop = () => {
             name: data.deckName || data.avatarName || data.name,
             description: data.deckDescription || data.avatarDescription || data.description,
             imageUrl: data.imageUrl || data.circleImageUrl,
-            type: data.__typename || data.type
+            type: data.__typename || data.type,
+            id: data._id
         };
         setModalData(normalizeData);
         setOpen(true);
@@ -133,6 +138,11 @@ const AppShop = () => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleAddToCart = () => {
+        setDrawerOpen(true); // Open drawer
+        setOpen(false); // Close modal
     };
 
     return (
@@ -144,7 +154,7 @@ const AppShop = () => {
                         itemInfo={shopData.decks}
                         sendModal={handleOpen}
                         theme={theme}
-                        dimensions={carouselData.decks}
+                        dimensions={carouselData.Deck}
                     />
                 </div>
                 <Divider sx={{ width: '100%', height: '1px', marginTop: '2rem' }} />
@@ -154,7 +164,7 @@ const AppShop = () => {
                         itemInfo={shopData.avatars}
                         sendModal={handleOpen}
                         theme={theme}
-                        dimensions={carouselData.avatars}
+                        dimensions={carouselData.Avatar}
                     />
                 </div>
                 <Divider sx={{ width: '100%', height: '1px', marginTop: '2rem' }} />
@@ -181,9 +191,16 @@ const AppShop = () => {
                         <ShopModal
                             onClose={handleClose}
                             modalData={modalData}
+                            onAddToCart={handleAddToCart}
                         />
                     </Fade>
                 </Modal>
+                <TemporaryDrawer
+                    open={drawerOpen}
+                    setOpen={setDrawerOpen}
+                    theme={theme}
+                    dimensions={carouselData}
+                />
             </div>
         </section>
     );

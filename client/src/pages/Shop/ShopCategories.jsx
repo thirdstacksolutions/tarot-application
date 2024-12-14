@@ -66,6 +66,7 @@ export const Test = ({ itemInfo, sendModal, theme, dimensions }) => {
                                     height: dimensions.height,
                                     margin: 0,
                                     position: 'relative',
+                                    // overflow: 'hidden',
                                     border: `3px solid ${theme.universalImageBorder}`,
                                     borderRadius: dimensions.borderRadius,
                                     backgroundImage: `url(${slide.imageUrl || slide.circleImageUrl})`,
@@ -79,12 +80,19 @@ export const Test = ({ itemInfo, sendModal, theme, dimensions }) => {
                                 }}>
                                 {dimensions.type === 'deck' && (
                                     <p
-                                        className='dashboardImageText'
+                                        className={dimensions.textName}
                                         style={{ width: '131.25px' }}>
                                         {slide.deckName}
                                     </p>
                                 )}
                             </Box>
+                            {dimensions.type === 'avatar' && (
+                                <p
+                                    className={dimensions.textName}
+                                    style={{ width: '131.25px' }}>
+                                    {slide.avatarName}
+                                </p>
+                            )}
                         </div>
                     </SplideSlide>
                 ))}
