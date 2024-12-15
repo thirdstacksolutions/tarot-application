@@ -138,8 +138,6 @@ const AppShop = () => {
         }
     }, [allShopData, shopLoading]);
 
-    console.log(shopData);
-
     const handleOpen = (data) => {
         const normalizeData = {
             name: data.deckName || data.avatarName || data.name,

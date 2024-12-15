@@ -31,8 +31,6 @@ const Cart = () => {
         total = Number(displayInfo?.cartTotal) + Number(salesTax);
     }
 
-    console.log(cartItems);
-
     // Function to handle item removal
     const removeItem = (indexToRemove) => {
         const updatedCartData = cartItems.filter((_, index) => index !== indexToRemove);

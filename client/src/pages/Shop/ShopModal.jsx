@@ -6,7 +6,6 @@ import './Shop.css';
 
 const ShopModal = ({ onClose, modalData, onAddToCart }) => {
     const price = '10';
-    console.log(modalData);
 
     const ContainerChoice = () => {
         if (modalData.type === 'Deck') {
