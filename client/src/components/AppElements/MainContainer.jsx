@@ -13,7 +13,9 @@ import CardRight from '../../pages/CardDetails/CardRight';
 import Community from '../../pages/Community/Community';
 import BrowseSpreads from '../../pages/BrowseSpreads/BrowseSpreads';
 import BrowseDecks from '../../pages/BrowseDecks/BrowseDecks';
+
 import AppShop from '../../pages/Shop/Shop';
+import Cart from '../../pages/Shop/Cart/Cart';
 
 import Terms from '../../pages/InfoPages/Terms';
 import Privacy from '../../pages/InfoPages/Privacy';
@@ -84,6 +86,7 @@ const routeToMainComponents = {
     '/privacy': Privacy,
     '/faqs': FAQs,
     '/contactUs': ContactUs,
+    '/cart': Cart,
     '/landing': Landing,
     '/': Landing
 };

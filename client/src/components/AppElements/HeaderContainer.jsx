@@ -11,6 +11,7 @@ const routeToHeader = {
     '/newReading': SimpleHeader,
     '/cardDetails': LargeHeader,
     '/journal': LargeHeader,
+    '/cart': LargeHeader,
     '/appShop': ShopHeader
 };
 

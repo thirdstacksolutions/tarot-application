@@ -24,6 +24,7 @@ const NavContainer = () => {
             '/browseSpreads': commonNav,
             '/browseDecks': commonNav,
             '/appShop': commonNav,
+            '/cart': commonNav,
             '/newReading': <NavIcons />,
             '/cardDetails': commonNav,
             '/journal': commonNav,

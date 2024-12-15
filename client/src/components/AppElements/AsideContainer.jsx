@@ -43,6 +43,13 @@ const AsideContainer = () => {
                 <QuickLinks />
                 <AppUpdates />
             </div>
+        ),
+        '/cart': () => (
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '200px' }}>
+                <QuickUserInfo />
+                <QuickLinks />
+                <AppUpdates />
+            </div>
         )
     };
 

@@ -3,10 +3,12 @@ import { useTheme } from '../../pages/Settings/ThemeContext';
 import { useContext } from 'react';
 import { CookieSettingsContext } from '../../pages/Settings/SettingsRight/CookiesSettings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
 
 const ShopHeader = () => {
     const { theme } = useTheme();
-
+    const navigate = useNavigate();
     const { preferences } = useContext(CookieSettingsContext);
 
     return (
@@ -39,16 +41,21 @@ const ShopHeader = () => {
                     />{' '}
                 </Link>
             </div>
-            <div
-                style={{
+
+            <Box
+                sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    color: theme.h2TextColor,
-                    fontSize: '1.5rem'
-                }}>
-                <span style={{ marginRight: '10px' }}>Cart</span>
-                <ShoppingCartIcon style={{ fontSize: '2rem', color: theme.h2TextColor }} />
-            </div>
+                    fontSize: '1.5rem',
+                    '&:hover': {
+                        color: theme.buttonSecondaryColor // Change border color on hover
+                    }
+                }}
+                onClick={() => navigate('/cart')}
+                className='cart_link'>
+                <span style={{ marginRight: '10px', color: theme.h3Color, textShadow: theme.h2TextShadow }}>Cart</span>
+                <ShoppingCartIcon style={{ fontSize: '2rem', color: theme.h3Color }} />
+            </Box>
         </header>
     );
 };

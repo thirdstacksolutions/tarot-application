@@ -17,11 +17,13 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
 const TemporaryDrawer = ({ open, setOpen, theme, dimensions }) => {
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen); // Control drawer open/close state
     };
+    const navigate = useNavigate();
 
     const cartData = sessionStorage.getItem('cartItems');
     const displayInfoSession = sessionStorage.getItem('checkoutPromptsDisplayInfo');
@@ -142,7 +144,8 @@ const TemporaryDrawer = ({ open, setOpen, theme, dimensions }) => {
                 </Typography>
                 <Button
                     className='cartDrawerButton'
-                    style={{ margin: '8px 0' }}>
+                    style={{ margin: '8px 0' }}
+                    onClick={() => navigate('/cart')}>
                     View Cart
                 </Button>
             </Box>

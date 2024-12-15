@@ -104,7 +104,10 @@ const MainRoutes = () => {
                 path='/community'
                 element={<ProtectedContent content='community' />}
             />
-
+            <Route
+                path='/cart'
+                element={<ProtectedContent content='cart' />}
+            />
             <Route
                 path='/aboutUs'
                 element={<Layout content='aboutUs' />}
