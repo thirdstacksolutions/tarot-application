@@ -1,5 +1,8 @@
 .cart_container {
     padding: 0 2.4rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 90vh;
 }
 
 .cart_wrapper {
@@ -7,6 +10,7 @@
     grid-template-columns: repeat(12, 1fr);
     gap: 3.2rem;
     margin: 0;
+    height: 100%;
 }
 
 .left_column {
@@ -16,12 +20,14 @@
 .right_column {
     grid-column: span 12;
     padding: 1.5rem;
-    position: sticky;
 }
 
 .order_container {
     padding: 0 1rem;
     border: solid 2px var(--borderLeftColor);
+    position: sticky;
+    top: 2.4rem;
+    z-index: 50;
 }
 
 .order_title {
@@ -96,6 +102,9 @@
     grid-column: span 6; /* Default span on small screens */
     max-width: 100%;
     height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .cart_item_info {

@@ -7,6 +7,8 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_ALL_SHOP_DATA } from '../../utils/queries';
 import TemporaryDrawer from './CartDrawer.jsx';
 
+import dummyData from './dummyData.json';
+
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logo from '../../assets/Logos/Large/MainLogo.png';
 import EOTS from '../../assets/CardBacks/eots_backs_01.jpg';
@@ -91,7 +93,17 @@ const AppShop = () => {
             height: '150px',
             borderRadius: '5%',
             displayName: false,
-            total: 7
+            total: 7,
+            textName: 'avatarImageText'
+        },
+        Bundle: {
+            type: 'bundle',
+            width: '218.75px',
+            height: '150px',
+            borderRadius: '5%',
+            displayName: false,
+            total: 7,
+            textName: 'avatarImageText'
         }
     });
 
@@ -110,7 +122,7 @@ const AppShop = () => {
                     const formattedSpreadName = avatar.avatarName.replace(/ /g, '_');
                     acc[formattedSpreadName] = avatar;
                     return acc;
-                }, {})
+                }, {}),
                 //   themes: allShopData.allThemes.reduce((acc, theme) => {
                 //     acc[theme.themeId] = theme;
                 //     return acc;
@@ -119,10 +131,14 @@ const AppShop = () => {
                 //     acc[bundle.bundleId] = bundle;
                 //     return acc;
                 //   }, {}),
+                themes: dummyData.themes,
+                bundles: dummyData.bundles
             };
             setShopData(formattedData);
         }
     }, [allShopData, shopLoading]);
+
+    console.log(shopData);
 
     const handleOpen = (data) => {
         const normalizeData = {
@@ -157,7 +173,10 @@ const AppShop = () => {
                         dimensions={carouselData.Deck}
                     />
                 </div>
-                <Divider sx={{ width: '100%', height: '1px', marginTop: '2rem' }} />
+                <Divider
+                    className='cart_divider'
+                    sx={{ width: '95%', height: '1px', marginTop: '2rem' }}
+                />
                 <div className='shopItems avatarShop'>
                     <h2 className='headingShop'>Avatars</h2>
                     <Test
@@ -167,21 +186,37 @@ const AppShop = () => {
                         dimensions={carouselData.Avatar}
                     />
                 </div>
-                <Divider sx={{ width: '100%', height: '1px', marginTop: '2rem' }} />
-                {/* <div className='shopItems themeShop'>
-                    <h2 className='headingShop'>Carefully Crafted Themes</h2>
-                    <Themes
-                        imgUrl={ThemeOne}
+                <Divider
+                    className='cart_divider'
+                    sx={{ width: '95%', height: '1px', marginTop: '2rem' }}
+                />
+                <div className='shopItems themeShop'>
+                    <h2 className='headingShop'>Themes</h2>
+                    <Test
+                        itemInfo={shopData.themes}
                         sendModal={handleOpen}
+                        theme={theme}
+                        dimensions={carouselData.Theme}
                     />
-                </div> */}
-                {/* <div className='shopItems bundleShop'>
+                </div>
+                <Divider
+                    className='cart_divider'
+                    sx={{ width: '95%', height: '1px', marginTop: '2rem' }}
+                />
+                <div className='shopItems themeShop'>
                     <h2 className='headingShop'>Bundles</h2>
-                    <Bundles
-                        imgUrl={BundleOne}
+                    <Test
+                        itemInfo={shopData.bundles}
                         sendModal={handleOpen}
+                        theme={theme}
+                        dimensions={carouselData.Theme}
                     />
-                </div> */}
+                </div>
+                <Divider
+                    className='cart_divider'
+                    sx={{ width: '95%', height: '1px', marginTop: '2rem' }}
+                />
+
                 <Modal
                     open={open}
                     onClose={handleClose}

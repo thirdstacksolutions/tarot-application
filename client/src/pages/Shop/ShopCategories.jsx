@@ -93,6 +93,7 @@ export const Test = ({ itemInfo, sendModal, theme, dimensions }) => {
                                     {slide.avatarName}
                                 </p>
                             )}
+                            {dimensions.type === 'theme' && <p className={dimensions.textName}>{slide.name}</p>}
                         </div>
                     </SplideSlide>
                 ))}
