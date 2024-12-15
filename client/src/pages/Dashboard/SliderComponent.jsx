@@ -302,6 +302,7 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
                                         cursor: 'pointer',
                                         width: `${dimensions.width}px`,
                                         height: `${dimensions.height}px`,
+                                        position: 'relative',
                                         margin: 0,
                                         border: `3px solid ${theme.universalImageBorder}`,
                                         borderRadius: '5%',
@@ -313,13 +314,13 @@ const SliderComponent = ({ userInfo, type, deckInfo = null }) => {
                                         '&:hover': {
                                             borderColor: theme.buttonSecondaryColor // Change border color on hover
                                         }
-                                    }}
-                                />
-                                <p
-                                    className='dashboardImageText'
-                                    style={{ width: dimensions.width }}>
-                                    {slide.name}
-                                </p>
+                                    }}>
+                                    <p
+                                        className='dashboardImageText'
+                                        style={{ width: dimensions.width }}>
+                                        {slide.name}
+                                    </p>
+                                </Box>
                             </div>
                         </SplideSlide>
                     ))}

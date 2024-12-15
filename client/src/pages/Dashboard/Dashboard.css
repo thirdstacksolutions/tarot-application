@@ -183,6 +183,7 @@
     justify-content: center;
     width: fit-content;
     flex-direction: column;
+    padding: 0 1rem;
 }
 
 .dashboardImageText {
