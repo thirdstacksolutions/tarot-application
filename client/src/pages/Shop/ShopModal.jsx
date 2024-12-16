@@ -1,7 +1,7 @@
 import { Card } from '@mui/material';
 import { useState } from 'react';
 import { deckContainer, avatarContainer, themeAndBundleContainer } from './ModalContainerChoice';
-import { addToCart } from '../../utils/cartUtils.js';
+import { addToCart } from '../../utils/CartUtils.js';
 import './Shop.css';
 
 const ShopModal = ({ onClose, modalData, onAddToCart }) => {
