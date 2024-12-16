@@ -13,7 +13,7 @@ import './NewReading.css';
 
 const NewReading = () => {
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
-
+    const [readingData, setReadingData] = useState(null); // Local state for reading data
     const [cardData, setCardData] = useState([]);
     const cardRefs = useRef([]);
     const [toggleRender, setToggleRender] = useState(false);
@@ -24,15 +24,10 @@ const NewReading = () => {
     const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
 
     useEffect(() => {
-        if (cardData.length > 0) {
-            cardRefs.current = Array(cardData.length).fill(false);
-        }
-    }, [cardData.length]);
-
-    useEffect(() => {
         if (data) {
             console.log('Temporary reading created:', data);
-            setCardData(data.generateTemporaryReading.cards);
+            setReadingData(data.generateTemporaryReading); // Store data locally
+            setCardData(data.generateTemporaryReading.cards); // Set card data
         }
         if (error) {
             console.error('Error creating temporary reading:', error);
@@ -42,9 +37,19 @@ const NewReading = () => {
         }
     }, [data, error, saveError]);
 
-    const handleRevealNextCard = () => {
-        const nextCardIndex = cardRefs.current.findIndex((isFlipped) => !isFlipped);
+    useEffect(() => {
+        if (cardData.length > 0) {
+            cardRefs.current = Array(cardData.length).fill(false);
+        }
+    }, [cardData.length]);
 
+    const handleRevealNextCard = () => {
+        if (!readingData) {
+            console.log('No Data');
+            return;
+        }
+
+        const nextCardIndex = cardRefs.current.findIndex((isFlipped) => !isFlipped);
         if (nextCardIndex !== -1 && nextCardIndex < cardData.length) {
             cardRefs.current[nextCardIndex] = true;
             console.log(`Revealing card at position: ${nextCardIndex + 1}`);
@@ -59,8 +64,8 @@ const NewReading = () => {
     };
 
     const handleSaveReading = () => {
-        if (data && data.generateTemporaryReading && selectedSpread && selectedDeck && userId) {
-            const cardObjects = data.generateTemporaryReading.cards.map((card) => ({
+        if (readingData && selectedSpread && selectedDeck && userId) {
+            const cardObjects = readingData.cards.map((card) => ({
                 card: card.card._id,
                 position: card.position,
                 orientation: card.orientation
@@ -75,7 +80,7 @@ const NewReading = () => {
             })
                 .then((response) => {
                     console.log('Reading saved:', response.data);
-                    setReadingStage('initial');
+                    setReadingStage('saved');
                 })
                 .catch((error) => {
                     console.error('Error saving the reading:', error);
@@ -86,6 +91,8 @@ const NewReading = () => {
     };
 
     const handleStartReading = () => {
+        console.log('reading started');
+        console.log('reading data', selectedDeck, selectedSpread, userId);
         if (selectedSpread && selectedDeck && userId) {
             createTemporaryReading({
                 variables: {
@@ -103,6 +110,20 @@ const NewReading = () => {
                 });
         } else {
             console.error('Spread, Deck, or User not selected');
+        }
+        // console.log('reading data', selectedDeck, selectedSpread, userId);
+        console.log('reading complete');
+    };
+
+    const handleExitReading = () => {
+        const confirmExit = window.confirm('Are you sure you want to exit the reading? Unsaved progress will be lost.');
+        if (confirmExit) {
+            setReadingStage('initial');
+            setReadingData(null);
+            setCardData([]);
+            cardRefs.current = [];
+            setToggleRender(false);
+            setIsExpanded(false);
         }
     };
 
@@ -162,18 +183,13 @@ const NewReading = () => {
                       ? 'Start Reading'
                       : readingStage === 'reveal'
                         ? 'Reveal Next Card'
-                        : 'Save Reading'}
+                        : readingStage === 'save'
+                          ? 'Save Reading'
+                          : 'Reading Saved'}
             </button>
             <button
                 className='button'
-                onClick={() => {
-                    const confirmExit = window.confirm(
-                        'Are you sure you want to exit the reading? Unsaved progress will be lost.'
-                    );
-                    if (confirmExit) {
-                        setIsExpanded(false);
-                    }
-                }}>
+                onClick={handleExitReading}>
                 Exit Reading
             </button>
 
