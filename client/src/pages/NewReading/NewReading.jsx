@@ -92,6 +92,13 @@ const NewReading = () => {
                     .then((response) => {
                         console.log('Reading saved:', response.data);
                         setReadingStage('saved');
+
+                        setReadingStage('initial');
+                        setReadingData(null);
+                        setCardData([]);
+                        cardRefs.current = [];
+                        setToggleRender(false);
+                        setIsExpanded(false);
                     })
                     .catch((error) => {
                         console.error('Error saving the reading:', error);
@@ -137,10 +144,6 @@ const NewReading = () => {
             cardRefs.current = [];
             setToggleRender(false);
             setIsExpanded(false);
-
-            // Clear temporary reading from cache
-            client.cache.evict({ fieldName: 'generateTemporaryReading' });
-            client.cache.gc();
         }
     };
 
