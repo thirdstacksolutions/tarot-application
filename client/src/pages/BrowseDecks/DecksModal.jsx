@@ -14,9 +14,6 @@ const DecksModal = ({ onClose, deckName, deckDescription, imageUrl }) => {
                     <div className='modal-title'>
                         <h2 className='custom-underline'>{deckName}</h2>
                     </div>
-                    <div className='subTitle'>
-                        <h2 className='custom-underline'>Deck Details</h2>
-                    </div>
                     <p className='modal-description'>{deckDescription}</p>
                 </div>
                 <div className='deckModalImgContainer'>

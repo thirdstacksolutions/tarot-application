@@ -15,21 +15,6 @@ import { GET_AVATAR_DETAILS, QUERY_AVATAR_DATA, QUERY_DEFAULT_DATA } from '../..
 import { EDIT_USER_SETTINGS } from '../../../utils/mutations';
 import { CookieSettingsContext } from './CookiesSettings';
 
-// const style = {
-//     position: 'absolute',
-//     top: '50%',
-//     left: '50%',
-//     transform: 'translate(-50%, -50%)',
-//     width: 'auto',
-//     height: '90%',
-//     aspectRatio: '8/9',
-//     backgroundColor: `var(--panel-color)`,
-//     border: `3px solid var(--universal-image-border)`,
-//     borderRadius: '8px',
-//     boxShadow: 24,
-//     p: 0
-// };
-
 const AvatarModal = ({ onClose }) => {
     const theme = useTheme();
     const { preferences, updatePreferences } = useContext(CookieSettingsContext);
@@ -115,35 +100,6 @@ const AvatarModal = ({ onClose }) => {
 
         return <>{rows}</>;
     };
-
-    // const CancelButton = styled(Button)(({ theme }) => ({
-    //     fontFamily: 'Quicksand',
-    //     backgroundColor: 'white',
-    //     color: '#a89467',
-    //     border: '2px solid white',
-    //     padding: '6px 12px',
-    //     width: '120px',
-    //     height: '40px',
-    //     '&:hover': {
-    //         backgroundColor: 'white',
-    //         color: '#121212',
-    //         border: '2px solid #A89467'
-    //     }
-    // }));
-    // const SaveButton = styled(Button)(({ theme }) => ({
-    //     fontFamily: 'Quicksand',
-    //     backgroundColor: '#A89467',
-    //     color: 'white',
-    //     border: '2px solid #382337',
-    //     padding: '6px 12px',
-    //     width: '120px',
-    //     height: '43px',
-    //     '&:hover': {
-    //         backgroundColor: '#A89467',
-    //         color: 'white',
-    //         border: '2px solid white'
-    //     }
-    // }));
 
     const handleSelectorChange = async (value) => {
         const userId = await userAvatarsData.me._id;

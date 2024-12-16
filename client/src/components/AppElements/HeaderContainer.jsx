@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 
 import LargeHeader from '../HeaderPane/LargeHeader';
 import SimpleHeader from '../HeaderPane/SimpleHeader';
+import ShopHeader from '../HeaderPane/ShopHeader';
 import { useTheme } from '../../pages/Settings/ThemeContext';
 
 const routeToHeader = {
@@ -9,7 +10,9 @@ const routeToHeader = {
     '/settings': LargeHeader,
     '/newReading': SimpleHeader,
     '/cardDetails': LargeHeader,
-    '/journal': LargeHeader
+    '/journal': LargeHeader,
+    '/cart': LargeHeader,
+    '/appShop': ShopHeader
 };
 
 const Header = () => {

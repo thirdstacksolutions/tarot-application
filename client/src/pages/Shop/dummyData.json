@@ -1,0 +1,48 @@
+{
+    "themes": {
+        "fall": {
+            "description": "This theme go Bur",
+            "name": "Authumn Harvest",
+            "imageUrl": "src/assets/themeOne.png",
+            "_id": "1231123131313313",
+            "type": "Theme"
+        },
+        "pastel": {
+            "description": "This theme go double Bur",
+            "name": "Andrea's Theme",
+            "imageUrl": "src/assets/themeTwo.jpg",
+            "_id": "1231123131313314",
+            "type": "Theme"
+        },
+        "joseph": {
+            "description": "This theme go tripple Bur",
+            "name": "Joseph's Theme",
+            "imageUrl": "src/assets/themeThree.png",
+            "_id": "1231123131313315",
+            "type": "Theme"
+        },
+        "moody": {
+            "description": "This theme go Quad Awesome Bur",
+            "name": "Christi's Theme",
+            "imageUrl": "src/assets/themeFour.jpg",
+            "_id": "1231123131313316",
+            "type": "Theme"
+        }
+    },
+    "bundles": {
+        "bundleOne": {
+            "description": "This bundle go Bur",
+            "name": "Bundle One",
+            "imageUrl": "src/assets/BundleOne.png",
+            "_id": "123123123123",
+            "type": "Bundle"
+        },
+        "bundleTwo": {
+            "description": "This bundle go double Bur",
+            "name": "Bundle One Copy",
+            "imageUrl": "src/assets/BundleOne.png",
+            "_id": "12312312312312319",
+            "type": "Bundle"
+        }
+    }
+}

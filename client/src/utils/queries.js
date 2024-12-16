@@ -335,6 +335,7 @@ export const GET_ALL_SHOP_DATA = gql`
             deckId
         }
         allAvatars {
+            _id
             avatarName
             circleImageUrl
         }

@@ -1,44 +1,12 @@
-import { Card, Button, Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card } from '@mui/material';
+import { useState } from 'react';
 import { deckContainer, avatarContainer, themeAndBundleContainer } from './ModalContainerChoice';
-
+import { addToCart } from '../../utils/CartUtils.js';
 import './Shop.css';
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'auto',
-    bgcolor: '#4F3052',
-    border: '1px solid rgb(168, 148, 103)',
-    borderRadius: '8px',
-    boxShadow: 24,
-    p: 0,
-    height: '60%',
-    aspectRatio: '8/9',
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexDirection: 'column'
-};
+const ShopModal = ({ onClose, modalData, onAddToCart }) => {
+    const price = '10';
 
-const CustomButton = styled(Button)(({ theme }) => ({
-    fontFamily: 'Quicksand',
-    backgroundColor: 'white',
-    color: '#a89467',
-    border: '2px solid white',
-    padding: '6px 12px',
-    width: '120px',
-    height: '40px',
-    '&:hover': {
-        backgroundColor: 'white',
-        color: 'black',
-        border: '2px solid rgb(168, 148, 103)'
-    }
-}));
-
-const ShopModal = ({ onClose, modalData }) => {
     const ContainerChoice = () => {
         if (modalData.type === 'Deck') {
             return deckContainer(modalData);
@@ -51,23 +19,37 @@ const ShopModal = ({ onClose, modalData }) => {
         }
     };
 
+    // Add item to cart and open the drawer
+    const addToCartHandler = () => {
+        addToCart(modalData.id, modalData.type, modalData.imageUrl, price, modalData.name, modalData.description);
+        onAddToCart(); // Close the modal and open the drawer
+    };
+
     return (
-        <Card sx={style}>
-            <div className='infoWrapper'>
-                <div className='modal-title'>
-                    <h1 className='custom-underline'>{modalData.name}</h1>
+        <Card className='shop-modal-card'>
+            <div className='shop-card-styling'>
+                <div className='infoWrapper'>
+                    <div className='modal-title'>
+                        <h2 className='custom-underline'>{modalData.name}</h2>
+                    </div>
+                    <p className='shop-modal-description'>{modalData.description}</p>
                 </div>
-                {/* <div className='subTitle'>
-                    <h2 className='custom-underline'>Deck Details</h2>
-                </div> */}
-                <p className='modal-description'>{modalData.description}</p>
-            </div>
 
-            <ContainerChoice />
+                <ContainerChoice />
 
-            <div className='shopButtonContainer'>
-                <CustomButton sx={{ width: '150px' }}>Add to Cart</CustomButton>
-                <CustomButton onClick={onClose}>Close</CustomButton>
+                <div className='shopButtonContainer'>
+                    <button
+                        className='button'
+                        sx={{ width: '150px' }}
+                        onClick={addToCartHandler}>
+                        Add to Cart
+                    </button>
+                    <button
+                        className='button-secondary'
+                        onClick={onClose}>
+                        Close
+                    </button>
+                </div>
             </div>
         </Card>
     );

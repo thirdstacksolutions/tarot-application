@@ -1,10 +1,13 @@
 import { useState, forwardRef, cloneElement, useEffect } from 'react';
-import { Modal } from '@mui/material';
+import { Modal, Divider } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from '@react-spring/web';
 import { useTheme } from '../../pages/Settings/ThemeContext.jsx';
 import { useLazyQuery } from '@apollo/client';
 import { GET_ALL_SHOP_DATA } from '../../utils/queries';
+import TemporaryDrawer from './CartDrawer.jsx';
+
+import dummyData from './dummyData.json';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logo from '../../assets/Logos/Large/MainLogo.png';
@@ -15,7 +18,7 @@ import BundleOne from '../../assets/BundleOne.png';
 import './Shop.css';
 
 import ShopModal from './ShopModal.jsx';
-import { Decks, Avatars, Themes, Bundles } from './ShopCategories.jsx';
+import { Avatars, Themes, Bundles, Test } from './ShopCategories.jsx';
 
 const Fade = forwardRef(function Fade(props, ref) {
     const { children, in: open, onClick, onEnter, onExited, ...other } = props;
@@ -53,18 +56,55 @@ Fade.propTypes = {
 };
 
 const AppShop = () => {
-    const [open, setOpen] = useState(false);
-    const [allShopInfo, { data: allShopData, loading: shopLoading }] = useLazyQuery(GET_ALL_SHOP_DATA);
-
-    const [shopData, setShopData] = useState({ decks: {}, avatars: {}, themes: {}, bundles: {} });
-
     const { theme } = useTheme();
 
+    const [open, setOpen] = useState(false);
+    const [allShopInfo, { data: allShopData, loading: shopLoading }] = useLazyQuery(GET_ALL_SHOP_DATA);
+    const [shopData, setShopData] = useState({ decks: {}, avatars: {}, themes: {}, bundles: {} });
     const [modalData, setModalData] = useState({
         name: '',
         description: '',
         imageUrl: '',
         type: ''
+    });
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [carouselData] = useState({
+        Deck: {
+            type: 'deck',
+            width: '131.25px',
+            height: '210px',
+            borderRadius: '5%',
+            displayName: true,
+            textName: 'dashboardImageText',
+            total: 15
+        },
+        Avatar: {
+            type: 'avatar',
+            width: '150px',
+            height: '150px',
+            borderRadius: '50%',
+            displayName: true,
+            textName: 'avatarImageText',
+            total: 12
+        },
+        Theme: {
+            type: 'theme',
+            width: '218.75px',
+            height: '150px',
+            borderRadius: '5%',
+            displayName: false,
+            total: 7,
+            textName: 'avatarImageText'
+        },
+        Bundle: {
+            type: 'bundle',
+            width: '218.75px',
+            height: '150px',
+            borderRadius: '5%',
+            displayName: false,
+            total: 7,
+            textName: 'avatarImageText'
+        }
     });
 
     useEffect(() => {
@@ -82,7 +122,7 @@ const AppShop = () => {
                     const formattedSpreadName = avatar.avatarName.replace(/ /g, '_');
                     acc[formattedSpreadName] = avatar;
                     return acc;
-                }, {})
+                }, {}),
                 //   themes: allShopData.allThemes.reduce((acc, theme) => {
                 //     acc[theme.themeId] = theme;
                 //     return acc;
@@ -91,6 +131,8 @@ const AppShop = () => {
                 //     acc[bundle.bundleId] = bundle;
                 //     return acc;
                 //   }, {}),
+                themes: dummyData.themes,
+                bundles: dummyData.bundles
             };
             setShopData(formattedData);
         }
@@ -101,7 +143,8 @@ const AppShop = () => {
             name: data.deckName || data.avatarName || data.name,
             description: data.deckDescription || data.avatarDescription || data.description,
             imageUrl: data.imageUrl || data.circleImageUrl,
-            type: data.__typename || data.type
+            type: data.__typename || data.type,
+            id: data._id
         };
         setModalData(normalizeData);
         setOpen(true);
@@ -111,62 +154,87 @@ const AppShop = () => {
         setOpen(false);
     };
 
+    const handleAddToCart = () => {
+        setDrawerOpen(true); // Open drawer
+        setOpen(false); // Close modal
+    };
+
     return (
-        <section className='shopWrapper'>
-            <div
-                className='topBar'
-                style={{ backgroundImage: `url(${theme.headerImage})`, backgroundSize: 'cover' }}>
-                <div className='logoWrapper'>
-                    <img
-                        className='LogoShop'
-                        src={theme.logo}
-                        alt='icon'></img>
-                </div>
-                <div className='cartWrapper'>
-                    <h2 id='cartText'>Cart</h2>
-                    <ShoppingCartIcon />
-                </div>
-            </div>
-            <div className='shopItems deckShop'>
-                <h2 className='headingShop'>Most Popular Tarot Decks</h2>
-                <Decks
-                    deckInfo={shopData.decks}
-                    sendModal={handleOpen}
-                />
-            </div>
-            <div className='shopItems avatarShop'>
-                <h2 className='headingShop'>Avatars for You</h2>
-                <Avatars
-                    avatarInfo={shopData.avatars}
-                    sendModal={handleOpen}
-                />
-            </div>
-            <div className='shopItems themeShop'>
-                <h2 className='headingShop'>Carefully Crafted Themes</h2>
-                <Themes
-                    imgUrl={ThemeOne}
-                    sendModal={handleOpen}
-                />
-            </div>
-            <div className='shopItems bundleShop'>
-                <h2 className='headingShop'>Bundles</h2>
-                <Bundles
-                    imgUrl={BundleOne}
-                    sendModal={handleOpen}
-                />
-            </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby='modal-title'
-                aria-describedby='modal-modal-description'>
-                <Fade in={open}>
-                    <ShopModal
-                        onClose={handleClose}
-                        modalData={modalData}
+        <section className='shopContainer'>
+            <div className='shopWrapper'>
+                <div className='shopItems deckShop'>
+                    <h2 className='headingShop'>Tarot Decks</h2>
+                    <Test
+                        itemInfo={shopData.decks}
+                        sendModal={handleOpen}
+                        theme={theme}
+                        dimensions={carouselData.Deck}
                     />
-                </Fade>
-            </Modal>
+                </div>
+                <Divider
+                    className='cart_divider'
+                    sx={{ width: '95%', height: '1px', marginTop: '2rem' }}
+                />
+                <div className='shopItems avatarShop'>
+                    <h2 className='headingShop'>Avatars</h2>
+                    <Test
+                        itemInfo={shopData.avatars}
+                        sendModal={handleOpen}
+                        theme={theme}
+                        dimensions={carouselData.Avatar}
+                    />
+                </div>
+                <Divider
+                    className='cart_divider'
+                    sx={{ width: '95%', height: '1px', marginTop: '2rem' }}
+                />
+                <div className='shopItems themeShop'>
+                    <h2 className='headingShop'>Themes</h2>
+                    <Test
+                        itemInfo={shopData.themes}
+                        sendModal={handleOpen}
+                        theme={theme}
+                        dimensions={carouselData.Theme}
+                    />
+                </div>
+                <Divider
+                    className='cart_divider'
+                    sx={{ width: '95%', height: '1px', marginTop: '2rem' }}
+                />
+                <div className='shopItems themeShop'>
+                    <h2 className='headingShop'>Bundles</h2>
+                    <Test
+                        itemInfo={shopData.bundles}
+                        sendModal={handleOpen}
+                        theme={theme}
+                        dimensions={carouselData.Theme}
+                    />
+                </div>
+                <Divider
+                    className='cart_divider'
+                    sx={{ width: '95%', height: '1px', marginTop: '2rem' }}
+                />
+
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby='modal-title'
+                    aria-describedby='modal-modal-description'>
+                    <Fade in={open}>
+                        <ShopModal
+                            onClose={handleClose}
+                            modalData={modalData}
+                            onAddToCart={handleAddToCart}
+                        />
+                    </Fade>
+                </Modal>
+                <TemporaryDrawer
+                    open={drawerOpen}
+                    setOpen={setDrawerOpen}
+                    theme={theme}
+                    dimensions={carouselData}
+                />
+            </div>
         </section>
     );
 };

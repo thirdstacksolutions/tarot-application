@@ -13,9 +13,9 @@ const SpreadModal = ({ onClose, spreadName, spreadDescription, imageUrl }) => {
                     <div className='modal-title'>
                         <h2 className='custom-underline'>{spreadName}</h2>
                     </div>
-                    <div className='subTitle'>
+                    {/* <div className='subTitle'>
                         <h2 className='custom-underline'>Daily Draw</h2>
-                    </div>
+                    </div> */}
                     <p className='modal-description'>{spreadDescription}</p>
                 </div>
                 <img

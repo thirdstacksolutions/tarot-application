@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { useTheme } from '../../pages/Settings/ThemeContext';
-import settingsPicture from '../../assets/08_Strength.jpg';
 import { CookieSettingsContext } from '../../pages/Settings/SettingsRight/CookiesSettings';
+
 const LargeHeader = () => {
     const { theme } = useTheme();
 
