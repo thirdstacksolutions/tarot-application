@@ -28,7 +28,9 @@ const NewReading = () => {
     const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING, {
         fetchPolicy: 'no-cache'
     });
-    const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
+    const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING, {
+        fetchPolicy: 'no-cache'
+    });
 
     useEffect(() => {
         if (data) {
@@ -71,29 +73,32 @@ const NewReading = () => {
     };
 
     const handleSaveReading = () => {
-        if (readingData && selectedSpread && selectedDeck && userId) {
-            const cardObjects = readingData.cards.map((card) => ({
-                card: card.card._id,
-                position: card.position,
-                orientation: card.orientation
-            }));
-            createTarotReading({
-                variables: {
-                    userId,
-                    deckId: selectedDeck._id,
-                    spreadId: selectedSpread._id,
-                    cardObjects
-                }
-            })
-                .then((response) => {
-                    console.log('Reading saved:', response.data);
-                    setReadingStage('saved');
+        const confirmSave = window.confirm('SAVE READING MODAL WITH INPUT FIELDS FOR JOURNAL ENTRY GOES HERE');
+        if (confirmSave) {
+            if (readingData && selectedSpread && selectedDeck && userId) {
+                const cardObjects = readingData.cards.map((card) => ({
+                    card: card.card._id,
+                    position: card.position,
+                    orientation: card.orientation
+                }));
+                createTarotReading({
+                    variables: {
+                        userId,
+                        deckId: selectedDeck._id,
+                        spreadId: selectedSpread._id,
+                        cardObjects
+                    }
                 })
-                .catch((error) => {
-                    console.error('Error saving the reading:', error);
-                });
-        } else {
-            console.error('Required data missing: Check if deck, spread, or user is selected.');
+                    .then((response) => {
+                        console.log('Reading saved:', response.data);
+                        setReadingStage('saved');
+                    })
+                    .catch((error) => {
+                        console.error('Error saving the reading:', error);
+                    });
+            } else {
+                console.error('Required data missing: Check if deck, spread, or user is selected.');
+            }
         }
     };
 
@@ -123,9 +128,7 @@ const NewReading = () => {
     };
 
     const handleExitReading = () => {
-        const confirmExit = window.confirm(
-            'MODAL GOES HERE: \n\nAre you sure you want to exit the reading? Unsaved progress will be lost.'
-        );
+        const confirmExit = window.confirm('EXIT READING DOES NOT SAVE READING MODAL HERE');
         if (confirmExit) {
             // Clear local state
             setReadingStage('initial');
@@ -201,11 +204,13 @@ const NewReading = () => {
                           ? 'Save Reading'
                           : 'Reading Saved'}
             </button>
-            <button
-                className='button'
-                onClick={handleExitReading}>
-                Exit Reading
-            </button>
+            {isExpanded && (
+                <button
+                    className='button'
+                    onClick={handleExitReading}>
+                    Exit Reading
+                </button>
+            )}
 
             {loading && <p>Loading...</p>}
             {savingReading && <p>Saving reading...</p>}
