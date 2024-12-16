@@ -1,17 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useApolloClient } from '@apollo/client';
+// the useReadingContext hook passes selectedSpread, selectedDeck, and userId from the ReadingAside component to the NewReading component
 import { useReadingContext } from '../../context/ReadingContext';
 
+// these spreads are the different layouts that can be used for the tarot readings
 import OneCardCenter from '../../components/SpreadLayouts/OneCardCenter';
 import ThreeCardHorizontal from '../../components/SpreadLayouts/ThreeCardHorizontal';
 import SixSpokesUpright from '../../components/SpreadLayouts/SixSpokesUpright';
 
+//this query is used to create a temporary reading which is not saved to the database but stored in the cache
 import { CREATE_TEMPORARY_READING } from '../../utils/queries.js';
 import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 
 import './NewReading.css';
 
 const NewReading = () => {
+    const client = useApolloClient();
+
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
     const [readingData, setReadingData] = useState(null); // Local state for reading data
     const [cardData, setCardData] = useState([]);
@@ -20,14 +25,16 @@ const NewReading = () => {
     const [readingStage, setReadingStage] = useState('initial');
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
+    const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING, {
+        fetchPolicy: 'no-cache'
+    });
     const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
 
     useEffect(() => {
         if (data) {
             console.log('Temporary reading created:', data);
-            setReadingData(data.generateTemporaryReading); // Store data locally
-            setCardData(data.generateTemporaryReading.cards); // Set card data
+            setReadingData(data.generateTemporaryReading);
+            setCardData(data.generateTemporaryReading.cards);
         }
         if (error) {
             console.error('Error creating temporary reading:', error);
@@ -116,14 +123,21 @@ const NewReading = () => {
     };
 
     const handleExitReading = () => {
-        const confirmExit = window.confirm('Are you sure you want to exit the reading? Unsaved progress will be lost.');
+        const confirmExit = window.confirm(
+            'MODAL GOES HERE: \n\nAre you sure you want to exit the reading? Unsaved progress will be lost.'
+        );
         if (confirmExit) {
+            // Clear local state
             setReadingStage('initial');
             setReadingData(null);
             setCardData([]);
             cardRefs.current = [];
             setToggleRender(false);
             setIsExpanded(false);
+
+            // Clear temporary reading from cache
+            client.cache.evict({ fieldName: 'generateTemporaryReading' });
+            client.cache.gc();
         }
     };
 
