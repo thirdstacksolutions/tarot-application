@@ -1,33 +1,112 @@
-export const Decks = ({ deckInfo, sendModal }) => {
-    const totalDecks = 7;
-    const deckIds = Object.keys(deckInfo);
-    const numDecksToShow = Math.min(deckIds.length, totalDecks);
-    const numComingSoon = totalDecks - numDecksToShow;
+import { Box } from '@mui/material';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/splide/dist/css/splide.min.css';
+
+export const Test = ({ itemInfo, sendModal, theme, dimensions }) => {
+    const totalItems = dimensions.total;
+    const ItemIds = Object.keys(itemInfo);
+    const numItemsToShow = Math.min(ItemIds.length, totalItems);
+    const numComingSoon = totalItems - numItemsToShow;
+
+    const slidesArray = Object.values(itemInfo);
+
+    const commingSoonArray = Array.from({ length: numComingSoon }).map((_, idx) => (
+        <div key={`coming-soon-${idx}`}>
+            <Box
+                sx={{
+                    width: dimensions.width,
+                    height: dimensions.height,
+                    margin: 0,
+                    border: `3px solid ${theme.universalImageBorder}`,
+                    borderRadius: dimensions.borderRadius
+                }}>
+                <h2 className='comingSoonTitle'>COMING SOON</h2>
+            </Box>
+        </div>
+    ));
 
     return (
-        <div className='deckShopContainer'>
-            {deckIds.slice(0, numDecksToShow).map((deckId) => (
-                <div
-                    className='deckShopWrapper'
-                    key={deckId}
-                    onClick={() => sendModal(deckInfo[deckId])}>
-                    <img
-                        className='deckShopImgs'
-                        src={deckInfo[deckId].imageUrl}
-                        alt={deckInfo[deckId].deckName}
-                    />
-                    <p className='imageShopText'>{deckInfo[deckId].deckName}</p>
-                </div>
-            ))}
+        <>
+            <Splide
+                options={{
+                    fixedWidth: dimensions.width,
+                    // autoWidth: true,
+                    // perpage: 3,
+                    wheel: true,
+                    releaseWheel: true,
+                    width: '100%',
+                    gap: '3rem',
+                    rewind: true,
+                    arrows: true,
+                    pagination: false,
+                    padding: '3rem',
+                    breakpoints: {
+                        640: {
+                            perPage: 2,
+                            gap: '.7rem',
+                            height: '6rem'
+                        },
+                        480: {
+                            perPage: 1,
+                            gap: '.7rem',
+                            height: '6rem'
+                        }
+                    }
+                }}
+                className='shopSplide'>
+                {slidesArray.map((slide, idx) => (
+                    <SplideSlide key={idx}>
+                        <div
+                            onClick={() => sendModal(slide)}
+                            className='itemWrapper'>
+                            <Box
+                                sx={{
+                                    cursor: 'pointer',
+                                    width: dimensions.width,
+                                    height: dimensions.height,
+                                    margin: 0,
+                                    position: 'relative',
+                                    // overflow: 'hidden',
+                                    border: `3px solid ${theme.universalImageBorder}`,
+                                    borderRadius: dimensions.borderRadius,
+                                    backgroundImage: `url(${slide.imageUrl || slide.circleImageUrl})`,
+                                    backgroundSize: 'cover', // Ensure the image covers the entire box
+                                    backgroundPosition: 'center', // Center the image
+                                    backgroundRepeat: 'no-repeat', // Prevent tiling
+                                    transition: 'border-color 0.3s ease', // Smooth transition for hover effect
+                                    '&:hover': {
+                                        borderColor: theme.buttonSecondaryColor // Change border color on hover
+                                    }
+                                }}>
+                                {dimensions.type === 'deck' && (
+                                    <p
+                                        className={dimensions.textName}
+                                        style={{ width: '131.25px' }}>
+                                        {slide.deckName}
+                                    </p>
+                                )}
+                            </Box>
+                            {dimensions.type === 'avatar' && (
+                                <p
+                                    className={dimensions.textName}
+                                    style={{ width: '131.25px' }}>
+                                    {slide.avatarName}
+                                </p>
+                            )}
+                            {dimensions.type === 'theme' && <p className={dimensions.textName}>{slide.name}</p>}
+                        </div>
+                    </SplideSlide>
+                ))}
 
-            {Array.from({ length: numComingSoon }).map((_, idx) => (
-                <div
-                    key={`coming-soon-${idx}`}
-                    className='deckShopWrapper comingSoon'>
-                    <h2 className='comingSoonTitle'>COMING SOON</h2>
-                </div>
-            ))}
-        </div>
+                {commingSoonArray.map((item, idx) => (
+                    <SplideSlide
+                        key={`comingSoon-slide-${idx}`}
+                        style={{ display: 'flex', justifyContent: 'center', width: 'fit-content' }}>
+                        {item}
+                    </SplideSlide>
+                ))}
+            </Splide>
+        </>
     );
 };
 

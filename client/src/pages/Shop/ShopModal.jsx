@@ -1,9 +1,12 @@
 import { Card } from '@mui/material';
+import { useState } from 'react';
 import { deckContainer, avatarContainer, themeAndBundleContainer } from './ModalContainerChoice';
-
+import { addToCart } from '../../utils/CartUtils.js';
 import './Shop.css';
 
-const ShopModal = ({ onClose, modalData }) => {
+const ShopModal = ({ onClose, modalData, onAddToCart }) => {
+    const price = '10';
+
     const ContainerChoice = () => {
         if (modalData.type === 'Deck') {
             return deckContainer(modalData);
@@ -14,6 +17,12 @@ const ShopModal = ({ onClose, modalData }) => {
         } else {
             return <div>Unknown Container</div>;
         }
+    };
+
+    // Add item to cart and open the drawer
+    const addToCartHandler = () => {
+        addToCart(modalData.id, modalData.type, modalData.imageUrl, price, modalData.name, modalData.description);
+        onAddToCart(); // Close the modal and open the drawer
     };
 
     return (
@@ -31,7 +40,8 @@ const ShopModal = ({ onClose, modalData }) => {
                 <div className='shopButtonContainer'>
                     <button
                         className='button'
-                        sx={{ width: '150px' }}>
+                        sx={{ width: '150px' }}
+                        onClick={addToCartHandler}>
                         Add to Cart
                     </button>
                     <button
