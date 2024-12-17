@@ -1,33 +1,41 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useApolloClient } from '@apollo/client';
+// the useReadingContext hook passes selectedSpread, selectedDeck, and userId from the ReadingAside component to the NewReading component
 import { useReadingContext } from '../../context/ReadingContext';
 
+// these spreads are the different layouts that can be used for the tarot readings
 import OneCardCenter from '../../components/SpreadLayouts/OneCardCenter';
 import ThreeCardHorizontal from '../../components/SpreadLayouts/ThreeCardHorizontal';
 import SixSpokesUpright from '../../components/SpreadLayouts/SixSpokesUpright';
 
+//this query is used to create a temporary reading which is not saved to the database but stored in the cache
 import { CREATE_TEMPORARY_READING } from '../../utils/queries.js';
 import { CREATE_TAROT_READING } from '../../utils/mutations.js';
 
+import './NewReading.css';
+
 const NewReading = () => {
+    const client = useApolloClient();
+
     const { selectedSpread, selectedDeck, userId } = useReadingContext();
+    const [readingData, setReadingData] = useState(null); // Local state for reading data
     const [cardData, setCardData] = useState([]);
     const cardRefs = useRef([]);
     const [toggleRender, setToggleRender] = useState(false);
     const [readingStage, setReadingStage] = useState('initial');
+    const [isExpanded, setIsExpanded] = useState(false);
 
-    const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING);
-    const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING);
-
-    useEffect(() => {
-        if (cardData.length > 0) {
-            cardRefs.current = Array(cardData.length).fill(false);
-        }
-    }, [cardData.length]);
+    const [createTemporaryReading, { data, loading, error }] = useLazyQuery(CREATE_TEMPORARY_READING, {
+        fetchPolicy: 'no-cache'
+    });
+    const [createTarotReading, { loading: savingReading, error: saveError }] = useMutation(CREATE_TAROT_READING, {
+        fetchPolicy: 'no-cache'
+    });
 
     useEffect(() => {
         if (data) {
             console.log('Temporary reading created:', data);
+            setReadingData(data.generateTemporaryReading);
             setCardData(data.generateTemporaryReading.cards);
         }
         if (error) {
@@ -38,9 +46,19 @@ const NewReading = () => {
         }
     }, [data, error, saveError]);
 
-    const handleRevealNextCard = () => {
-        const nextCardIndex = cardRefs.current.findIndex((isFlipped) => !isFlipped);
+    useEffect(() => {
+        if (cardData.length > 0) {
+            cardRefs.current = Array(cardData.length).fill(false);
+        }
+    }, [cardData.length]);
 
+    const handleRevealNextCard = () => {
+        if (!readingData) {
+            console.log('No Data');
+            return;
+        }
+
+        const nextCardIndex = cardRefs.current.findIndex((isFlipped) => !isFlipped);
         if (nextCardIndex !== -1 && nextCardIndex < cardData.length) {
             cardRefs.current[nextCardIndex] = true;
             console.log(`Revealing card at position: ${nextCardIndex + 1}`);
@@ -55,33 +73,45 @@ const NewReading = () => {
     };
 
     const handleSaveReading = () => {
-        if (data && data.generateTemporaryReading && selectedSpread && selectedDeck && userId) {
-            const cardObjects = data.generateTemporaryReading.cards.map((card) => ({
-                card: card.card._id,
-                position: card.position,
-                orientation: card.orientation
-            }));
-            createTarotReading({
-                variables: {
-                    userId,
-                    deckId: selectedDeck._id,
-                    spreadId: selectedSpread._id,
-                    cardObjects
-                }
-            })
-                .then((response) => {
-                    console.log('Reading saved:', response.data);
-                    setReadingStage('initial');
+        const confirmSave = window.confirm('SAVE READING MODAL WITH INPUT FIELDS FOR JOURNAL ENTRY GOES HERE');
+        if (confirmSave) {
+            if (readingData && selectedSpread && selectedDeck && userId) {
+                const cardObjects = readingData.cards.map((card) => ({
+                    card: card.card._id,
+                    position: card.position,
+                    orientation: card.orientation
+                }));
+                createTarotReading({
+                    variables: {
+                        userId,
+                        deckId: selectedDeck._id,
+                        spreadId: selectedSpread._id,
+                        cardObjects
+                    }
                 })
-                .catch((error) => {
-                    console.error('Error saving the reading:', error);
-                });
-        } else {
-            console.error('Required data missing: Check if deck, spread, or user is selected.');
+                    .then((response) => {
+                        console.log('Reading saved:', response.data);
+                        setReadingStage('saved');
+
+                        setReadingStage('initial');
+                        setReadingData(null);
+                        setCardData([]);
+                        cardRefs.current = [];
+                        setToggleRender(false);
+                        setIsExpanded(false);
+                    })
+                    .catch((error) => {
+                        console.error('Error saving the reading:', error);
+                    });
+            } else {
+                console.error('Required data missing: Check if deck, spread, or user is selected.');
+            }
         }
     };
 
     const handleStartReading = () => {
+        console.log('reading started');
+        console.log('reading data', selectedDeck, selectedSpread, userId);
         if (selectedSpread && selectedDeck && userId) {
             createTemporaryReading({
                 variables: {
@@ -92,12 +122,28 @@ const NewReading = () => {
             })
                 .then(() => {
                     setReadingStage('reveal');
+                    setIsExpanded(true);
                 })
                 .catch((error) => {
                     console.error('Error starting the reading:', error);
                 });
         } else {
             console.error('Spread, Deck, or User not selected');
+        }
+        // console.log('reading data', selectedDeck, selectedSpread, userId);
+        console.log('reading complete');
+    };
+
+    const handleExitReading = () => {
+        const confirmExit = window.confirm('EXIT READING DOES NOT SAVE READING MODAL HERE');
+        if (confirmExit) {
+            // Clear local state
+            setReadingStage('initial');
+            setReadingData(null);
+            setCardData([]);
+            cardRefs.current = [];
+            setToggleRender(false);
+            setIsExpanded(false);
         }
     };
 
@@ -110,7 +156,7 @@ const NewReading = () => {
     const LayoutComponent = layoutMap[selectedSpread?.layout] || null;
 
     return (
-        <section>
+        <section className={`new-reading ${isExpanded ? 'expanded' : ''}`}>
             <h2>New Reading</h2>
 
             {selectedSpread ? (
@@ -157,8 +203,17 @@ const NewReading = () => {
                       ? 'Start Reading'
                       : readingStage === 'reveal'
                         ? 'Reveal Next Card'
-                        : 'Save Reading'}
+                        : readingStage === 'save'
+                          ? 'Save Reading'
+                          : 'Reading Saved'}
             </button>
+            {isExpanded && (
+                <button
+                    className='button'
+                    onClick={handleExitReading}>
+                    Exit Reading
+                </button>
+            )}
 
             {loading && <p>Loading...</p>}
             {savingReading && <p>Saving reading...</p>}

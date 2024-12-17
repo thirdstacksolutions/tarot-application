@@ -42,7 +42,7 @@ export const ReadingContextProvider = ({ children }) => {
                 setSelectedDeck,
                 allDecks: allDecksData?.allDecks || [],
                 allSpreads: allSpreadsData?.allSpreads || [],
-                userId: userData?.me?._id || null // Add userId to the context value
+                userId: userData?.me?._id || null
             }}>
             {children}
         </ReadingContext.Provider>

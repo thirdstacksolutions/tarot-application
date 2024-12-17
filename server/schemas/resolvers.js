@@ -278,11 +278,12 @@ const resolvers = {
         generateTemporaryReading: async (_, { userId, deckId, spreadId }, context) => {
             try {
                 checkAuthentication(context, userId);
-
+                // finding the spread and deck by id from the database
                 const spread = await Spread.findOne({ _id: spreadId });
                 const deck = await Deck.findOne({ _id: deckId });
 
-                console.log('Deck:', deck);
+                console.log('Spread in resolver:', spread);
+                console.log('Deck in resolver:', deck);
 
                 if (!spread) {
                     throw new Error('Spread not found');
@@ -291,11 +292,14 @@ const resolvers = {
                     throw new Error('Deck not found');
                 }
 
-                const isEclipseDeck = deck.deckName === 'Eclipse of the Soul Tarot';
+                // sets the orientation verbiage for the cards based on the deck name
+                const isEclipseDeck = deck.deckName === 'Eclipse of the Soul';
 
+                // the drawCards function uses the shuffleArray function to shuffle the deck and draw the cards from the "top" of the deck
                 const selectedCardIds = drawCards(deck.cards, spread.numCards).map((card) => card._id);
                 const selectedCards = await Card.find({ _id: { $in: selectedCardIds } });
 
+                // create the card objects for the reading
                 const cardObjects = selectedCards.map((card, index) => ({
                     card: {
                         _id: card._id,
@@ -312,6 +316,7 @@ const resolvers = {
                           : 'Reversed'
                 }));
 
+                // return the temporary reading object to the client with the spread, deck, and cards data populated from the database queries above
                 return {
                     deck: {
                         _id: deck._id,

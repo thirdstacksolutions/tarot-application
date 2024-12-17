@@ -4,7 +4,6 @@ import './ReadingAside.css';
 
 const ReadingAside = () => {
     const panelRef = useRef(null);
-
     const { setSelectedSpread, setSelectedDeck, allSpreads, allDecks } = useReadingContext();
 
     const combinedItems = useMemo(() => {
