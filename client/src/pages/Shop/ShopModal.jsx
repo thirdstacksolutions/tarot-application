@@ -26,13 +26,13 @@ const ShopModal = ({ onClose, modalData, onAddToCart }) => {
     };
 
     return (
-        <Card className='shop-modal-card'>
-            <div className='shop-card-styling'>
+        <Card className='base-modal-card'>
+            <div className='base-card-styling'>
                 <div className='infoWrapper'>
                     <div className='modal-title'>
                         <h2 className='custom-underline'>{modalData.name}</h2>
                     </div>
-                    <p className='shop-modal-description'>{modalData.description}</p>
+                    <p className='modal-description'>{modalData.description}</p>
                 </div>
 
                 <ContainerChoice />

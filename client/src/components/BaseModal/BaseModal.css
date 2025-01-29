@@ -1,5 +1,4 @@
 /* Base Modal CSS */
-
 .base-modal-card {
     position: absolute;
     top: 50%;
@@ -28,7 +27,7 @@
     width: 100%;
 }
 
-.modal-info-wrapper {
+.infoWrapper {
     width: 100%;
     height: fit-content;
     max-height: 55%;
@@ -70,7 +69,9 @@
     width: min-content;
     text-align: center;
 }
-.modal-content-container {
+.modal-content-container,
+.deckModalImgContainer,
+.spreadModalImgContainer {
     position: relative;
     display: flex;
     justify-content: center;

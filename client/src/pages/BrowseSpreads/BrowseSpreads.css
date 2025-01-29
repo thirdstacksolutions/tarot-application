@@ -131,16 +131,7 @@
     align-items: center;
 }
 
-/* Modal Styling */
-.spreadModalImgContainer {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70%;
-    height: 31%;
-}
-
+/* Browse Spreads Modal */
 .spreadModalImg {
     width: 60%;
     aspect-ratio: 4/3;
