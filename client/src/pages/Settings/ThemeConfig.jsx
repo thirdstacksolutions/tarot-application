@@ -83,7 +83,7 @@ const themes = {
     pastel: {
         headerImage: PastelHeader,
         logo: PastelLogo,
-        backgroundColor: '#468874',
+        backgroundColor: '#486874',
         h2Color: '#AB8383',
         h2TextShadow: '#121212',
         linkColor: '#cdb167',

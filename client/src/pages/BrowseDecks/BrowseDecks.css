@@ -132,7 +132,7 @@
     align-items: center;
 }
 /* Browse Decks Modal */
-.decks-modal-card {
+.base-modal-card {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -149,55 +149,13 @@
     align-items: center;
     flex-direction: column;
 }
-.decks-card-styling {
+.base-card-styling {
     background-color: var(--background-color);
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100%;
     flex-grow: 1;
-}
-
-.infoWrapper {
-    width: 100%;
-    height: fit-content;
-    max-height: 55%;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    flex-direction: column;
-    flex-grow: 1;
-}
-.modal-title {
-    width: 80%;
-    padding: 1.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--h3-color);
-}
-
-.modal-title .custom-underline {
-    width: 100%;
-    font-size: 2.5rem;
-}
-
-.custom-underline {
-    color: var(--h3-color);
-    text-decoration: none;
-    border-bottom: 2px solid var(--universal-image-border);
-    margin: 0;
-    width: min-content;
-    text-align: center;
-}
-
-.modal-description {
-    font-size: 1.5rem;
-    padding: 0.2rem;
-    width: 80%;
-    height: 65%;
-    overflow: scroll;
-    color: var(--text-color);
 }
 
 .deckModalImgContainer {

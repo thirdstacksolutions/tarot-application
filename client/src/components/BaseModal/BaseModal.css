@@ -1,0 +1,80 @@
+/* Base Modal CSS */
+
+.base-modal-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    border: 3px solid var(--universal-image-border);
+    border-radius: 8px;
+    box-shadow: 24;
+    padding: 0;
+    height: 90%;
+    aspect-ratio: 8/9;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+}
+
+.base-card-styling {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+}
+
+.modal-info-wrapper {
+    width: 100%;
+    height: fit-content;
+    max-height: 55%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.modal-title {
+    width: 80%;
+    padding: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--h3-color);
+}
+
+.modal-title .custom-underline {
+    width: 100%;
+    font-size: 2.5rem;
+}
+
+.modal-description {
+    font-size: 1.5rem;
+    padding: 0.2rem;
+    width: 80%;
+    height: 60% !important;
+    overflow-y: auto;
+    /* overflow: scroll; */
+    color: var(--text-color);
+}
+.custom-underline {
+    color: var(--h3-color);
+    text-decoration: none;
+    border-bottom: 2px solid var(--universal-image-border);
+    margin: 0;
+    width: min-content;
+    text-align: center;
+}
+.modal-content-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 31%;
+}

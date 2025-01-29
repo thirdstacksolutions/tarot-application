@@ -1,4 +1,5 @@
 import { useState, forwardRef, cloneElement, useEffect } from 'react';
+import BaseModal from '../../components/BaseModal/BaseModal.jsx';
 import { Modal, Divider } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from '@react-spring/web';

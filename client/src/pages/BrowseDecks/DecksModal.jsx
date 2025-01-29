@@ -1,6 +1,5 @@
 import { Card } from '@mui/material';
 import { useTheme } from '../Settings/ThemeContext';
-import Button from 'react-bootstrap/Button';
 
 import './BrowseDecks.css';
 
@@ -8,8 +7,8 @@ const DecksModal = ({ onClose, deckName, deckDescription, imageUrl }) => {
     const theme = useTheme();
 
     return (
-        <Card className='decks-modal-card'>
-            <div className='decks-card-styling'>
+        <Card className='base-modal-card'>
+            <div className='base-card-styling'>
                 <div className='infoWrapper'>
                     <div className='modal-title'>
                         <h2 className='custom-underline'>{deckName}</h2>
@@ -33,11 +32,11 @@ const DecksModal = ({ onClose, deckName, deckDescription, imageUrl }) => {
                         src={imageUrl}
                     />
                 </div>
-                <Button
+                <button
                     className='button'
                     onClick={onClose}>
                     Close
-                </Button>
+                </button>
             </div>
         </Card>
     );

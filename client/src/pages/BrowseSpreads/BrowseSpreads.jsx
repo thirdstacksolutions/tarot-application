@@ -2,12 +2,14 @@ import { useState, forwardRef, cloneElement, useEffect } from 'react';
 import { Modal } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from '@react-spring/web';
-import SpreadModal from './SpreadModal';
+import '../../components/BaseModal/BaseModal';
 import { useTheme } from '../Settings/ThemeContext';
 import { useLazyQuery } from '@apollo/client';
 import { QUERY_ALL_SPREADS } from '../../utils/queries';
 
 import './BrowseSpreads.css';
+
+import SpreadModal from './SpreadModal';
 
 const Fade = forwardRef(function Fade(props, ref) {
     const { children, in: open, onClick, onEnter, onExited, ...other } = props;
